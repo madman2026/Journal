@@ -1,12 +1,9 @@
 {
     "agents": [
-        "cursor",
-        "phpstorm"
+        "cursor"
     ],
     "editors": [
-        "cursor",
-        "phpstorm",
-        "vscode"
+        "cursor"
     ],
     "guidelines": []
 }

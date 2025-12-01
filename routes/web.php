@@ -1,6 +1,6 @@
 <?php
 
-use App\Livewire\Home;
 use Illuminate\Support\Facades\Route;
+use Modules\Core\Livewire\LandingPage;
 
-Route::get('/', Home::class)->name('home');
+Route::get('/', LandingPage::class)->name('home');
