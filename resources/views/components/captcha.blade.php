@@ -1,8 +1,8 @@
 <div class="w-full max-w-full">
     {!! NoCaptcha::renderJs('fa') !!}
-    {!! NoCaptcha::display() !!}
-    @error("g-recaptcha-response")
-    <span class="rounded-lg bg-red-500 px-2 py-1 my-1 text-white">
+    {!! NoCaptcha::display(['data-theme' => 'dark']) !!}
+    @error("g_recaptcha_response")
+    <span class="text-red-500 text-sm mt-1">
             {{$message}}
         </span>
     @enderror

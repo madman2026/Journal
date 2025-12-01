@@ -1,4 +1,4 @@
-<div class="container mx-auto px-4 py-8" data-aos="fade-up">
+<div class="container mx-auto px-4 py-8">
     <h1 class="text-2xl font-bold mb-6 text-gray-800 dark:text-white">ایجاد نشریه جدید</h1>
 
     <form wire:submit="save" enctype="multipart/form-data" class="space-y-6">
@@ -23,24 +23,10 @@
         />
 
         {{-- تصویر نشریه --}}
-        <div>
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                تصویر نشریه (JPEG یا JPG)
-            </label>
-            <input
-                type="file"
-                wire:model="image"
-                class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 dark:file:bg-blue-900 dark:file:text-blue-300"
-                accept=".jpg,.jpeg,.png"
-            >
-            @error('image') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-            @if ($image)
-                <p class="mt-1 text-sm text-gray-500">فایل انتخاب شده: {{ $image->getClientOriginalName() }}</p>
-            @endif
-        </div>
+        <x-core::form.file-input :required="true" :value="old('image')" label="عکس" name="image"  />
 
         {{-- فایل PDF/DOCX --}}
-        <div>
+        {{-- <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 فایل نشریه (PDF یا DOCX)
             </label>
@@ -54,7 +40,7 @@
             @if ($addOn)
                 <p class="mt-1 text-sm text-gray-500">فایل انتخاب شده: {{ $addOn->getClientOriginalName() }}</p>
             @endif
-        </div>
+        </div> --}}
 
         {{-- دسته‌بندی‌ها --}}
         <x-core::form.select
@@ -133,7 +119,7 @@
                         @error("articles.{$index}.addOn")
                             <span class="text-red-500 text-sm">{{ $message }}</span>
                         @enderror
-                        @if ($articles[$index]['addOn'] instanceof \Livewire\Features\SupportFileUploads\TemporaryUploadedFile)
+                        @if ($articles[$index]['attachment'] instanceof \Livewire\Features\SupportFileUploads\TemporaryUploadedFile)
                             <p class="mt-1 text-sm text-gray-500">فایل انتخاب شده: {{ $articles[$index]['addOn']->getClientOriginalName() }}</p>
                         @endif
                     </div>

@@ -4,6 +4,7 @@ namespace Modules\Magazine\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Modules\Core\app\Contracts\HasSlug;
+use Modules\Core\App\Contracts\Interactable;
 use Modules\Core\Contracts\Likeable;
 use Modules\Core\Models\Category;
 use Modules\Interaction\Models\Comment;
@@ -14,7 +15,7 @@ use Modules\User\Models\User;
 
 class Magazine extends Model
 {
-    use HasSlug , Likeable;
+    use HasSlug , Interactable;
 
     protected $fillable = [
         'title',
@@ -42,19 +43,9 @@ class Magazine extends Model
         return 'magazine.show';
     }
 
-    public function comments()
-    {
-        return $this->morphMany(Comment::class, 'commentable');
-    }
-
     public function articles()
     {
         return $this->hasMany(Article::class);
-    }
-
-    public function views()
-    {
-        return $this->morphMany(View::class, 'viewable');
     }
 
     public function user()

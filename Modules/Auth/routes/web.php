@@ -12,5 +12,7 @@ Route::middleware(['guest'])->group(function () {
     Route::get('forgot-password', ForgotPassword::class)->name('forgot-password');
 });
 
-Route::get('reset-password', ResetPassword::class)->name('reset-password');
-Route::post('logout', \Modules\Auth\Http\Controllers\LogoutController::class)->name('logout');
+Route::middleware(['auth:web'])->group(function () {
+    Route::get('reset-password', ResetPassword::class)->name('reset-password');
+    Route::post('logout', \Modules\Auth\Http\Controllers\LogoutController::class)->name('logout');
+});

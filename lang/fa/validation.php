@@ -156,6 +156,8 @@ return [
     'url' => ':Attribute معتبر نمی‌باشد.',
     'uuid' => ':Attribute باید یک UUID معتبر باشد.',
     'attributes' => [
-
+        'body' => 'متن',
+        'phone' => 'تلفن همراه',
+        'g_recaptcha_response' => 'تشخیص ربات',
     ],
 ];

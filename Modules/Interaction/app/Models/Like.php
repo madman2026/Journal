@@ -10,14 +10,20 @@ use Illuminate\Database\Eloquent\Model;
 class Like extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'user_id',
+        'likeable_id',
+        'likeable_type',
+        'ip_address'
+    ];
 
-    /**
-     * The attributes that are mass assignable.
-     */
-    protected $fillable = [];
+    public function user()
+    {
+        return $this->morphTo();
+    }
 
-    // protected static function newFactory(): LikeFactory
-    // {
-    //     // return LikeFactory::new();
-    // }
+    public function likeable()
+    {
+        return $this->morphTo();
+    }
 }

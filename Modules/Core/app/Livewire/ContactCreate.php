@@ -5,18 +5,18 @@ namespace Modules\Core\Livewire;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Modules\Core\Actions\CreateContactAction;
+use Modules\Core\App\Contracts\HasCaptcha;
 use Modules\Core\Services\ContactService;
 
 class ContactCreate extends Component
 {
+    use HasCaptcha;
+
     #[Validate('required|numeric')]
     public $phone = '';
 
     #[Validate('required|string|min:10|max:10000')]
     public $body = '';
-
-    public $gRecaptchaResponse = '';
-
     protected ContactService $service;
 
     public function boot(ContactService $service)
@@ -30,13 +30,13 @@ class ContactCreate extends Component
         $this->validate([
             'phone' => 'required|numeric',
             'body' => 'required|string|min:10|max:10000',
-            'gRecaptchaResponse' => 'required|captcha',
+            'g_recaptcha_response' => 'required|captcha',
         ]);
 
         $result = $this->service->createContact([
             'phone' => $this->phone,
             'body' => $this->body,
-            'g-recaptcha-response' => $this->gRecaptchaResponse,
+            'g-recaptcha-response' => $this->g_recaptcha_response,
         ]);
 
         if ($result->status) {

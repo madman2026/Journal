@@ -19,7 +19,7 @@ return new class extends Migration
             $table->text('body');
             $table->text('abstract');
             $table->foreignId('magazine_id')->constrained('magazines')->cascadeOnDelete();
-            $table->text('url')->nullable();
+            $table->text('attachment')->nullable();
             $table->timestamps();
         });
     }

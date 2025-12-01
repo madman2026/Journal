@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('activities', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(\Modules\Activity\Models\Scope::class)->nullable()->constrained('scopes')->cascadeOnDelete();
+            $table->foreignIdFor(\Modules\Activity\Models\Level::class)->nullable()->constrained('levels')->cascadeOnDelete();
             $table->string('title');
             $table->string('slug')->unique();
             $table->text('body');
-            $table->string('pdf')->nullable();
+            $table->string('attachment')->nullable();
             $table->string('image');
             $table->foreignIdFor(\Modules\User\Models\User::class)->constrained('users')->cascadeOnDelete();
             $table->timestamps();

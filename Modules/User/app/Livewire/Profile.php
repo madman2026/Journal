@@ -12,6 +12,7 @@ class Profile extends Component
     use WithFileUploads;
 
     public $user;
+    public $username;
 
     public $name;
 
@@ -27,10 +28,10 @@ class Profile extends Component
     {
         return [
             'name' => 'required|string|min:3|max:255',
+            'username' => 'required|string|min:3|max:255|unique:users'.$this->user['id'],
             'number' => 'required|numeric',
             'email' => 'required|email|max:255|unique:users,email,'.$this->user['id'],
             'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'delete' => 'boolean',
         ];
     }
 
@@ -52,12 +53,6 @@ class Profile extends Component
     public function updateUser()
     {
         $this->validate();
-
-        if ($this->delete) {
-            Auth::user()->delete();
-
-            return redirect('/');
-        }
 
         $user = Auth::user();
         $user->name = $this->name;

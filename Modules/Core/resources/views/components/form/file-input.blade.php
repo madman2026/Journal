@@ -28,6 +28,7 @@
     <input
         type="file"
         name="{{ $name }}"
+        wire:model.lazy="{{ $name }}"
         id="{{ $name }}"
         class="hidden"
         @if($accept) accept="{{ $accept }}" @endif
@@ -36,26 +37,8 @@
 
         x-on:change="fileName = $event.target.files[0]?.name || ''"
 
-        @isset($rule)
-            x-data
-            x-init="$el.dataset.rules = @js($rule)"
-            data-rules
-        @endisset
-
         {{ $attributes }}
     >
-
-    {{-- نمایش لیست rule‌ها --}}
-    @isset($rule)
-        <div x-data="ruleViewer($el.previousElementSibling)" class="mt-2">
-            <template x-for="rule in rules">
-                <div class="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
-                    <span class="w-1.5 h-1.5 bg-gray-400 rounded-full"></span>
-                    <span x-text="rule"></span>
-                </div>
-            </template>
-        </div>
-    @endisset
 
     @if($help)
         <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">{{ $help }}</p>

@@ -12,69 +12,19 @@
         @endif
 
         {{-- نام کاربری --}}
-        <div>
-            <label for="username" class="block text-sm font-medium text-gray-700 dark:text-gray-300">نام کاربری</label>
-            <input disabled value="{{ $user['username'] ?? '' }}" type="text" id="username"
-                   class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md p-2 bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed">
-        </div>
+        <x-core::form.text-input label="نام کاربری" placeholder="نام کاربری خود را وارد" name="username"/>
 
         {{-- نام و نام خانوادگی --}}
-        <div>
-            <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                نام و نام خانوادگی
-            </label>
 
-
-            <input wire:model="name" type="text" id="name"
-                   class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-gray-700 dark:text-white transition duration-200
-                          @error('name') border-red-500 @enderror">
-
-            @error('name')
-                <div class="text-red-500 text-sm mt-1 flex items-center gap-1">
-                    <x-heroicon-o-exclamation-circle class="w-4 h-4" />
-                    {{ $message }}
-                </div>
-            @enderror
-        </div>
+        <x-core::form.text-input label="نام و نام خانوادگی" placeholder="نام و نام خانوادگی خود را وارد کنید" name="name"  />
 
         {{-- شماره تماس --}}
-        <div>
-            <label for="number" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                شماره تماس
-            </label>
+        <x-core::form.text-input label="شماره تلفن همراه" placeholder="09XXXXXXXXX" name="number"  />
 
-
-            <input wire:model="number" type="tel" id="number"
-                   class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-gray-700 dark:text-white transition duration-200
-                          @error('number') border-red-500 @enderror"
-                   placeholder="09xxxxxxxxx">
-
-            @error('number')
-                <div class="text-red-500 text-sm mt-1 flex items-center gap-1">
-                    <x-heroicon-o-exclamation-circle class="w-4 h-4" />
-                    {{ $message }}
-                </div>
-            @enderror
-        </div>
 
         {{-- ایمیل --}}
-        <div>
-            <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                ایمیل
-            </label>
+        <x-core::form.text-input label="ایمیل" placeholder="ایمیل خود را وارد کنید" name="email"  />
 
-
-            <input wire:model="email" type="email" id="email"
-                   class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-gray-700 dark:text-white transition duration-200
-                          @error('email') border-red-500 @enderror">
-
-            @error('email')
-                <div class="text-red-500 text-sm mt-1 flex items-center gap-1">
-                    <x-heroicon-o-exclamation-circle class="w-4 h-4" />
-                    {{ $message }}
-                </div>
-            @enderror
-        </div>
 
         <div>
             <label for="image" class="block text-sm font-medium text-gray-700 dark:text-gray-300">

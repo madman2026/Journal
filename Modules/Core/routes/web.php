@@ -3,8 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use Modules\Core\Http\Controllers\RecommendDeleteController;
 use Modules\Core\Livewire\Recommend;
+use Modules\Magazine\Livewire\MagazineIndex;
 
-Route::as('core.')->group(function () {
+Route::as("core.")->group(function () {
     Route::get('recommend', Recommend::class)->name('recommend');
     Route::delete('recommend', RecommendDeleteController::class)->name('recommend.delete');
     Route::get('search', \Modules\Core\Livewire\Search::class)->name('search');
@@ -12,7 +13,4 @@ Route::as('core.')->group(function () {
     // Contact routes
     Route::get('contact-us', \Modules\Core\Livewire\ContactCreate::class)->name('contact');
     Route::get('contact', \Modules\Core\Livewire\ContactCreate::class)->name('contact.alias');
-    // Index routes
-    Route::get('news', \Modules\Core\Livewire\NewsIndex::class)->name('news');
-    Route::get('events', \Modules\Core\Livewire\EventsIndex::class)->name('events');
 });
