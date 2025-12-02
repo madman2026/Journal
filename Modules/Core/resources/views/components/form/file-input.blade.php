@@ -28,7 +28,6 @@
     <input
         type="file"
         name="{{ $name }}"
-        wire:model.lazy="{{ $name }}"
         id="{{ $name }}"
         class="hidden"
         @if($accept) accept="{{ $accept }}" @endif

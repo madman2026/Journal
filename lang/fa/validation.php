@@ -159,5 +159,16 @@ return [
         'body' => 'متن',
         'phone' => 'تلفن همراه',
         'g_recaptcha_response' => 'تشخیص ربات',
+        "categories" => "دسته‌بندی‌ها",
+        "levels" => "سطح‌ها",
+        "sections" => "بخش‌ها",
+        "links" => "لینک‌ها",
+        "category" => "نام دسته‌بندی",
+        "level" => "نام سطح",
+        "linkName" => "عنوان لینک",
+        "link" => "آدرس لینک",
+        "titleFooter" => "عکس پایین صفحه",
+        "titleHeader" => "عکس بالای صفحه"
+
     ],
 ];
