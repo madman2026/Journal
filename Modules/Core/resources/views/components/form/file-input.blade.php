@@ -61,17 +61,35 @@
             </div>
         </template>
 
-
+        <!-- Preview -->
         @php
             $parts = explode('.', $name);
             $prop = $parts[0] ?? null;
             $index = $parts[1] ?? null;
 
-            $fileValue = $prop && $index ? ($this->{$prop}[$index] ?? null) : null;
+            $fileValue = null;
+
+            if ($prop && $index) {
+                $fileValue = $this->{$prop}[$index] ?? null;
+            } elseif ($prop && isset($this->{$prop})) {
+                $fileValue = $this->{$prop};
+            }
         @endphp
 
-        @if ($fileValue instanceof \Livewire\Features\SupportFileUploads\TemporaryUploadedFile)
-            <img src="{{ $fileValue->temporaryUrl() }}" class="max-h-40 rounded-md mt-3" />
+        @if($fileValue)
+            <div class="flex flex-wrap gap-3 mt-3">
+                @php
+                    $files = is_array($fileValue) ? $fileValue : [$fileValue];
+                @endphp
+
+                @foreach($files as $file)
+                    @if($file instanceof \Livewire\Features\SupportFileUploads\TemporaryUploadedFile)
+                        <img src="{{ $file->temporaryUrl() }}" class="max-h-40 rounded-md" />
+                    @elseif(is_string($file))
+                        <img src="{{ $file }}" class="max-h-40 rounded-md" />
+                    @endif
+                @endforeach
+            </div>
         @endif
 
         <!-- Error -->

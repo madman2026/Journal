@@ -26,30 +26,7 @@
         <x-core::form.text-input label="ایمیل" placeholder="ایمیل خود را وارد کنید" name="email"  />
 
 
-        <div>
-            <label for="image" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                تعویض عکس پروفایل
-            </label>
-
-            <input wire:model="image" type="file" accept="image/png,image/jpeg" id="image"
-                   class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-gray-700 transition duration-200
-                          @error('image') border-red-500 @enderror">
-
-            @error('image')
-                <div class="text-red-500 text-sm mt-1 flex items-center gap-1">
-                    <x-heroicon-o-exclamation-circle class="w-4 h-4" />
-                    {{ $message }}
-                </div>
-            @enderror
-
-            {{-- پیش‌نمایش تصویر --}}
-            @if ($image)
-                <div class="mt-2">
-                    <p class="text-sm text-gray-600 dark:text-gray-400">پیش‌نمایش:</p>
-                    <img src="{{ $image->temporaryUrl() }}" class="mt-1 h-20 w-20 object-cover rounded-lg">
-                </div>
-            @endif
-        </div>
+        <x-core::form.file-input label="تعویض عکس پروفایل" name="image"  />
 
         {{-- حذف حساب کاربری --}}
         @if(!auth()->user()->hasRole("super-admin"))
