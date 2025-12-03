@@ -3,8 +3,8 @@
 namespace Modules\Admin\Livewire;
 
 use Livewire\Component;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Livewire\WithFileUploads;
-use Illuminate\Support\Facades\DB;
 use Modules\Activity\Models\Level;
 use Modules\Core\Models\Category;
 use Modules\Core\Models\FooterLink;
@@ -28,11 +28,15 @@ class Settings extends Component
 
     public function mount()
     {
-        $this->categories = Category::get();
-        $this->levels = Level::get();
-        $this->sections = Section::get();
+        $this->loadAll();
+    }
 
-        $this->links = FooterLink::get();
+    private function loadAll()
+    {
+        $this->categories = Category::get();
+        $this->levels      = Level::get();
+        $this->sections    = Section::get();
+        $this->links       = FooterLink::get();
 
         foreach ($this->sections as $section) {
             $this->sectionInputs[$section->name] = null;
@@ -41,29 +45,45 @@ class Settings extends Component
 
     public function addCategory()
     {
-        Category::create([
-            'name' => $this->category
+        $this->validateOnly('category', [
+            'category' => 'required|string|min:2|max:40'
         ]);
+
+        Category::create(['name' => $this->category]);
 
         $this->category = '';
-        $this->mount();
+        $this->loadAll();
     }
 
-    public function addlevel()
+    public function delCategory($id)
     {
-        Level::create([
-            'name' => $this->level
+        Category::where('id', $id)->delete();
+        $this->loadAll();
+    }
+
+    public function addLevel()
+    {
+        $this->validateOnly('level', [
+            'level' => 'required|string|min:1|max:40'
         ]);
 
+        Level::create(['name' => $this->level]);
+
         $this->level = '';
-        $this->mount();
+        $this->loadAll();
+    }
+
+    public function delLevel($id)
+    {
+        Level::where('id', $id)->delete();
+        $this->loadAll();
     }
 
     public function addLink()
     {
         $this->validate([
-            'linkName' => 'required',
-            'link' => 'required|url'
+            'linkName' => 'required|string|max:100',
+            'link'     => 'required|url'
         ]);
 
         FooterLink::create([
@@ -72,31 +92,42 @@ class Settings extends Component
         ]);
 
         $this->linkName = '';
-        $this->link = '';
-        $this->mount();
+        $this->link     = '';
+
+        $this->loadAll();
     }
 
     public function deleteLink($id)
     {
-        FooterLink::find('id', $id)->delete();
-        $this->mount();
+        FooterLink::where('id', $id)->delete();
+        $this->loadAll();
     }
-
     public function updateSections()
     {
         foreach ($this->sectionInputs as $key => $value) {
-            if ($value) {
-                Section::where('name', $key)->update([
-                    'content' => $value
-                ]);
+
+            if (empty($value)) continue;
+
+            $section = Section::where('name', $key)->first();
+
+            // اگر فایل است
+            if ($value instanceof TemporaryUploadedFile) {
+                $path = $value->store('uploads/sections', 'public');
+                $section->update(['content' => $path]);
+            }
+            // اگر متن است
+            else {
+                $section->update(['content' => $value]);
             }
         }
+
         $this->dispatch('toastMagic',
             status: 'success',
-            title: 'ورود موفق',
+            title: 'عملیات موفق',
             message: 'تنظیمات با موفقیت ذخیره شد'
         );
     }
+
 
     public function render()
     {

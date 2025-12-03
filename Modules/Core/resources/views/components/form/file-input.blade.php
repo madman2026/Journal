@@ -1,49 +1,82 @@
 @props([
     'name',
-    'label',
-    'value' => '',
-    'accept' => null,
-    'required' => false,
-    'help' => null,
+    'label' => null,
+    'accept' => '',
     'multiple' => false,
-    'rule' => null
 ])
 
-<div class="mb-4" x-data="{ fileName: '' }">
-    <label for="{{ $name }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-        {{ $label }} @if($required)<span class="text-red-500">*</span>@endif
-    </label>
-
-    <div class="flex items-center gap-3">
-        <label for="{{ $name }}"
-               class="cursor-pointer bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
-            <x-heroicon-o-cloud-arrow-up class="w-5 h-5 inline ml-1" />
-            انتخاب فایل
+<div class="mb-6 w-full">
+    @if($label)
+        <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+            {{ $label }}
         </label>
-
-        <span x-text="fileName || 'هیچ فایلی انتخاب نشده'"
-              class="text-sm text-gray-500 dark:text-gray-400 flex-1"></span>
-    </div>
-
-    <input
-        type="file"
-        name="{{ $name }}"
-        id="{{ $name }}"
-        class="hidden"
-        @if($accept) accept="{{ $accept }}" @endif
-        @if($required) required @endif
-        @if($multiple) multiple @endif
-
-        x-on:change="fileName = $event.target.files[0]?.name || ''"
-
-        {{ $attributes }}
-    >
-
-    @if($help)
-        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">{{ $help }}</p>
     @endif
 
-    @error($name)
-        <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-    @enderror
+    <div
+        x-data="{ uploading: false, progress: 0, hover: false }"
+        x-on:livewire-upload-start="uploading = true"
+        x-on:livewire-upload-finish="uploading = false; progress = 0"
+        x-on:livewire-upload-cancel="uploading = false; progress = 0"
+        x-on:livewire-upload-error="uploading = false; progress = 0"
+        x-on:livewire-upload-progress="progress = $event.detail.progress"
+        class="space-y-3"
+    >
+
+        <!-- Input -->
+        <label
+            class="flex flex-col items-center justify-center w-full p-5 border-2 border-dashed rounded-xl transition
+                   bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600
+                   hover:border-indigo-400 dark:hover:border-indigo-300 cursor-pointer shadow-sm hover:shadow-md"
+            @mouseenter="hover = true"
+            @mouseleave="hover = false"
+        >
+            <x-heroicon-o-arrow-up-tray
+                class="w-10 h-10 text-gray-400 dark:text-gray-500 transition-all"
+                x-bind:class="hover ? 'scale-110 text-indigo-500 dark:text-indigo-300' : ''"
+            />
+
+            <span class="mt-2 text-sm text-gray-600 dark:text-gray-300">
+                فایل‌هاتو انتخاب کن
+            </span>
+
+            <input
+                type="file"
+                wire:model="{{ $name }}"
+                @if($accept) accept="{{ $accept }}" @endif
+                @if($multiple) multiple @endif
+                class="hidden"
+            />
+        </label>
+
+        <!-- Progress -->
+        <template x-if="uploading">
+            <div class="w-full flex flex-col gap-1 transition-opacity duration-300 opacity-100">
+                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
+                    <div
+                        class="h-full bg-indigo-500 dark:bg-indigo-400 transition-all duration-200"
+                        :style="`width: ${progress}%;`"
+                    ></div>
+                </div>
+                <p class="text-xs text-gray-600 dark:text-gray-400 text-left" x-text="progress + '%'"></p>
+            </div>
+        </template>
+
+
+        @php
+            $parts = explode('.', $name);
+            $prop = $parts[0] ?? null;
+            $index = $parts[1] ?? null;
+
+            $fileValue = $prop && $index ? ($this->{$prop}[$index] ?? null) : null;
+        @endphp
+
+        @if ($fileValue instanceof \Livewire\Features\SupportFileUploads\TemporaryUploadedFile)
+            <img src="{{ $fileValue->temporaryUrl() }}" class="max-h-40 rounded-md mt-3" />
+        @endif
+
+        <!-- Error -->
+        @error($name)
+            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+        @enderror
+    </div>
 </div>

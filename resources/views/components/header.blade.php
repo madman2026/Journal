@@ -7,7 +7,7 @@
     @if ($section && $section->content)
         <a href="{{ route('home') }}" class="block w-full">
             <img
-                src="{{ Storage::url($section->content) }}" {{-- Use Storage::url for better asset handling --}}
+                src="{{ asset($section->content) }}" {{-- Use Storage::url for better asset handling --}}
                 alt="Title Header"
                 class="block w-full max-w-full object-cover h-16 md:h-24" {{-- Fixed height for consistency --}}
                 loading="lazy" {{-- Lazy loading for better performance --}}
