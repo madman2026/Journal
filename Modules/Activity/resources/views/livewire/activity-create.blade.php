@@ -1,6 +1,6 @@
 <main class="flex justify-center py-8 bg-gray-50 dark:bg-gray-900 min-h-screen">
     <form
-        wire:submit.prevent="save"
+        wire:submit.prevent="createActivity"
         enctype="multipart/form-data"
         class="container flex flex-col gap-6 p-8 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-lg dark:shadow-lg/10 rounded-lg"
     >
@@ -18,15 +18,13 @@
                 label="سطح رویداد"
                 :required="true"
                 name="level"
-                wire:model.lazy="level"
                 class="dark:bg-gray-700 dark:border-gray-600 dark:text-white"
             />
 
             <x-core::form.select
                 :options="$categories"
                 label="دسته بندی"
-                name="categories"
-                wire:model.lazy="categories"
+                name="selectedCategories"
                 :multiple="true"
                 class="dark:bg-gray-700 dark:border-gray-600 dark:text-white"
             />

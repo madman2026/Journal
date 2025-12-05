@@ -14,6 +14,7 @@
 
     <select
         name="{{ $name }}{{ $multiple ? '[]' : '' }}"
+        wire:model.lazy="{{ $name }}"
         id="{{ $name }}"
         @if($multiple) multiple @endif
         @if($required) required @endif
@@ -33,7 +34,7 @@
             >
                 {{ $text }}
             </option>
-        @endforeach
+            @endforeach
     </select>
 
     @error($name)

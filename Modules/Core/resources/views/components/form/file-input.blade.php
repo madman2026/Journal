@@ -22,11 +22,11 @@
         class="space-y-3"
     >
 
-        <!-- Input -->
+        {{-- Upload Area --}}
         <label
-            class="flex flex-col items-center justify-center w-full p-5 border-2 border-dashed rounded-xl transition
-                   bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600
-                   hover:border-indigo-400 dark:hover:border-indigo-300 cursor-pointer shadow-sm hover:shadow-md"
+            class="flex flex-col items-center justify-center w-full p-5 border-2 border-dashed rounded-xl cursor-pointer transition
+                   bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 shadow-sm hover:shadow-md
+                   hover:border-indigo-400 dark:hover:border-indigo-300"
             @mouseenter="hover = true"
             @mouseleave="hover = false"
         >
@@ -36,7 +36,7 @@
             />
 
             <span class="mt-2 text-sm text-gray-600 dark:text-gray-300">
-                فایل‌هاتو انتخاب کن
+                فایل خود را انتخاب کنید
             </span>
 
             <input
@@ -48,53 +48,56 @@
             />
         </label>
 
-        <!-- Progress -->
+        {{-- Progress Bar --}}
         <template x-if="uploading">
-            <div class="w-full flex flex-col gap-1 transition-opacity duration-300 opacity-100">
-                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
+            <div class="w-full flex flex-col gap-1">
+                <div class="w-full bg-gray-200 dark:bg-gray-700 h-2 rounded-full overflow-hidden">
                     <div
                         class="h-full bg-indigo-500 dark:bg-indigo-400 transition-all duration-200"
                         :style="`width: ${progress}%;`"
                     ></div>
                 </div>
-                <p class="text-xs text-gray-600 dark:text-gray-400 text-left" x-text="progress + '%'"></p>
+                <p class="text-xs text-gray-600 dark:text-gray-400" x-text="progress + '%'"></p>
             </div>
         </template>
 
-        <!-- Preview -->
+        {{-- PREVIEW --}}
         @php
-            $parts = explode('.', $name);
-            $prop = $parts[0] ?? null;
-            $index = $parts[1] ?? null;
-
-            $fileValue = null;
-
-            if ($prop && $index) {
-                $fileValue = $this->{$prop}[$index] ?? null;
-            } elseif ($prop && isset($this->{$prop})) {
-                $fileValue = $this->{$prop};
-            }
+            $value = data_get($this, $name);
+            $files = $value ? (is_array($value) ? $value : [$value]) : [];
         @endphp
 
-        @if($fileValue)
+        @if(count($files))
             <div class="flex flex-wrap gap-3 mt-3">
-                @php
-                    $files = is_array($fileValue) ? $fileValue : [$fileValue];
-                @endphp
 
                 @foreach($files as $file)
+                    {{-- Temporary file --}}
                     @if($file instanceof \Livewire\Features\SupportFileUploads\TemporaryUploadedFile)
-                        <img src="{{ $file->temporaryUrl() }}" class="max-h-40 rounded-md" />
+                        @php
+                            $mime = $file->getMimeType();
+                        @endphp
+
+                        @if(str_starts_with($mime, 'image/'))
+                            <img src="{{ $file->temporaryUrl() }}" class="max-h-40 rounded-md shadow" />
+                        @else
+                            <div class="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg text-sm text-gray-600 dark:text-gray-300">
+                                فایل: {{ $file->getClientOriginalName() }}
+                            </div>
+                        @endif
+
+                    {{-- Stored string path --}}
                     @elseif(is_string($file))
-                        <img src="{{ $file }}" class="max-h-40 rounded-md" />
+                        <img src="{{ $file }}" class="max-h-40 rounded-md shadow" />
                     @endif
                 @endforeach
+
             </div>
         @endif
 
-        <!-- Error -->
+        {{-- Error --}}
         @error($name)
             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
         @enderror
+
     </div>
 </div>
