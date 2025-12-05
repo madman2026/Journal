@@ -5,10 +5,7 @@ namespace Modules\Tip\Models;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Core\app\Contracts\HasSlug;
 use Modules\Core\App\Contracts\Interactable;
-use Modules\Core\Contracts\Likeable;
 use Modules\Core\Models\Category;
-use Modules\Interaction\Models\Comment;
-use Modules\Interaction\Models\View;
 use Modules\User\Models\User;
 
 class Tip extends Model

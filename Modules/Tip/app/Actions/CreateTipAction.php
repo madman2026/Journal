@@ -9,6 +9,7 @@ class CreateTipAction
     public function handle(array $data)
     {
         $data['user_id'] = auth()->id();
+
         return Tip::create($data);
     }
 }

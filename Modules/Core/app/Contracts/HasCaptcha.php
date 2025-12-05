@@ -8,5 +8,4 @@ trait HasCaptcha
 {
     // #[Validate('required|captcha')]
     public $g_recaptcha_response;
-
 }

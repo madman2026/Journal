@@ -22,4 +22,3 @@ class LandingPageService extends BaseService
         );
     }
 }
-

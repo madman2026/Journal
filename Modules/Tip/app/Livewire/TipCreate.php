@@ -5,37 +5,46 @@ namespace Modules\Tip\Livewire;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use Modules\Tip\Services\TipService;
 use Modules\Core\Models\Category;
+use Modules\Tip\Services\TipService;
 
 class TipCreate extends Component
 {
     use WithFileUploads;
+
     #[Validate('nullable|array')]
     public $selectedCategories;
+
     #[Validate('required|string|min:1|max:100')]
     public $title;
+
     #[Validate('required|string|min:10|max:9999999')]
     public $body;
+
     #[Validate('required|file|mimes:pdf|max:10000')]
     public $attachment;
+
     #[Validate('required|image|max:10000')]
     public $image;
+
     public $categories = [];
-    protected  TipService $service;
+
+    protected TipService $service;
 
     public function boot(TipService $service)
     {
         $this->service = $service;
     }
+
     public function mount()
     {
-        $this->categories = Category::all()->pluck("name","id");
+        $this->categories = Category::all()->pluck('name', 'id');
     }
 
     public function render()
     {
-        $this->categories = Category::all()->pluck("name","id");
+        $this->categories = Category::all()->pluck('name', 'id');
+
         return view('tip::livewire.tip-create');
     }
 
@@ -43,6 +52,7 @@ class TipCreate extends Component
     {
         $this->validateOnly($propertyName);
     }
+
     public function createTip()
     {
         $data = $this->validate();
@@ -63,11 +73,11 @@ class TipCreate extends Component
                 message: 'نکته با موفقیت ایجاد شد'
             );
             $this->reset();
-        }else{
+        } else {
             $this->dispatch('toastMagic',
                 status: 'error',
                 title: 'خطا',
-                message: 'مشکلی بوجود آمد:'. $result->message
+                message: 'مشکلی بوجود آمد:'.$result->message
             );
         }
     }

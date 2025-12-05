@@ -15,13 +15,19 @@ class Settings extends Component
     use WithFileUploads;
 
     public $categories = [];
+
     public $levels = [];
+
     public $sections = [];
+
     public $links = [];
 
     public $category;
+
     public $level;
+
     public $linkName;
+
     public $link;
 
     public $sectionInputs = [];
@@ -34,9 +40,9 @@ class Settings extends Component
     private function loadAll()
     {
         $this->categories = Category::get();
-        $this->levels      = Level::get();
-        $this->sections    = Section::get();
-        $this->links       = FooterLink::get();
+        $this->levels = Level::get();
+        $this->sections = Section::get();
+        $this->links = FooterLink::get();
 
         foreach ($this->sections as $section) {
             $this->sectionInputs[$section->name] = null;
@@ -46,7 +52,7 @@ class Settings extends Component
     public function addCategory()
     {
         $this->validateOnly('category', [
-            'category' => 'required|string|min:2|max:40'
+            'category' => 'required|string|min:2|max:40',
         ]);
 
         Category::create(['name' => $this->category]);
@@ -64,7 +70,7 @@ class Settings extends Component
     public function addLevel()
     {
         $this->validateOnly('level', [
-            'level' => 'required|string|min:1|max:40'
+            'level' => 'required|string|min:1|max:40',
         ]);
 
         Level::create(['name' => $this->level]);
@@ -83,16 +89,16 @@ class Settings extends Component
     {
         $this->validate([
             'linkName' => 'required|string|max:100',
-            'link'     => 'required|url'
+            'link' => 'required|url',
         ]);
 
         FooterLink::create([
             'name' => $this->linkName,
-            'link' => $this->link
+            'link' => $this->link,
         ]);
 
         $this->linkName = '';
-        $this->link     = '';
+        $this->link = '';
 
         $this->loadAll();
     }
@@ -102,11 +108,14 @@ class Settings extends Component
         FooterLink::where('id', $id)->delete();
         $this->loadAll();
     }
+
     public function updateSections()
     {
         foreach ($this->sectionInputs as $key => $value) {
 
-            if (empty($value)) continue;
+            if (empty($value)) {
+                continue;
+            }
 
             $section = Section::where('name', $key)->first();
 
@@ -127,7 +136,6 @@ class Settings extends Component
             message: 'تنظیمات با موفقیت ذخیره شد'
         );
     }
-
 
     public function render()
     {

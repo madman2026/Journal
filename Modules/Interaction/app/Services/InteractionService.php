@@ -9,17 +9,17 @@ class InteractionService extends BaseService
 {
     public function makeComment(Model $model, array $comment)
     {
-        return $this->execute(function () use ($model , $comment){
+        return $this->execute(function () use ($model, $comment) {
             $model->comments()->create([
                 'user_id' => auth()->id(),
                 'body' => $comment['body'],
-        ]);
+            ]);
         });
     }
 
     public function visit(Model $model)
     {
-        return $this->execute(function () use ($model){
+        return $this->execute(function () use ($model) {
             $exists = $model->views()
                 ->where('user_id', auth()->id())
                 ->where('ip_address', request()->ip())
@@ -36,7 +36,7 @@ class InteractionService extends BaseService
 
     public function toggleLike(Model $model)
     {
-        return $this->execute(function () use ($model){
+        return $this->execute(function () use ($model) {
 
             $like = $model->likes()
                 ->where('user_id', auth()->id())
@@ -45,6 +45,7 @@ class InteractionService extends BaseService
 
             if ($like) {
                 $like->delete();
+
                 return false;
             }
 

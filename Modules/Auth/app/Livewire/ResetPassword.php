@@ -11,6 +11,7 @@ class ResetPassword extends Component
     use HasCaptcha;
 
     public $password;
+
     public $password_confirmation;
 
     public function rules()
@@ -21,15 +22,16 @@ class ResetPassword extends Component
     }
 
     protected AuthService $service;
+
     public function boot(AuthService $service)
     {
         $this->service = $service;
     }
+
     public function save()
     {
         $result = $this->service->resetPassword($this->validate());
-        if ($result->status)
-        {
+        if ($result->status) {
             $this->dispatch('toastMagic',
                 status: 'success',
                 title: 'ثبت نام موفق',

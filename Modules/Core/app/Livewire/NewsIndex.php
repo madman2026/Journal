@@ -26,4 +26,3 @@ class NewsIndex extends Component
         ]);
     }
 }
-

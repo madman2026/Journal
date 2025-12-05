@@ -5,10 +5,7 @@ namespace Modules\Magazine\Models;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Core\app\Contracts\HasSlug;
 use Modules\Core\App\Contracts\Interactable;
-use Modules\Core\Contracts\Likeable;
 use Modules\Core\Models\Category;
-use Modules\Interaction\Models\Comment;
-use Modules\Interaction\Models\View;
 
 class Article extends Model
 {
@@ -33,6 +30,7 @@ class Article extends Model
     {
         return $this->morphToMany(Category::class, 'categorizable');
     }
+
     /**
      * Get the route key for the model.
      */

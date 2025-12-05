@@ -80,7 +80,7 @@ class MagazineCreate extends Component
         foreach ($data['articles'] as $index => $article) {
             if (isset($article['attachment']) && $article['attachment']) {
                 $data['articles'][$index]['attachment'] =
-                    $article['attachment']->store("magazines/articles", "public");
+                    $article['attachment']->store('magazines/articles', 'public');
             }
         }
 
@@ -92,6 +92,7 @@ class MagazineCreate extends Component
                 title: 'موفقیت',
                 message: 'نشریه با موفقیت ایجاد شد.'
             );
+
             return $this->redirectRoute('magazine.index');
         }
 
@@ -101,7 +102,6 @@ class MagazineCreate extends Component
             message: $result->message
         );
     }
-
 
     public function render()
     {

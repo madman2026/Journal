@@ -11,12 +11,13 @@ class RegisterAction
     {
 
         $user = User::create([
-            'username'     => $data['username'],
-            'email'    => $data['email'],
+            'username' => $data['username'],
+            'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
 
         $user->assignRole('user');
+
         return $user;
     }
 }

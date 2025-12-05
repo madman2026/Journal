@@ -10,6 +10,7 @@ class MakeRecommendAction
     {
         try {
             Recommend::create($data);
+
             return true;
         } catch (\Throwable $th) {
             return false;

@@ -4,7 +4,6 @@ namespace Modules\Core\Livewire;
 
 use Livewire\Attributes\Validate;
 use Livewire\Component;
-use Modules\Core\Actions\CreateContactAction;
 use Modules\Core\App\Contracts\HasCaptcha;
 use Modules\Core\Services\ContactService;
 
@@ -17,6 +16,7 @@ class ContactCreate extends Component
 
     #[Validate('required|string|min:10|max:10000')]
     public $body = '';
+
     protected ContactService $service;
 
     public function boot(ContactService $service)

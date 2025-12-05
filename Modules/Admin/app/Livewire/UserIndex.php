@@ -13,6 +13,7 @@ class UserIndex extends Component
     use WithPagination;
 
     public $roles = [];
+
     public $selectedRoles = [];
 
     protected $paginationTheme = 'tailwind';
@@ -43,7 +44,9 @@ class UserIndex extends Component
 
         try {
             foreach ($validated['selectedRoles'] as $userId => $roleName) {
-                if (!$roleName) continue;
+                if (! $roleName) {
+                    continue;
+                }
 
                 $user = User::find($userId);
 

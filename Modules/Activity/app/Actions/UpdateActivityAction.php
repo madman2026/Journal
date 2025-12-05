@@ -12,10 +12,10 @@ class UpdateActivityAction
         $filtered = array_intersect_key($data, $activity->getFillable());
 
         // اگر هیچ چیزی تغییر نکرده باشه
-        if (!$this->isChanged($activity, $filtered)) {
+        if (! $this->isChanged($activity, $filtered)) {
             return [
                 'updated' => false,
-                'model'   => $activity
+                'model' => $activity,
             ];
         }
 
@@ -24,7 +24,7 @@ class UpdateActivityAction
 
         return [
             'updated' => true,
-            'model'   => $activity->fresh()
+            'model' => $activity->fresh(),
         ];
     }
 
@@ -35,6 +35,7 @@ class UpdateActivityAction
                 return true;
             }
         }
+
         return false;
     }
 }

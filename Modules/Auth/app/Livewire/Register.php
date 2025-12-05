@@ -2,7 +2,6 @@
 
 namespace Modules\Auth\Livewire;
 
-use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Modules\Auth\Services\AuthService;
 use Modules\Core\App\Contracts\HasCaptcha;
@@ -10,9 +9,13 @@ use Modules\Core\App\Contracts\HasCaptcha;
 class Register extends Component
 {
     use HasCaptcha;
+
     public string $email = '';
+
     public string $password = '';
+
     public string $password_confirmation = '';
+
     public string $username = '';
 
     public function rules()
@@ -23,6 +26,7 @@ class Register extends Component
             'username' => 'required|string|unique:users',
         ];
     }
+
     protected AuthService $service;
 
     public function boot(AuthService $service)

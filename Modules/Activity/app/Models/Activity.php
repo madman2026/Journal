@@ -6,10 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
 use Modules\Core\app\Contracts\HasSlug;
 use Modules\Core\App\Contracts\Interactable;
-use Modules\Core\Contracts\Likeable;
 use Modules\Core\Models\Category;
-use Modules\Interaction\Models\Comment;
-use Modules\Interaction\Models\View;
 use Modules\User\Models\User;
 
 // use Modules\Activity\Database\Factories\ActivityFactory;

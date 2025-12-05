@@ -12,6 +12,7 @@ class Profile extends Component
     use WithFileUploads;
 
     public $user;
+
     public $username;
 
     public $name;

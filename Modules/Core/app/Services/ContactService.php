@@ -21,4 +21,3 @@ class ContactService extends BaseService
         );
     }
 }
-

@@ -24,4 +24,3 @@ class MainController extends Controller
         return ContactCreate::class;
     }
 }
-

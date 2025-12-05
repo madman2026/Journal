@@ -15,4 +15,3 @@ class GetEventsListAction
             ->paginate($perPage);
     }
 }
-

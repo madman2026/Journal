@@ -9,6 +9,7 @@ use Modules\Core\Models\Contact;
 class ContactIndex extends Component
 {
     use WithFileUploads;
+
     public function delete($id)
     {
         Contact::findOrFail($id)->delete();

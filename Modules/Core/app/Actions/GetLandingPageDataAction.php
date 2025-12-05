@@ -74,6 +74,7 @@ class GetLandingPageDataAction
             if (is_array($item)) {
                 return $item;
             }
+
             return [
                 'id' => $item->id,
                 'title' => $item->title ?? '',
@@ -84,4 +85,3 @@ class GetLandingPageDataAction
         });
     }
 }
-

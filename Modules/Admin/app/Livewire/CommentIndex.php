@@ -8,8 +8,7 @@ use Modules\Interaction\Models\Comment;
 
 class CommentIndex extends Component
 {
-  use WithPagination;
-
+    use WithPagination;
 
     public function accept($id)
     {
@@ -34,7 +33,7 @@ class CommentIndex extends Component
         return view('admin::livewire.comment-index', [
             'comments' => Comment::where('status', false)
                 ->latest()
-                ->paginate(10)
+                ->paginate(10),
         ]);
     }
 }

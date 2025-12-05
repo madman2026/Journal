@@ -34,4 +34,3 @@ class ContentService extends BaseService
         );
     }
 }
-

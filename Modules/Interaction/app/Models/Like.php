@@ -10,11 +10,12 @@ use Illuminate\Database\Eloquent\Model;
 class Like extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'user_id',
         'likeable_id',
         'likeable_type',
-        'ip_address'
+        'ip_address',
     ];
 
     public function user()

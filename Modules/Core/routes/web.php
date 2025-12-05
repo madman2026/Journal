@@ -3,9 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use Modules\Core\Http\Controllers\RecommendDeleteController;
 use Modules\Core\Livewire\Recommend;
-use Modules\Magazine\Livewire\MagazineIndex;
 
-Route::as("core.")->group(function () {
+Route::as('core.')->group(function () {
     Route::get('recommend', Recommend::class)->name('recommend');
     Route::delete('recommend', RecommendDeleteController::class)->name('recommend.delete');
     Route::get('search', \Modules\Core\Livewire\Search::class)->name('search');

@@ -8,10 +8,13 @@ use Modules\Core\Actions\MakeRecommendAction;
 class Recommend extends Component
 {
     public $word;
+
     public $pdf;
+
     public $title;
 
     protected MakeRecommendAction $action;
+
     public function boot(MakeRecommendAction $action)
     {
         $this->action = $action;
@@ -30,6 +33,7 @@ class Recommend extends Component
             $this->redirectRoute('home');
         }
     }
+
     public function render()
     {
         return view('core::livewire.recommend');
