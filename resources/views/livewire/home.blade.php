@@ -28,7 +28,7 @@
 
             <div class="relative rounded-xl p-6 flex flex-col lg:col-span-4 lg:flex-row bg-blue-300 dark:bg-darkPrimary items-center shadow-lg">
                 @if(isset($magazines) && $magazines->isNotEmpty())
-                    <livewire:slider :items="$magazines" type="magaizne" defaultLink="{{ route('magazine.index') }}" containerClass="magazine-swiper-container" />
+                    <x-slider :items="$magazines" type="magazine" defaultLink="{{ route('magazine.index') }}" containerClass="magazine-swiper-container" />
                 @else
                     <p class="text-center text-gray-500 dark:text-gray-400 w-full">نشریه‌ای موجود نیست</p>
                 @endif

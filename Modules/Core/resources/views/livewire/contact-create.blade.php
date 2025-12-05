@@ -11,8 +11,6 @@
 
                 <x-core::form.textarea name="body" label="متن" id="body" rows="6"
                     placeholder="پیام خود را بنویسید..." />
-                <x-captcha />
-
                 {{-- Submit Button --}}
                 <div class="flex justify-end">
                     <x-core::form.button type="submit" class="px-6 py-2">

@@ -58,6 +58,7 @@ class Profile extends Component
 
         $user = auth('web')->user();
         $user->name = $this->name;
+        $user->username = $this->username;
         $user->number = $this->number;
         $user->email = $this->email;
 

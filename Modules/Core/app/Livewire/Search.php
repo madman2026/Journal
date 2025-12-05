@@ -17,7 +17,14 @@ class Search extends Component
 
     public string $search = '';
 
-    public string $type = 'all';
+    public array $types = [
+        'All',
+        'Magazine',
+        'Activity',
+        'Tip',
+        'Article'
+    ];
+    public string $type = 'All';
 
     public int $page = 1;
 
@@ -51,7 +58,7 @@ class Search extends Component
         try {
 
             // حالت all → merge همه مدل‌ها
-            if ($this->type === 'all') {
+            if ($this->type === 'All') {
 
                 $merged = collect($this->modelMap)
                     ->flatMap(fn ($model) => $model::query()

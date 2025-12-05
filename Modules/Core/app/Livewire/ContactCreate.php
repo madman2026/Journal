@@ -9,7 +9,6 @@ use Modules\Core\Services\ContactService;
 
 class ContactCreate extends Component
 {
-    use HasCaptcha;
 
     #[Validate('required|numeric')]
     public $phone = '';
@@ -30,13 +29,11 @@ class ContactCreate extends Component
         $this->validate([
             'phone' => 'required|numeric',
             'body' => 'required|string|min:10|max:10000',
-            'g_recaptcha_response' => 'required|captcha',
         ]);
 
         $result = $this->service->createContact([
             'phone' => $this->phone,
             'body' => $this->body,
-            'g-recaptcha-response' => $this->g_recaptcha_response,
         ]);
 
         if ($result->status) {
@@ -47,7 +44,7 @@ class ContactCreate extends Component
             );
 
             // Reset form
-            $this->reset(['phone', 'body', 'gRecaptchaResponse']);
+            $this->reset(['phone', 'body']);
 
             return redirect()->route('home');
         }

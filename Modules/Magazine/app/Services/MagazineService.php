@@ -11,7 +11,8 @@ class MagazineService
         // === Create Magazine ===
         $magazine = Magazine::create([
             'title' => $data['title'],
-            'desc' => $data['desc'],
+            'body' => $data['desc'],
+            'user_id' => auth()->user()->id,
             'image' => $data['image'],
             'attachment' => $data['attachment'],
         ]);
