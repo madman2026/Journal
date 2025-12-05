@@ -5,17 +5,15 @@ namespace Modules\Activity\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
 use Modules\Core\app\Contracts\HasSlug;
-use Modules\Core\Contracts\Likeable;
+use Modules\Core\App\Contracts\Interactable;
 use Modules\Core\Models\Category;
-use Modules\Interaction\Models\Comment;
-use Modules\Interaction\Models\View;
 use Modules\User\Models\User;
 
 // use Modules\Activity\Database\Factories\ActivityFactory;
 
 class Activity extends Model
 {
-    use HasSlug , Likeable;
+    use HasSlug , Interactable;
 
     protected $fillable = [
         'title',
@@ -23,7 +21,7 @@ class Activity extends Model
         'user_id',
         'image',
         'pdf',
-        'scope_id',
+        'level_id',
         'slug',
     ];
 
@@ -42,19 +40,9 @@ class Activity extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function comments()
-    {
-        return $this->morphMany(Comment::class, 'commentable');
-    }
-
-    public function scope()
+    public function Level()
     {
         return $this->belongsTo(Scope::class);
-    }
-
-    public function views()
-    {
-        return $this->morphMany(View::class, 'viewable');
     }
 
     public function categories()

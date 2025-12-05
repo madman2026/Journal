@@ -1,21 +1,23 @@
-<div class="flex items-center justify-center min-h-screen px-4 sm:px-6 lg:px-8">
-    <form wire:submit.prevent='save' class="bg-slate-800 rounded-2xl shadow-xl w-full max-w-md p-6 space-y-6">
-        @csrf
-        <h2 class=" text-lg font-bold text-white flex justify-center">تماس باما</h2>
-        <x-core::form.text-input
-            name="number"
-            type="text"
-            label="شماره تلفن"
-            placeholder="شماره تلفن خود را وارد کنید"
-        />
-        <x-core::form.textarea
-            name="body"
-            label="متن"
-            placeholder="متن خود را وارد کنید"
-            required
-            :value="old('body')"
-        />
-        <x-captcha/>
-        <button type="submit" class="w-full py-3 text-white font-semibold bg-gradient-to-r from-blue-900 to-amber-600 hover:from-blue-800 hover:to-amber-500 transition-colors rounded-xl">ثبت</button>
-    </form>
+<div>
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-2xl mx-auto">
+            <h1 class="text-3xl font-bold mb-6 dark:text-white text-center">تماس با ما</h1>
+
+            <form wire:submit="save" class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 space-y-6">
+
+                {{-- Phone Input --}}
+                <x-core::form.text-input label='تلفن همراه' name="phone" id="phone" type="tel"
+                    placeholder="09123456789" />
+
+                <x-core::form.textarea name="body" label="متن" id="body" rows="6"
+                    placeholder="پیام خود را بنویسید..." />
+                {{-- Submit Button --}}
+                <div class="flex justify-end">
+                    <x-core::form.button type="submit" class="px-6 py-2">
+                        ارسال پیام
+                    </x-core::form.button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>

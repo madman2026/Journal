@@ -13,6 +13,8 @@ class Profile extends Component
 
     public $user;
 
+    public $username;
+
     public $name;
 
     public $number;
@@ -27,10 +29,10 @@ class Profile extends Component
     {
         return [
             'name' => 'required|string|min:3|max:255',
+            'username' => 'required|string|min:3|max:255|unique:users,username,'.$this->user['id'],
             'number' => 'required|numeric',
             'email' => 'required|email|max:255|unique:users,email,'.$this->user['id'],
             'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'delete' => 'boolean',
         ];
     }
 
@@ -45,6 +47,7 @@ class Profile extends Component
     {
         $this->user = Auth::user()->toArray();
         $this->name = $this->user['name'] ?? '';
+        $this->username = $this->user['username'] ?? '';
         $this->number = $this->user['number'] ?? '';
         $this->email = $this->user['email'] ?? '';
     }
@@ -53,14 +56,9 @@ class Profile extends Component
     {
         $this->validate();
 
-        if ($this->delete) {
-            Auth::user()->delete();
-
-            return redirect('/');
-        }
-
-        $user = Auth::user();
+        $user = auth('web')->user();
         $user->name = $this->name;
+        $user->username = $this->username;
         $user->number = $this->number;
         $user->email = $this->email;
 

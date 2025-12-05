@@ -4,17 +4,13 @@ namespace Modules\Tip\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Modules\Core\app\Contracts\HasSlug;
-use Modules\Core\Contracts\Likeable;
+use Modules\Core\App\Contracts\Interactable;
 use Modules\Core\Models\Category;
-use Modules\Interaction\Models\Comment;
-use Modules\Interaction\Models\View;
 use Modules\User\Models\User;
-
-// use Modules\Tip\Database\Factories\TipFactory;
 
 class Tip extends Model
 {
-    use HasSlug , Likeable;
+    use HasSlug , Interactable;
 
     protected $fillable = [
         'title',
@@ -22,31 +18,12 @@ class Tip extends Model
         'user_id',
         'image',
         'slug',
+        'status',
     ];
-
-    public function getTypeWordAttribute()
-    {
-        return 'نکته';
-    }
-
-    public function getRouteNameAttribute()
-    {
-        return 'tip.show';
-    }
 
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function comments()
-    {
-        return $this->morphMany(Comment::class, 'commentable');
-    }
-
-    public function views()
-    {
-        return $this->morphMany(View::class, 'viewable');
     }
 
     public function categories()

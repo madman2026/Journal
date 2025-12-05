@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('likes', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(\Modules\User\Models\User::class)->constrained('users');
-            $table->ipAddress('ip');
+            $table->ipAddress();
             $table->morphs('likeable');
             $table->timestamps();
         });

@@ -11,13 +11,20 @@ class Like extends Model
 {
     use HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     */
-    protected $fillable = [];
+    protected $fillable = [
+        'user_id',
+        'likeable_id',
+        'likeable_type',
+        'ip_address',
+    ];
 
-    // protected static function newFactory(): LikeFactory
-    // {
-    //     // return LikeFactory::new();
-    // }
+    public function user()
+    {
+        return $this->morphTo();
+    }
+
+    public function likeable()
+    {
+        return $this->morphTo();
+    }
 }

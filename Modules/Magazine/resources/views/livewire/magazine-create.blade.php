@@ -1,4 +1,4 @@
-<div class="container mx-auto px-4 py-8" data-aos="fade-up">
+<div class="container mx-auto px-4 py-8">
     <h1 class="text-2xl font-bold mb-6 text-gray-800 dark:text-white">ایجاد نشریه جدید</h1>
 
     <form wire:submit="save" enctype="multipart/form-data" class="space-y-6">
@@ -23,38 +23,10 @@
         />
 
         {{-- تصویر نشریه --}}
-        <div>
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                تصویر نشریه (JPEG یا JPG)
-            </label>
-            <input
-                type="file"
-                wire:model="image"
-                class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 dark:file:bg-blue-900 dark:file:text-blue-300"
-                accept=".jpg,.jpeg,.png"
-            >
-            @error('image') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-            @if ($image)
-                <p class="mt-1 text-sm text-gray-500">فایل انتخاب شده: {{ $image->getClientOriginalName() }}</p>
-            @endif
-        </div>
+        <x-core::form.file-input :required="true" :value="old('image')" label="عکس" name="image"  />
 
-        {{-- فایل PDF/DOCX --}}
-        <div>
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                فایل نشریه (PDF یا DOCX)
-            </label>
-            <input
-                type="file"
-                wire:model="addOn"
-                class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100 dark:file:bg-green-900 dark:file:text-green-300"
-                accept=".pdf,.docx"
-            >
-            @error('addOn') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-            @if ($addOn)
-                <p class="mt-1 text-sm text-gray-500">فایل انتخاب شده: {{ $addOn->getClientOriginalName() }}</p>
-            @endif
-        </div>
+        <x-core::form.file-input :required="true" :value="old('attachment')" label="فایل PDF" name="attachment"  />
+
 
         {{-- دسته‌بندی‌ها --}}
         <x-core::form.select
@@ -75,100 +47,32 @@
                     <div class="flex justify-between items-center mb-4">
                         <h4 class="font-medium text-gray-800 dark:text-white">مقاله شماره {{ $index + 1 }}</h4>
                         @if($index > 0)
-                            <button
+                            <x-core::form.button
                                 type="button"
+                                variant="danger"
                                 wire:click="removeArticle({{ $index }})"
-                                class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300"
                             >
                                 <x-heroicon-o-trash class="w-5 h-5" />
-                            </button>
+                                حذف
+                            </x-core::form.button>
                         @endif
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                        {{-- عنوان مقاله --}}
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                عنوان مقاله
-                            </label>
-                            <input
-                                type="text"
-                                wire:model="articles.{{ $index }}.title"
-                                class="w-full border border-gray-300 dark:border-gray-600 rounded-md p-2 dark:bg-gray-700 dark:text-white"
-                                placeholder="عنوان مقاله"
-                            >
-                            @error("articles.{$index}.title")
-                                <span class="text-red-500 text-sm">{{ $message }}</span>
-                            @enderror
-                        </div>
-
-                        {{-- نویسنده مقاله --}}
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                نویسنده مقاله
-                            </label>
-                            <input
-                                type="text"
-                                wire:model="articles.{{ $index }}.author"
-                                class="w-full border border-gray-300 dark:border-gray-600 rounded-md p-2 dark:bg-gray-700 dark:text-white"
-                                placeholder="نویسنده مقاله"
-                            >
-                            @error("articles.{$index}.author")
-                                <span class="text-red-500 text-sm">{{ $message }}</span>
-                            @enderror
-                        </div>
+                        <x-core::form.text-input
+                            name="articles.{{ $index }}.title" placeholder="عنوان مقاله" label="عنوان مقاله {{ $index + 1 }}"
+                            />
+                        <x-core::form.text-input
+                        name="articles.{{ $index }}.author" placeholder="نویسنده مقاله" label="نویسنده مقاله {{ $index + 1 }}"
+                            />
                     </div>
 
-                    {{-- فایل مقاله --}}
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            فایل مقاله
-                        </label>
-                        <input
-                            type="file"
-                            wire:model="articles.{{ $index }}.addOn"
-                            class="w-full border border-gray-300 dark:border-gray-600 rounded-md p-2 dark:bg-gray-700"
-                            accept=".pdf,.docx"
-                        >
-                        @error("articles.{$index}.addOn")
-                            <span class="text-red-500 text-sm">{{ $message }}</span>
-                        @enderror
-                        @if ($articles[$index]['addOn'] instanceof \Livewire\Features\SupportFileUploads\TemporaryUploadedFile)
-                            <p class="mt-1 text-sm text-gray-500">فایل انتخاب شده: {{ $articles[$index]['addOn']->getClientOriginalName() }}</p>
-                        @endif
-                    </div>
+                    <x-core::form.file-input label='فایل مقاله' name="articles.{{ $index }}.attachment" accept=".pdf,.docx" />
 
-                    {{-- چکیده مقاله --}}
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            چکیده مقاله
-                        </label>
-                        <textarea
-                            wire:model="articles.{{ $index }}.abstract"
-                            rows="3"
-                            class="w-full border border-gray-300 dark:border-gray-600 rounded-md p-2 dark:bg-gray-700 dark:text-white"
-                            placeholder="چکیده مقاله"
-                        ></textarea>
-                        @error("articles.{$index}.abstract")
-                            <span class="text-red-500 text-sm">{{ $message }}</span>
-                        @enderror
-                    </div>
+                    <x-core::form.textarea label="چکیده مقاله" name="articles.{{ $index }}.abstract" placeholder="چکیده مقاله" />
 
-                    {{-- متن مقاله --}}
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            متن مقاله
-                        </label>
-                        <textarea
-                            wire:model="articles.{{ $index }}.body"
-                            rows="6"
-                            class="w-full border border-gray-300 dark:border-gray-600 rounded-md p-2 dark:bg-gray-700 dark:text-white"
-                            placeholder="متن مقاله"
-                        ></textarea>
-                        @error("articles.{$index }.body")
-                            <span class="text-red-500 text-sm">{{ $message }}</span>
-                        @enderror
-                    </div>
+                    <x-core::form.textarea label='متن مقاله' name="articles.{{ $index }}.body" placeholder="متن مقاله" />
+
                 </div>
             @endforeach
 

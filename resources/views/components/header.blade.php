@@ -7,7 +7,7 @@
     @if ($section && $section->content)
         <a href="{{ route('home') }}" class="block w-full">
             <img
-                src="{{ Storage::url($section->content) }}" {{-- Use Storage::url for better asset handling --}}
+                src="{{ asset($section->content) }}" {{-- Use Storage::url for better asset handling --}}
                 alt="Title Header"
                 class="block w-full max-w-full object-cover h-16 md:h-24" {{-- Fixed height for consistency --}}
                 loading="lazy" {{-- Lazy loading for better performance --}}
@@ -126,7 +126,7 @@
         </a>
     @endauth
 
-    <nav class="md:flex gap-3 max-lg:gap-1 items-center sm:text-lg text-sm">
+    <nav class="flex gap-3 items-center sm:text-lg text-sm">
         <a href="{{ route('activity.index') }}" class="hover:bg-blue-100 dark:hover:bg-blue-800 px-3 py-2 rounded-md transition-all flex items-center gap-1">
             <x-heroicon-o-calendar class="w-4 h-4" />
             رویدادها

@@ -2,17 +2,25 @@
 
 namespace Modules\Auth\Livewire;
 
-use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Modules\Auth\Services\AuthService;
+use Modules\Core\App\Contracts\HasCaptcha;
 
 class Login extends Component
 {
-    #[Validate('required|email|exists:users,email')]
+    use HasCaptcha;
+
     public string $email = '';
 
-    #[Validate('required|string|min:8|max:255')]
     public string $password = '';
+
+    public function rules()
+    {
+        return [
+            'email' => 'required|email|exists:users,email',
+            'password' => 'required|string|min:8|max:255',
+        ];
+    }
 
     protected AuthService $service;
 

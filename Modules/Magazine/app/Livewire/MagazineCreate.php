@@ -17,7 +17,7 @@ class MagazineCreate extends Component
 
     public $image;
 
-    public $addOn;
+    public $attachment;
 
     public $categories = [];
 
@@ -27,13 +27,13 @@ class MagazineCreate extends Component
         'title' => 'required|string|max:255',
         'desc' => 'required|string',
         'image' => 'required|image|mimes:jpeg,jpg,png|max:2048',
-        'addOn' => 'required|file|mimes:pdf,docx|max:10240',
+        'attachment' => 'required|file|mimes:pdf,docx|max:10240',
         'categories' => 'required|array|min:1',
         'categories.*' => 'exists:categories,id',
         'articles' => 'required|array|min:1',
         'articles.*.title' => 'required|string|max:255',
         'articles.*.author' => 'required|string|max:255',
-        'articles.*.addOn' => 'required|file|mimes:pdf,docx|max:10240',
+        'articles.*.attachment' => 'required|file|mimes:pdf,docx|max:10240',
         'articles.*.abstract' => 'required|string|min:50',
         'articles.*.body' => 'required|string|min:100',
     ];
@@ -48,13 +48,13 @@ class MagazineCreate extends Component
     public function mount()
     {
         $this->articles = [
-            ['title' => '', 'author' => '', 'addOn' => null, 'abstract' => '', 'body' => ''],
+            ['title' => '', 'author' => '', 'attachment' => null, 'abstract' => '', 'body' => ''],
         ];
     }
 
     public function addArticle()
     {
-        $this->articles[] = ['title' => '', 'author' => '', 'addOn' => null, 'abstract' => '', 'body' => ''];
+        $this->articles[] = ['title' => '', 'author' => '', 'attachment' => null, 'abstract' => '', 'body' => ''];
     }
 
     public function removeArticle($index)
@@ -67,14 +67,40 @@ class MagazineCreate extends Component
 
     public function save()
     {
-        $this->validate();
+        $data = $this->validate();
 
-        // ذخیره نشریه و مقالات
-        // این بخش را با منطق ذخیره‌سازی خود پر کنید
+        if ($this->image) {
+            $data['image'] = $this->image->store('magazines/images', 'public');
+        }
 
-        session()->flash('message', 'نشریه با موفقیت ایجاد شد.');
+        if ($this->attachment) {
+            $data['attachment'] = $this->attachment->store('magazines/attachments', 'public');
+        }
 
-        return redirect()->route('writer.magazine.index');
+        foreach ($data['articles'] as $index => $article) {
+            if (isset($article['attachment']) && $article['attachment']) {
+                $data['articles'][$index]['attachment'] =
+                    $article['attachment']->store('magazines/articles', 'public');
+            }
+        }
+
+        $result = $this->service->create($data);
+
+        if ($result->status) {
+            $this->dispatch('toastMagic',
+                status: 'success',
+                title: 'موفقیت',
+                message: 'نشریه با موفقیت ایجاد شد.'
+            );
+
+            return $this->redirectRoute('magazine.index');
+        }
+
+        $this->dispatch('toastMagic',
+            status: 'error',
+            title: 'خطا',
+            message: $result->message
+        );
     }
 
     public function render()

@@ -7,17 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 // use Modules\Activity\Database\Factories\ScopeFactory;
 
-class Scope extends Model
+class Level extends Model
 {
     use HasFactory;
 
     /**
      * The attributes that are mass assignable.
      */
-    protected $fillable = [];
-
-    // protected static function newFactory(): ScopeFactory
-    // {
-    //     // return ScopeFactory::new();
-    // }
+    protected $fillable = ['name'];
 }
