@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Core\App\Contracts;
+namespace Modules\Core\Contracts;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -13,13 +13,14 @@ trait HasInteractableComponent
 
         $existingLike = $this->content->likes()
             ->where(function ($q) use ($userId, $ip) {
-                $q->when($userId, fn($x) => $x->where('user_id', $userId))
-                  ->when(!$userId, fn($x) => $x->where('ip_address', $ip));
+                $q->when($userId, fn ($x) => $x->where('user_id', $userId))
+                    ->when(! $userId, fn ($x) => $x->where('ip_address', $ip));
             })
             ->first();
 
         if ($existingLike) {
             $existingLike->delete();
+
             return false;
         }
 
@@ -46,7 +47,7 @@ trait HasInteractableComponent
             })
             ->exists();
 
-        if (!$exists) {
+        if (! $exists) {
             $this->content->views()->create([
                 'ip_address' => $ip,
                 'user_id' => $userId,

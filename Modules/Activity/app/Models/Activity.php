@@ -5,7 +5,7 @@ namespace Modules\Activity\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
 use Modules\Core\app\Contracts\HasSlug;
-use Modules\Core\App\Contracts\Interactable;
+use Modules\Core\Contracts\Interactable;
 use Modules\Core\Models\Category;
 use Modules\User\Models\User;
 

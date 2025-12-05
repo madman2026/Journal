@@ -22,8 +22,9 @@ class Search extends Component
         'Magazine',
         'Activity',
         'Tip',
-        'Article'
+        'Article',
     ];
+
     public string $type = 'All';
 
     public int $page = 1;

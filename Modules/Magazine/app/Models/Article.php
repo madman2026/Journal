@@ -4,7 +4,7 @@ namespace Modules\Magazine\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Modules\Core\app\Contracts\HasSlug;
-use Modules\Core\App\Contracts\Interactable;
+use Modules\Core\Contracts\Interactable;
 use Modules\Core\Models\Category;
 
 class Article extends Model

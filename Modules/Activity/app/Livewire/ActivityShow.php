@@ -4,12 +4,14 @@ namespace Modules\Activity\Livewire;
 
 use Livewire\Component;
 use Modules\Activity\Models\Activity;
-use Modules\Core\App\Contracts\HasInteractableComponent;
+use Modules\Core\Contracts\HasInteractableComponent;
 
 class ActivityShow extends Component
 {
     use HasInteractableComponent;
+
     public $content;
+
     public function mount(Activity $Activity)
     {
         $this->content = $Activity->load(['user', 'comments'])

@@ -4,7 +4,7 @@ namespace Modules\Auth\Livewire;
 
 use Livewire\Component;
 use Modules\Auth\Services\AuthService;
-use Modules\Core\App\Contracts\HasCaptcha;
+use Modules\Core\Contracts\HasCaptcha;
 
 class Login extends Component
 {

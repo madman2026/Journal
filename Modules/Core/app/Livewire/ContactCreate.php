@@ -4,12 +4,10 @@ namespace Modules\Core\Livewire;
 
 use Livewire\Attributes\Validate;
 use Livewire\Component;
-use Modules\Core\App\Contracts\HasCaptcha;
 use Modules\Core\Services\ContactService;
 
 class ContactCreate extends Component
 {
-
     #[Validate('required|numeric')]
     public $phone = '';
 
