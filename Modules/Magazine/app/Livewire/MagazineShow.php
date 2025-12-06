@@ -6,57 +6,47 @@ use Devrabiul\ToastMagic\Facades\ToastMagic;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
+use Modules\Core\Contracts\HasInteractableComponent;
 use Modules\Magazine\Models\Magazine;
+use Modules\Magazine\Services\MagazineService;
 
 class MagazineShow extends Component
 {
-    public function render(Magazine $Magazine)
+    use HasInteractableComponent;
+
+    public Magazine $magazine;
+    public $relateds = [];
+    public $categories = [];
+    public MagazineService $service;
+
+    public function boot(MagazineService $service)
     {
-        try {
-            $magazine = $Magazine::laodCount(['comments', 'views'])
-                ->laodCount(['likers as like_count'])
-                ->laod([
-                    'user',
-                    'articles',
-                    'comments' => fn ($q) => $q->where('status', 1),
-                ])
-                ->first();
+        $this->service = $service;
+    }
 
-            if (! $magazine) {
-                ToastMagic::error('موجود نیست!', 'شاید آدرسو اشتباه رفتی!');
+    public function mount(Magazine $magazine)
+    {
+        $result = $this->service->get($magazine);
 
-                return redirect()->back();
-            }
-
-            if (Auth::check()) {
-                $magazine->views()->firstOrCreate([
-                    'ip_address' => request()->ip(),
-                    'user_id' => Auth::id(),
-                ]);
-            }
-
-            $categoryIds = $magazine->categories()->pluck('id');
-            $relateds = $categoryIds->isNotEmpty()
-                ? Magazine::whereHas('categories', fn ($q) => $q->whereIn('id', $categoryIds))
-                    ->where('id', '!=', $magazine->id)
-                    ->with('user')->limit(10)->get()
-                : Magazine::with('user')->limit(10)->get();
-
-            $categories = $magazine->categories()->get();
-
-            return view('magazine::livewire.magazine-show', compact('magazine', 'relateds', 'type', 'categories'));
-
-        } catch (\Throwable $th) {
-            Log::error('Error in show logic for magazine', [
-                'slug' => $magazine->title,
-                'user_id' => Auth::id(),
-                'error' => $th->getMessage(),
-                'line' => $th->getLine(),
-                'file' => $th->getFile(),
-            ]);
-            ToastMagic::error('موجود نیست!', 'شاید آدرسو اشتباه رفتی!');
-
-            return redirect('/');
+        if (! $result->status) {
+            $this->dispatch('toastMagic', status: 'error', title: 'خطا!', message: 'نشریه پیدا نشد!');
+            $this->redirectRoute('home');
         }
+
+        dd($result);
+        $this->magazine   = $result->data['magazine'];
+        $this->categories = $result->data['categories'];
+        $this->relateds   = $result->data['relateds'];
+
+        // برای Trait تعاملات
+        $this->content = $this->magazine;
+    }
+
+    public function render()
+    {
+        // ثبت بازدید
+        $this->visitAction();
+
+        return view('magazine::livewire.magazine-show');
     }
 }

@@ -95,7 +95,6 @@ class MagazineCreate extends Component
 
             return $this->redirectRoute('magazine.index');
         }
-
         $this->dispatch('toastMagic',
             status: 'error',
             title: 'خطا',

@@ -54,4 +54,12 @@ class Magazine extends Model
     {
         return $this->morphToMany(Category::class, 'categorizable');
     }
+
+    /**
+     * Get the route key for the model.
+     */
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
 }

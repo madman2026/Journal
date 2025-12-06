@@ -23,9 +23,9 @@
         />
 
         {{-- تصویر نشریه --}}
-        <x-core::form.file-input :required="true" :value="old('image')" label="عکس" name="image"  />
+        <x-core::form.file-input :required="true" accept="image/*" :value="old('image')" label="عکس" name="image"  />
 
-        <x-core::form.file-input :required="true" :value="old('attachment')" label="فایل PDF" name="attachment"  />
+        <x-core::form.file-input :required="true" :value="old('attachment')" label="فایل PDF" name="attachment" accept="application/pdf" />
 
 
         {{-- دسته‌بندی‌ها --}}
@@ -111,6 +111,4 @@
         </div>
     </form>
 
-    {{-- Loading Overlay --}}
-    <x-overlay wire:loading.flex />
 </div>
