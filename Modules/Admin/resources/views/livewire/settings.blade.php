@@ -90,9 +90,8 @@
                         <p class="text-sm opacity-70 mb-3">متن فعلی: {{ $section->content }}</p>
 
                         <x-core::form.textarea
-                            :name='$section->name'
+                            name='sectionInputs.{{ $section->name }}'
                             :label='__("fields.$section->name")'
-                            wire:model.lazy="sectionInputs.{{ $section->name }}"
                             placeholder="متن جدید را وارد کنید..." />
                     @endif
                 </div>
