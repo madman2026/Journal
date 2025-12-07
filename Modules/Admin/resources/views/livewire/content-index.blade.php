@@ -1,6 +1,7 @@
 <div class="space-y-10">
     {{-- Activities --}}
     <x-content-table
+        type="activities"
         :items="$activities"
         title="فعالیت‌ها"
         :showFiles="true"
@@ -12,6 +13,7 @@
 
     {{-- Tips --}}
     <x-content-table
+        type="tips"
         :items="$tips"
         title="نکات"
         :showFiles="true"
@@ -24,6 +26,7 @@
     {{-- Magazines --}}
     <x-content-table
         :items="$magazines"
+        type="magazines"
         title="مجلات"
         :showFiles="true"
         editRoute="magazine.edit"

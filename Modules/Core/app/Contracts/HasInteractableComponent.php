@@ -2,9 +2,7 @@
 
 namespace Modules\Core\Contracts;
 
-use Gate;
 use Illuminate\Support\Facades\Auth;
-use Livewire\Attributes\Validate;
 
 trait HasInteractableComponent
 {
@@ -66,7 +64,7 @@ trait HasInteractableComponent
                 title: 'موفقیت',
                 message: 'لایک شد'
             );
-        }else{
+        } else {
             $this->dispatch('toastMagic',
                 status: 'error',
                 title: 'خطا',
@@ -99,19 +97,35 @@ trait HasInteractableComponent
         }
     }
 
-    #[Validate('required|')]
     public $commentBody;
 
     public function makeComment()
     {
-        $this->validateOnly('commentBody', [
+        if (! auth()->check()) {
+            $this->dispatch('toastMagic',
+                status: 'error',
+                title: 'خطا',
+                message: 'برای ثبت نظر باید ابتدا وارد شوید'
+            );
+
+            return;
+        }
+
+        $this->validate([
             'commentBody' => 'required|string|min:1|max:1000',
         ]);
+
         $this->content->comments()->create([
             'user_id' => Auth::id(),
             'body' => $this->commentBody,
             'ip_address' => request()->ip(),
         ]);
+
+        $this->commentBody = '';
+        $this->content->refresh();
+        $this->content->load('comments');
+        $this->refreshStats();
+
         $this->dispatch('toastMagic',
             status: 'success',
             title: 'موفقیت',

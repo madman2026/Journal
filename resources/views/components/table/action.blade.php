@@ -14,7 +14,8 @@
 
     <x-core::form.button
         variant="danger"
-        wire:click="deleteContent({{ $type }}', {{ $slug }})"
+        wire:click="deleteContent('{{ $type }}', '{{ $slug }}')"
+        wire:confirm="آیا از حذف مطمئن هستید؟"
     >
         <x-heroicon-o-trash class="w-5 h-5" />
     </x-core::form.button>

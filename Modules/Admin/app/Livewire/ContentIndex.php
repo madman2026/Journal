@@ -12,59 +12,58 @@ use Modules\Tip\Models\Tip;
 
 class ContentIndex extends Component
 {
-    use WithPagination , HasDownloadableContentComponent;
+    use HasDownloadableContentComponent , WithPagination;
 
     // همه‌ی مدل‌ها + کانفیگ‌ها در یکجا
     protected array $contentMap = [
         'activities' => [
             'model' => Activity::class,
-            'with'  => ['user'],
+            'with' => ['user'],
             'withCount' => [],
-            'pageName' => 'activities_page'
+            'pageName' => 'activities_page',
         ],
         'tips' => [
             'model' => Tip::class,
-            'with'  => ['user'],
+            'with' => ['user'],
             'withCount' => [],
-            'pageName' => 'tips_page'
+            'pageName' => 'tips_page',
         ],
         'magazines' => [
             'model' => Magazine::class,
-            'with'  => ['user'],
+            'with' => ['user'],
             'withCount' => ['articles'],
-            'pageName' => 'magazines_page'
+            'pageName' => 'magazines_page',
         ],
         'recommends' => [
             'model' => Recommend::class,
-            'with'  => ['user'],
+            'with' => ['user'],
             'withCount' => [],
-            'pageName' => 'recommends_page'
+            'pageName' => 'recommends_page',
         ],
     ];
 
     // حذف محتوا
-    public function deleteContent(string $type, int $id)
+    public function deleteContent(string $type, $slug)
     {
         try {
-            if (!isset($this->contentMap[$type])) {
+            if (! isset($this->contentMap[$type])) {
                 throw new \Exception('نوع محتوا معتبر نیست.');
             }
-
             $model = $this->contentMap[$type]['model'];
-            $content = $model::findOrFail($id);
+            $content = $model::whereSlug($slug)->first();
 
             $content->delete();
-
-            $this->dispatch('show-toast', [
-                'type' => 'success',
-                'message' => 'محتوا با موفقیت حذف شد.',
-            ]);
+            $this->dispatch('toastMagic',
+                success: 'success',
+                message: 'محتوا با موفقیت حذف شد.',
+            );
 
         } catch (\Exception $e) {
-            $this->dispatch('show-toast', [
-                'type' => 'error',
-                'message' => 'خطا در حذف محتوا: ' . $e->getMessage(),
-            ]);
+            report($e);
+            $this->dispatch('toastMagic',
+                success: 'error',
+                message: 'خطا در حذف محتوا'
+            );
         }
     }
 
@@ -76,11 +75,11 @@ class ContentIndex extends Component
         foreach ($this->contentMap as $key => $config) {
             $query = $config['model']::query();
 
-            if (!empty($config['with'])) {
+            if (! empty($config['with'])) {
                 $query->with($config['with']);
             }
 
-            if (!empty($config['withCount'])) {
+            if (! empty($config['withCount'])) {
                 $query->withCount($config['withCount']);
             }
 
@@ -91,12 +90,14 @@ class ContentIndex extends Component
 
         return view('admin::livewire.content-index', [
             'activities' => $contents['activities'],
-            'tips'       => $contents['tips'],
-            'magazines'  => $contents['magazines'],
+            'tips' => $contents['tips'],
+            'magazines' => $contents['magazines'],
             'recommends' => $contents['recommends'],
         ]);
     }
-    public function extractContent($item) {
+
+    public function extractContent($item)
+    {
         return strip_tags(
             $item->content
             ?? $item->description

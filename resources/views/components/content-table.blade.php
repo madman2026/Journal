@@ -78,7 +78,7 @@
                                 :editRoute="$editRoute"
                                 :viewRoute="$viewRoute"
                                 :slug="$item->slug"
-                                :type="$type" {{-- برای delete --}}
+                                :type="$type"
                             />
                         </td>
                     </tr>
