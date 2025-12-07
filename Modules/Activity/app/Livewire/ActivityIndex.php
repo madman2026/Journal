@@ -10,7 +10,11 @@ class ActivityIndex extends Component
     public function render()
     {
         return view('activity::livewire.activity-index', [
-            'activities' => Activity::orderByDesc('updated_at')->with('user')->withCount(['likes', 'views'])->paginate(10),
+            'activities' => Activity::query()
+                ->with(['user', 'level', 'categories'])
+                ->withCount(['likes', 'views', 'comments'])
+                ->orderByDesc('updated_at')
+                ->paginate(10),
         ]);
     }
 }

@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 use Modules\Tip\Livewire\TipCreate;
 use Modules\Tip\Livewire\TipEdit;
 use Modules\Tip\Livewire\TipIndex;
-use Modules\Tip\Livewire\TipManage;
 use Modules\Tip\Livewire\TipShow;
 
 Route::as('tip.')->prefix('tip')->group(function () {

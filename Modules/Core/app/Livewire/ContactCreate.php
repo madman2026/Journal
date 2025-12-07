@@ -44,14 +44,15 @@ class ContactCreate extends Component
             // Reset form
             $this->reset(['phone', 'body']);
 
-            return redirect()->route('home');
+            return;
         }
 
         $this->dispatch('toastMagic',
             status: 'error',
             title: 'خطا',
-            message: $result->message ?? 'در ارسال فرم خطایی رخ داد'
+            message: 'در ارسال فرم خطایی رخ داد'
         );
+
     }
 
     public function render()

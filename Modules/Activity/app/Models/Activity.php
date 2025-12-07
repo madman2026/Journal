@@ -3,7 +3,6 @@
 namespace Modules\Activity\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Scope;
 use Modules\Core\app\Contracts\HasSlug;
 use Modules\Core\Contracts\Interactable;
 use Modules\Core\Models\Category;
@@ -40,9 +39,9 @@ class Activity extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function Level()
+    public function level()
     {
-        return $this->belongsTo(Scope::class);
+        return $this->belongsTo(Level::class);
     }
 
     public function categories()

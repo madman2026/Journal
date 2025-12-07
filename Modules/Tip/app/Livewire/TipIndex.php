@@ -10,7 +10,11 @@ class TipIndex extends Component
     public function render()
     {
         return view('tip::livewire.tip-index', [
-            'tips' => Tip::orderByDesc('updated_at')->paginate(10),
+            'tips' => Tip::query()
+                ->with(['user', 'categories'])
+                ->withCount(['likes', 'views', 'comments'])
+                ->orderByDesc('updated_at')
+                ->paginate(10),
         ]);
     }
 }

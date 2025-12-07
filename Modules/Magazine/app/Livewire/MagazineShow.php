@@ -42,6 +42,11 @@ class MagazineShow extends Component
         $this->initializeHasLiked();
     }
 
+    public function refreshStats()
+    {
+        $this->magazine->loadCount(['comments', 'views', 'likes']);
+    }
+
     public function render()
     {
         // ثبت بازدید

@@ -50,5 +50,4 @@ class ContentTable extends Component
     {
         return view('components.content-table');
     }
-
 }

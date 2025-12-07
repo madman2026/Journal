@@ -14,9 +14,8 @@ class TipService extends BaseService
 
     public function create(array $data)
     {
-
         return $this->execute(function () use ($data) {
-            $this->createAction->handle($data);
+            return $this->createAction->handle($data);
         });
     }
 

@@ -15,10 +15,10 @@
             <p class="mt-4 text-gray-700 flex my-3 justify-center text-right dark:text-gray-300" data-aos="fade-up">
                 {!! nl2br(e($magazine->body)) !!}
             </p>
-            @if ($magazine->pdf)
+            @if ($magazine->attachment)
                 <div class="p-4 bg-blue-50 dark:bg-blue-900 rounded-lg">
                     <h3 class="text-lg font-bold">📂 فایل‌ نشریه</h3>
-                    <a href="{{ route('download', ["url"=>$magazine->pdf]) }}"
+                    <a href="{{ route('core.download', ["url"=>$magazine->attachment]) }}"
                         class="text-blue-500 hover:text-blue-700 dark:hover:text-blue-300">دانلود فایل</a>
                 </div>
             @endif
@@ -28,14 +28,13 @@
                     @foreach ($magazine->articles as $index => $article)
                         <li class=" flex justify-between text-right items-center">
                             <div class=" flex items-center gap-4">
-                                <p class=" mx-3 my-3">{!!$index  = $index + 1 !!}</p>
-                                <a href="{{ route('Article.show', ['Article' => $article->slug]) }}"
-                                    class="text-blue-500 dark:text-orange-300 hover:underline">
+                                <p class=" mx-3 my-3">{{ $index + 1 }}</p>
+                                <span class="text-blue-500 dark:text-orange-300">
                                     {{ $article->title }}
-                                </a>
+                                </span>
                             </div>
-                        @if ($article->url)
-                        <a href="{{route("download" , ["url" => $article->url]) }}" class=" rounded-2xl bg-blue-500 px-4 text-conter py-2 max-md:py-1 max-md:px-3 text-white h-9">
+                        @if ($article->attachment)
+                        <a href="{{ route('core.download', ["url" => $article->attachment]) }}" class=" rounded-2xl bg-blue-500 px-4 text-conter py-2 max-md:py-1 max-md:px-3 text-white h-9">
                             دانلود
                         </a>
                         @endif
@@ -46,13 +45,12 @@
             </div>
             <div class="flex justify-between items-center mt-6">
                 <span>👁 بازدید: {{ $magazine->views_count }}</span>
-                <form method="POST" action="{{ route('toggle.like', ['id' => $magazine->id, 'type' => $type]) }}">
-                    @csrf
-                    <button
-                        class="flex items-center px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition">
-                        ❤️ لایک: {{ $magazine->like_count }}
-                    </button>
-                </form>
+                <x-core::form.button
+                    wire:click="toggleLike()"
+                    class="flex items-center px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition">
+                    <x-heroicon-o-heart class="w-5 h-5" />
+                    ❤️ لایک: {{ $magazine->likes_count }}
+                </x-core::form.button>
             </div>
             <div class="flex items-center justify-center mt-5">
                 <p class=" text-bold text-lg mr-2">برچسب ها</p>
@@ -100,12 +98,12 @@
             @forelse ($relateds as $related)
                 <div
                     class="flex items-center bg-gray-100 dark:bg-gray-700 p-4 rounded-lg shadow-sm hover:shadow-md transition">
-                    <img src="{{ asset($related['image']) }}" alt="{{ $related['title'] }}"
+                    <img src="{{ asset($related->image) }}" alt="{{ $related->title }}"
                         class="w-16 h-16 object-cover rounded-lg">
                     <div class="ml-4 truncate">
-                        <a href="{{ route("$type.show", $related['slug']) }}"
+                        <a href="{{ route('magazine.show', $related->slug) }}"
                             class="text-blue-500 dark:text-orange-300 hover:underline">
-                            {{ Illuminate\Support\Str::limit($related['title'], 40) }}
+                            {{ Illuminate\Support\Str::limit($related->title, 40) }}
                         </a>
                     </div>
                 </div>

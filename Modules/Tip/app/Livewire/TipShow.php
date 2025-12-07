@@ -3,8 +3,8 @@
 namespace Modules\Tip\Livewire;
 
 use Livewire\Component;
-use Modules\Tip\Models\Tip;
 use Modules\Core\Contracts\HasInteractableComponent;
+use Modules\Tip\Models\Tip;
 
 class TipShow extends Component
 {
@@ -17,10 +17,10 @@ class TipShow extends Component
         $this->content = $Tip
             ->load([
                 'user',
-                'comments' => fn($q) => $q->where('status', true)
-                ])
+                'comments' => fn ($q) => $q->where('status', true),
+            ])
             ->loadCount([
-                'comments' => fn($q) => $q->where('status', true),
+                'comments' => fn ($q) => $q->where('status', true),
                 'likes',
                 'views']);
 
@@ -31,7 +31,7 @@ class TipShow extends Component
     public function refreshStats()
     {
         $this->content->loadCount([
-            'comments' => fn($q) => $q->where('status', true),
+            'comments' => fn ($q) => $q->where('status', true),
             'likes',
             'views',
         ]);

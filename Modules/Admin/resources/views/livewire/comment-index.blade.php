@@ -69,7 +69,7 @@
                         <!-- Accept -->
                         <td class="border border-gray-300 dark:border-gray-700 p-3 text-center">
                             <div>
-                                <button wire:click="accept($comment->id)" class="bg-green-500 hover:bg-green-600 dark:bg-green-600 dark:hover:bg-green-700 text-white px-4 py-1 rounded-xl transition">
+                                <button wire:click="accept({{ $comment->id }})" class="bg-green-500 hover:bg-green-600 dark:bg-green-600 dark:hover:bg-green-700 text-white px-4 py-1 rounded-xl transition">
                                     تایید
                                 </button>
                             </div>
@@ -78,7 +78,7 @@
                         <!-- Delete -->
                         <td class="border border-gray-300 dark:border-gray-700 p-3 text-center">
                             <div class="inline-block">
-                                <button wire:click="delete($comment->id) }}" class="bg-red-500 hover:bg-red-600 dark:bg-red-700 dark:hover:bg-red-800 text-white px-4 py-1 rounded-xl transition">
+                                <button wire:click="delete({{ $comment->id }})" class="bg-red-500 hover:bg-red-600 dark:bg-red-700 dark:hover:bg-red-800 text-white px-4 py-1 rounded-xl transition">
                                     حذف
                                 </button>
                             </div>

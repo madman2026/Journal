@@ -16,8 +16,17 @@ class ActivityShow extends Component
 
     public function mount(Activity $Activity)
     {
-        $this->content = $Activity->load(['user', 'comments'])
-            ->loadCount(['comments', 'likes', 'views']);
+        $this->content = $Activity
+            ->load([
+                'user',
+                'level',
+                'comments' => fn ($q) => $q->where('status', true),
+            ])
+            ->loadCount([
+                'comments' => fn ($q) => $q->where('status', true),
+                'likes',
+                'views',
+            ]);
 
         $this->initializeHasLiked();
         $this->visitAction();

@@ -21,11 +21,6 @@
             @if ($content->attachment)
                 <x-table.file-download :filePath="$content->attachment" />
             @endif
-            <!-- Abstract -->
-            <p class="mt-4 text-gray-700 dark:text-gray-300 leading-7" >
-                <span class="font-bold text-lg">چکیده</span><br>
-                {!! nl2br(e($content->abstract)) !!}
-            </p>
 
             <!-- Body -->
             <p class="mt-6 text-gray-700 dark:text-gray-300 leading-8 text-right" >
