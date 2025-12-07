@@ -42,8 +42,6 @@
            text=' تغییر رمز عبور'
            />
 
-        <x-captcha />
-
         <div>
             <button type="submit"
                     wire:loading.attr="disabled"
