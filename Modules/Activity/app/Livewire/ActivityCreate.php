@@ -71,7 +71,6 @@ class ActivityCreate extends Component
         if ($this->attachment) {
             $data['attachment'] = $this->attachment->store('activities/attachments', 'public');
         }
-
         $result = $this->service->create($data);
 
         if ($result->status) {

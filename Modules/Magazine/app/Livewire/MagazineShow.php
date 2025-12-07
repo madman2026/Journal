@@ -2,9 +2,6 @@
 
 namespace Modules\Magazine\Livewire;
 
-use Devrabiul\ToastMagic\Facades\ToastMagic;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use Modules\Core\Contracts\HasInteractableComponent;
 use Modules\Magazine\Models\Magazine;
@@ -15,8 +12,11 @@ class MagazineShow extends Component
     use HasInteractableComponent;
 
     public Magazine $magazine;
+
     public $relateds = [];
+
     public $categories = [];
+
     public MagazineService $service;
 
     public function boot(MagazineService $service)
@@ -33,13 +33,13 @@ class MagazineShow extends Component
             $this->redirectRoute('home');
         }
 
-        dd($result);
-        $this->magazine   = $result->data['magazine'];
+        $this->magazine = $result->data['magazine'];
         $this->categories = $result->data['categories'];
-        $this->relateds   = $result->data['relateds'];
+        $this->relateds = $result->data['relateds'];
 
         // برای Trait تعاملات
         $this->content = $this->magazine;
+        $this->initializeHasLiked();
     }
 
     public function render()

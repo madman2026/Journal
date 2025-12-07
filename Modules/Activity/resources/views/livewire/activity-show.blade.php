@@ -18,7 +18,9 @@
                     تعداد نظرات: {{ $content->comments_count }}
                 </span>
             </div>
-
+            @if ($content->attachment)
+                <x-table.file-download :filePath="$content->attachment" />
+            @endif
             <!-- Abstract -->
             <p class="mt-4 text-gray-700 dark:text-gray-300 leading-7" >
                 <span class="font-bold text-lg">چکیده</span><br>
@@ -39,9 +41,9 @@
                 </span>
 
                 <x-core::form.button
-                    wire:click="toggleLike"
+                    wire:click="toggleLike()"
                     class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition">
-                    لایک: {{ $content->likes_count }}
+                    <x-heroicon-o-heart class=" w-5 h-5"/> {{ $content->likes_count }}
                 </x-core::form.button>
 
             </div>
@@ -73,7 +75,7 @@
         @auth
             <form wire:submit.prevent="makeComment" class="mt-6 space-y-4">
                 <x-core::form.textarea
-                    name="body"
+                    name="commentBody"
                     label="متن"
                     required
                     placeholder="نظر خود را وارد کنید..."

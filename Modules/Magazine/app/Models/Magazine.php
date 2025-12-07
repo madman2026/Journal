@@ -19,7 +19,7 @@ class Magazine extends Model
         'slug',
         'image',
         'user_id',
-        'pdf',
+        'attachment',
         'body',
     ];
 

@@ -4,11 +4,13 @@ namespace Modules\Activity\Livewire;
 
 use Livewire\Component;
 use Modules\Activity\Models\Activity;
+use Modules\Core\App\Contracts\HasDownloadableContentComponent;
 use Modules\Core\Contracts\HasInteractableComponent;
 
 class ActivityShow extends Component
 {
-    use HasInteractableComponent;
+    use HasDownloadableContentComponent
+        , HasInteractableComponent;
 
     public $content;
 
@@ -17,20 +19,8 @@ class ActivityShow extends Component
         $this->content = $Activity->load(['user', 'comments'])
             ->loadCount(['comments', 'likes', 'views']);
 
+        $this->initializeHasLiked();
         $this->visitAction();
-    }
-
-    public function toggleLike()
-    {
-        $liked = $this->toggleLikeAction();
-
-        $this->refreshStats();
-
-        $this->dispatch('toastMagic',
-            message: $liked ? 'لایک شد' : 'لایک حذف شد',
-            title: 'موفقیت',
-            status: 'success'
-        );
     }
 
     public function refreshStats()

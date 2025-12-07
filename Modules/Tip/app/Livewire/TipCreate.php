@@ -21,9 +21,6 @@ class TipCreate extends Component
     #[Validate('required|string|min:10|max:9999999')]
     public $body;
 
-    #[Validate('required|file|mimes:pdf|max:10000')]
-    public $attachment;
-
     #[Validate('required|image|max:10000')]
     public $image;
 
@@ -58,10 +55,6 @@ class TipCreate extends Component
         $data = $this->validate();
         if ($this->image) {
             $data['image'] = $this->image->store('tips/images', 'public');
-        }
-
-        if ($this->attachment) {
-            $data['attachment'] = $this->attachment->store('tips/attachments', 'public');
         }
 
         $result = $this->service->create($data);

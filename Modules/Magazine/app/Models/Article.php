@@ -18,7 +18,7 @@ class Article extends Model
         'abstract',
         'slug',
         'magazine_id',
-        'url',
+        'attachment',
     ];
 
     public function magazine()

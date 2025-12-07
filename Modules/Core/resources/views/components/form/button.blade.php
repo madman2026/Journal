@@ -27,20 +27,64 @@
     ];
     $sizeClass = $sizes[$size] ?? $sizes['md'];
 
-    // variants (ghost and link are special)
     $variants = [
+
+        // PRIMARY (indigo)
         'primary' => $outline
             ? 'border border-indigo-600 text-indigo-600 bg-transparent hover:bg-indigo-50 focus:ring-indigo-500'
             : 'bg-indigo-600 text-white hover:bg-indigo-700 focus:ring-indigo-500 shadow-sm',
+
+        // SECONDARY (gray)
         'secondary' => $outline
-            ? 'border border-gray-300 text-gray-700 bg-transparent hover:bg-gray-50 focus:ring-gray-300'
+            ? 'border border-gray-400 text-gray-800 bg-transparent hover:bg-gray-100 focus:ring-gray-300'
             : 'bg-gray-100 text-gray-900 hover:bg-gray-200 focus:ring-gray-300',
+
+        // DANGER (red)
         'danger' => $outline
             ? 'border border-red-600 text-red-600 bg-transparent hover:bg-red-50 focus:ring-red-500'
             : 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500',
+
+        // SUCCESS (green) ← جدید
+        'success' => $outline
+            ? 'border border-green-600 text-green-600 bg-transparent hover:bg-green-50 focus:ring-green-500'
+            : 'bg-green-600 text-white hover:bg-green-700 focus:ring-green-500',
+
+        // WARNING (yellow) ← جدید
+        'warning' => $outline
+            ? 'border border-yellow-500 text-yellow-600 bg-transparent hover:bg-yellow-50 focus:ring-yellow-400'
+            : 'bg-yellow-500 text-black hover:bg-yellow-600 focus:ring-yellow-400',
+
+        // PURPLE ← جدید
+        'purple' => $outline
+            ? 'border border-purple-600 text-purple-600 bg-transparent hover:bg-purple-50 focus:ring-purple-500'
+            : 'bg-purple-600 text-white hover:bg-purple-700 focus:ring-purple-500',
+
+        // ORANGE ← جدید
+        'orange' => $outline
+            ? 'border border-orange-600 text-orange-600 bg-transparent hover:bg-orange-50 focus:ring-orange-500'
+            : 'bg-orange-600 text-white hover:bg-orange-700 focus:ring-orange-500',
+
+        'blue' => $outline
+            ? 'border border-blue-600 text-blue-600 bg-transparent hover:bg-blue-50 focus:ring-blue-500'
+            : 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500',
+
+
+        'sky' => $outline
+            ? 'border border-blue-500 text-blue-500 bg-transparent hover:bg-blue-50 focus:ring-blue-500'
+            : 'bg-blue-500 text-white hover:bg-blue-700 focus:ring-blue-500',
+
+        // BLACK ← جدید
+        'black' => $outline
+            ? 'border border-black text-black bg-transparent hover:bg-gray-200 focus:ring-gray-700'
+            : 'bg-black text-white hover:bg-gray-900 focus:ring-gray-700',
+
+        // GHOST (شناور)
         'ghost' => 'bg-transparent text-gray-800 hover:bg-gray-100 focus:ring-gray-300',
+
+        // LINK
         'link' => 'bg-transparent underline text-indigo-600 hover:text-indigo-700 px-0 py-0',
     ];
+
     $variantClass = $variants[$variant] ?? $variants['primary'];
 
     $computedClass = trim("{$base} {$display} {$sizeClass} {$variantClass} {$attributes->get('class')}");
@@ -61,12 +105,11 @@
             </svg>
         @endif
 
-        {{-- icon slot or prop --}}
         @if($icon)
             <span class="shrink-0">{!! $icon !!}</span>
         @endif
 
-        <span>{{ $slot }}</span>
+        <span class=" flex gap-1">{{ $slot }}</span>
     </a>
 @else
     <button

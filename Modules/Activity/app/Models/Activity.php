@@ -20,7 +20,7 @@ class Activity extends Model
         'body',
         'user_id',
         'image',
-        'pdf',
+        'attachment',
         'level_id',
         'slug',
     ];

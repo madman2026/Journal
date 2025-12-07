@@ -29,16 +29,6 @@
             class="dark:bg-gray-700 dark:border-gray-600 dark:text-white"
         />
 
-        <x-core::form.file-input
-            label="PDF"
-            placeholder="فایل PDF"
-            name="attachment"
-            accept="application/pdf"
-            wire:model.lazy="attachment"
-            :required="false"
-            class="dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-        />
-
         <x-core::form.textarea label="متن نکته" name="body" wire:model.lazy="body" placeholder="متن نکته را وارد کنید" :required="true" />
         <x-captcha />
 

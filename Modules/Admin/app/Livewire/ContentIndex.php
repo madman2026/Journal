@@ -5,64 +5,53 @@ namespace Modules\Admin\Livewire;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Modules\Activity\Models\Activity;
+use Modules\Core\App\Contracts\HasDownloadableContentComponent;
 use Modules\Core\Models\Recommend;
 use Modules\Magazine\Models\Magazine;
 use Modules\Tip\Models\Tip;
 
 class ContentIndex extends Component
 {
-    use WithPagination;
+    use WithPagination , HasDownloadableContentComponent;
 
-    public $search = '';
-
-    public $type = '';
-
-    public $activeTab = 'news'; // Default active tab
-
-    // Tab names for better organization
-    protected $tabs = [
-        'news' => 'اخبار',
-        'events' => 'رویدادها',
-        'magazines' => 'نشریه‌ها',
-        'recommends' => 'پیشنهادها',
+    // همه‌ی مدل‌ها + کانفیگ‌ها در یکجا
+    protected array $contentMap = [
+        'activities' => [
+            'model' => Activity::class,
+            'with'  => ['user'],
+            'withCount' => [],
+            'pageName' => 'activities_page'
+        ],
+        'tips' => [
+            'model' => Tip::class,
+            'with'  => ['user'],
+            'withCount' => [],
+            'pageName' => 'tips_page'
+        ],
+        'magazines' => [
+            'model' => Magazine::class,
+            'with'  => ['user'],
+            'withCount' => ['articles'],
+            'pageName' => 'magazines_page'
+        ],
+        'recommends' => [
+            'model' => Recommend::class,
+            'with'  => ['user'],
+            'withCount' => [],
+            'pageName' => 'recommends_page'
+        ],
     ];
 
-    protected $queryString = [
-        'search' => ['except' => ''],
-        'type' => ['except' => ''],
-        'activeTab' => ['except' => 'news'],
-    ];
-
-    public function mount()
-    {
-        // Initial data loading is handled in render method
-    }
-
-    public function setActiveTab($tab)
-    {
-        $this->activeTab = $tab;
-        $this->resetPage(); // Reset pagination when changing tabs
-    }
-
-    public function deleteContent($type, $id)
+    // حذف محتوا
+    public function deleteContent(string $type, int $id)
     {
         try {
-            switch ($type) {
-                case 'news':
-                    $content = Activity::findOrFail($id);
-                    break;
-                case 'events':
-                    $content = Tip::findOrFail($id);
-                    break;
-                case 'magazines':
-                    $content = Magazine::findOrFail($id);
-                    break;
-                case 'recommends':
-                    $content = Recommend::findOrFail($id);
-                    break;
-                default:
-                    throw new \Exception('نوع محتوای نامعتبر');
+            if (!isset($this->contentMap[$type])) {
+                throw new \Exception('نوع محتوا معتبر نیست.');
             }
+
+            $model = $this->contentMap[$type]['model'];
+            $content = $model::findOrFail($id);
 
             $content->delete();
 
@@ -74,89 +63,45 @@ class ContentIndex extends Component
         } catch (\Exception $e) {
             $this->dispatch('show-toast', [
                 'type' => 'error',
-                'message' => 'خطا در حذف محتوا: '.$e->getMessage(),
-            ]);
-        }
-    }
-
-    public function toggleStatus($type, $id)
-    {
-        try {
-            switch ($type) {
-                case 'news':
-                    $content = Activity::findOrFail($id);
-                    break;
-                case 'events':
-                    $content = Tip::findOrFail($id);
-                    break;
-                case 'magazines':
-                    $content = Magazine::findOrFail($id);
-                    break;
-                case 'recommends':
-                    $content = Recommend::findOrFail($id);
-                    break;
-                default:
-                    throw new \Exception('نوع محتوای نامعتبر');
-            }
-
-            // Toggle status - adjust field name according to your models
-            $statusField = $content->getTable() === 'activities' ? 'is_active' : 'status';
-
-            if (isset($content->$statusField)) {
-                $content->update([
-                    $statusField => ! $content->$statusField,
-                ]);
-            }
-
-            $this->dispatch('show-toast', [
-                'type' => 'success',
-                'message' => 'وضعیت محتوا با موفقیت تغییر کرد.',
-            ]);
-
-        } catch (\Exception $e) {
-            $this->dispatch('show-toast', [
-                'type' => 'error',
-                'message' => 'خطا در تغییر وضعیت: '.$e->getMessage(),
+                'message' => 'خطا در حذف محتوا: ' . $e->getMessage(),
             ]);
         }
     }
 
     public function render()
     {
-        // Load data based on active tab with search and filtering
-        $activities = Activity::with('user')
-            ->when($this->search && $this->activeTab === 'news', function ($query) {
-                $query->where('title', 'like', '%'.$this->search.'%')
-                    ->orWhere('content', 'like', '%'.$this->search.'%');
-            })
-            ->orderBy('created_at', 'desc')
-            ->paginate(10, ['*'], 'news_page');
+        // تمام دیتاها رو دینامیک لود می‌کنیم
+        $contents = [];
 
-        $tips = Tip::with('user')
-            ->when($this->search && $this->activeTab === 'events', function ($query) {
-                $query->where('title', 'like', '%'.$this->search.'%')
-                    ->orWhere('description', 'like', '%'.$this->search.'%');
-            })
-            ->orderBy('created_at', 'desc')
-            ->paginate(10, ['*'], 'events_page');
+        foreach ($this->contentMap as $key => $config) {
+            $query = $config['model']::query();
 
-        $magazines = Magazine::with('user')
-            ->withCount('articles as articles_count')
-            ->when($this->search && $this->activeTab === 'magazines', function ($query) {
-                $query->where('title', 'like', '%'.$this->search.'%')
-                    ->orWhere('description', 'like', '%'.$this->search.'%');
-            })
-            ->orderBy('created_at', 'desc')
-            ->paginate(10, ['*'], 'magazines_page');
+            if (!empty($config['with'])) {
+                $query->with($config['with']);
+            }
 
-        $recommends = Recommend::with('user')
-            ->when($this->search && $this->activeTab === 'recommends', function ($query) {
-                $query->where('title', 'like', '%'.$this->search.'%')
-                    ->orWhere('description', 'like', '%'.$this->search.'%');
-            })
-            ->orderBy('created_at', 'desc')
-            ->paginate(10, ['*'], 'recommends_page');
+            if (!empty($config['withCount'])) {
+                $query->withCount($config['withCount']);
+            }
 
-        return view('admin::livewire.content-index', compact('activities', 'tips', 'magazines', 'recommends'));
+            $contents[$key] = $query
+                ->orderBy('created_at', 'desc')
+                ->paginate(10, ['*'], $config['pageName']);
+        }
+
+        return view('admin::livewire.content-index', [
+            'activities' => $contents['activities'],
+            'tips'       => $contents['tips'],
+            'magazines'  => $contents['magazines'],
+            'recommends' => $contents['recommends'],
+        ]);
+    }
+    public function extractContent($item) {
+        return strip_tags(
+            $item->content
+            ?? $item->description
+            ?? $item->body
+            ?? ''
+        );
     }
 }
