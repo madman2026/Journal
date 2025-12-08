@@ -9,7 +9,7 @@ use Modules\User\Models\User;
 
 class Comment extends Model
 {
-    protected $fillable = ['body', 'user_id', 'status', 'commentable_id', 'commentable_type'];
+    protected $fillable = ['body', 'user_id', 'ip_address' , 'status', 'commentable_id', 'commentable_type'];
 
     public function commentable()
     {

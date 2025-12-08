@@ -27,6 +27,11 @@ class CommentIndex extends Component
         Comment::where('status', false)->update(['status' => true]);
         $this->dispatch('toastMagic', status: 'success', message: 'همه نظرات تایید شدند');
     }
+    public function deleteAll()
+    {
+        Comment::where('status', false)->delete();
+        $this->dispatch('toastMagic', status: 'success', message: 'همه نظرات حذف شدند');
+    }
 
     public function render()
     {

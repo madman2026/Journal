@@ -15,32 +15,26 @@ class TipShow extends Component
 
     public function mount(Tip $Tip)
     {
-        $this->content = $Tip
-            ->load([
-                'user',
-                'comments' => fn ($q) => $q->where('status', true),
-            ])
-            ->loadCount([
-                'comments' => fn ($q) => $q->where('status', true),
-                'likes',
-                'views']);
+        $this->content = $Tip->load([
+            'user',
+            'categories',
+        ])->loadCount([
+            'likes',
+            'views',
+            'comments' => fn($q) => $q->where('status', true),
+        ]);
+
+        $this->loadComments();         // فقط کامنت‌های تایید شده
+        $this->initializeHasLiked();
+        $this->visitAction();
+
         $this->relateds = Tip::whereHas('categories', function ($q) {
                 $q->whereIn('categories.id', $this->content->categories->pluck('id'));
             })
             ->where('id', '!=', $this->content->id)
+            ->with('categories')
             ->limit(10)
             ->get();
-        $this->initializeHasLiked(); // از Trait
-        $this->visitAction();        // از Trait
-    }
-
-    public function refreshStats()
-    {
-        $this->content->loadCount([
-            'comments' => fn ($q) => $q->where('status', true),
-            'likes',
-            'views',
-        ]);
     }
 
     public function render()

@@ -5,12 +5,13 @@
     <div class="flex justify-between items-center w-full h-12 mb-6">
         <h1 class="text-2xl font-bold">لیست نظرات</h1>
 
-        <button wire:click="acceptAll()"
-           class="rounded-xl bg-red-600 text-white px-4 py-2 w-28 text-center transition hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-800">
+        <x-core::form.button varient="success" wire:click="acceptAll()">
             تایید همه
-        </button>
+        </x-core::form.button>
+        <x-core::form.button varient="danger" wire:click="deleteAll()">
+            تایید همه
+        </x-core::form.button>
     </div>
-
     <!-- Table Container -->
     <div class="overflow-x-auto border border-gray-300 dark:border-gray-700 rounded-xl shadow-md">
         <table class="w-full border-collapse text-sm">
@@ -28,7 +29,6 @@
             <tbody>
                 @foreach ($comments as $comment)
                     <tr class="hover:bg-gray-50 dark:hover:bg-gray-800 transition">
-
                         <!-- نویسنده -->
                         <td class="border border-gray-300 dark:border-gray-700 p-3">
                             {{ $comment->user->username }}
