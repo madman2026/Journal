@@ -4,17 +4,17 @@ namespace Modules\Admin\Livewire;
 
 use Livewire\Component;
 use Livewire\WithPagination;
-use Modules\Activity\Models\Activity;
+use Modules\Activity\Actions\DeleteActivityAction;
 use Modules\Core\App\Contracts\HasDownloadableContentComponent;
+use Modules\Activity\Models\Activity;
 use Modules\Core\Models\Recommend;
 use Modules\Magazine\Models\Magazine;
 use Modules\Tip\Models\Tip;
 
 class ContentIndex extends Component
 {
-    use HasDownloadableContentComponent , WithPagination;
+    use HasDownloadableContentComponent, WithPagination;
 
-    // همه‌ی مدل‌ها + کانفیگ‌ها در یکجا
     protected array $contentMap = [
         'activities' => [
             'model' => Activity::class,
@@ -42,17 +42,22 @@ class ContentIndex extends Component
         ],
     ];
 
-    // حذف محتوا
     public function deleteContent(string $type, $slug)
     {
         try {
             if (! isset($this->contentMap[$type])) {
                 throw new \Exception('نوع محتوا معتبر نیست.');
             }
+
             $model = $this->contentMap[$type]['model'];
             $content = $model::whereSlug($slug)->first();
 
-            $content->delete();
+            if (! $content) {
+                throw new \Exception('محتوا یافت نشد.');
+            }
+
+            app(DeleteActivityAction::class)->handle($content);
+
             $this->dispatch('toastMagic',
                 success: 'success',
                 message: 'محتوا با موفقیت حذف شد.',
@@ -60,6 +65,7 @@ class ContentIndex extends Component
 
         } catch (\Exception $e) {
             report($e);
+
             $this->dispatch('toastMagic',
                 success: 'error',
                 message: 'خطا در حذف محتوا'
@@ -69,22 +75,15 @@ class ContentIndex extends Component
 
     public function render()
     {
-        // تمام دیتاها رو دینامیک لود می‌کنیم
         $contents = [];
 
         foreach ($this->contentMap as $key => $config) {
-            $query = $config['model']::query();
-
-            if (! empty($config['with'])) {
-                $query->with($config['with']);
-            }
-
-            if (! empty($config['withCount'])) {
-                $query->withCount($config['withCount']);
-            }
+            $query = $config['model']::query()
+                ->when($config['with'], fn ($q, $r) => $q->with($r))
+                ->when($config['withCount'], fn ($q, $r) => $q->withCount($r));
 
             $contents[$key] = $query
-                ->orderBy('created_at', 'desc')
+                ->orderByDesc('created_at')
                 ->paginate(10, ['*'], $config['pageName']);
         }
 
@@ -98,11 +97,14 @@ class ContentIndex extends Component
 
     public function extractContent($item)
     {
-        return strip_tags(
-            $item->content
-            ?? $item->description
-            ?? $item->body
-            ?? ''
-        );
+        $fields = ['content', 'description', 'body'];
+
+        foreach ($fields as $field) {
+            if (! empty($item->$field)) {
+                return strip_tags($item->$field);
+            }
+        }
+
+        return '';
     }
 }

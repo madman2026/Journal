@@ -3,7 +3,7 @@
 <td class="px-4 py-3 whitespace-nowrap">
     @if($image)
         <img
-            src="{{ Storage::url($image) }}"
+            src="{{ asset($image) }}"
             alt="{{ $alt }}"
             class="{{ $size }} object-cover rounded-lg"
         >

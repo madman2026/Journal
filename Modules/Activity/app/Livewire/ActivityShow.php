@@ -13,6 +13,7 @@ class ActivityShow extends Component
         , HasInteractableComponent;
 
     public $content;
+    public $relateds;
 
     public function mount(Activity $Activity)
     {
@@ -27,7 +28,12 @@ class ActivityShow extends Component
                 'likes',
                 'views',
             ]);
-
+        $this->relateds = Activity::whereHas('categories', function ($q) {
+                $q->whereIn('categories.id', $this->content->categories->pluck('id'));
+            })
+            ->where('id', '!=', $this->content->id)
+            ->limit(10)
+            ->get();
         $this->initializeHasLiked();
         $this->visitAction();
     }

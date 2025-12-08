@@ -101,10 +101,9 @@
         <h2 class="text-xl font-bold text-gray-900 dark:text-gray-100">محتواهای مشابه</h2>
 
         <div class="mt-5 space-y-4">
-
             @if (!empty($relateds))
                 @foreach ($relateds as $related)
-                    <div class="flex items-center bg-gray-100 dark:bg-gray-700 p-3 rounded-lg">
+                    <div class="flex items-center bg-gray-100 gap-2 dark:bg-gray-700 p-3 rounded-lg">
 
                         <img src="{{ asset($related['image']) }}"
                              alt="{{ $related['title'] }}"

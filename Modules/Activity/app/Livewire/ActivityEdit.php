@@ -72,7 +72,6 @@ class ActivityEdit extends Component
     public function updateActivity()
     {
         $data = $this->validate();
-
         if ($this->image) {
             $data['image'] = $this->image->store('activities/images', 'public');
         }

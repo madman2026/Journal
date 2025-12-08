@@ -58,6 +58,9 @@ trait HasInteractableComponent
                 'ip_address' => $ip,
             ]);
             $this->has_liked = true;
+
+            $this->content->refresh();
+            $this->content->load(['comments' => fn ($q) => $q->where('status', true)]);
             $this->refreshStats();
             $this->dispatch('toastMagic',
                 status: 'success',

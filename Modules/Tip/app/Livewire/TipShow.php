@@ -11,6 +11,7 @@ class TipShow extends Component
     use HasInteractableComponent;
 
     public $content;
+    public $relateds;
 
     public function mount(Tip $Tip)
     {
@@ -23,7 +24,12 @@ class TipShow extends Component
                 'comments' => fn ($q) => $q->where('status', true),
                 'likes',
                 'views']);
-
+        $this->relateds = Tip::whereHas('categories', function ($q) {
+                $q->whereIn('categories.id', $this->content->categories->pluck('id'));
+            })
+            ->where('id', '!=', $this->content->id)
+            ->limit(10)
+            ->get();
         $this->initializeHasLiked(); // از Trait
         $this->visitAction();        // از Trait
     }
