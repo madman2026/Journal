@@ -8,3 +8,4 @@ Route::as('magazine.')->prefix('magazine')->group(function () {
     Route::get('create', \Modules\Magazine\Livewire\MagazineCreate::class)->name('create');
     Route::get('e/{Magazine}', \Modules\Magazine\Livewire\MagazineEdit::class)->name('edit');
 });
+Route::get('article/s/{Article}', \Modules\Magazine\Livewire\ArticleShow::class)->name('article.show');

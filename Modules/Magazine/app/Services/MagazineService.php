@@ -103,7 +103,6 @@ class MagazineService extends BaseService
     {
         return $this->execute(function () use ($magazine) {
 
-            // بارگذاری روابط و آمار اصلی
             $magazine->loadCount([
                 'comments' => fn ($q) => $q->where('status', true),
                 'views',
@@ -114,13 +113,11 @@ class MagazineService extends BaseService
                 'comments' => fn ($q) => $q->where('status', true),
             ]);
 
-            // گرفتن دسته‌بندی‌ها و تبدیل به آرایه ساده
             $categories = $magazine->categories()->get()->map(fn($c) => [
                 'id' => $c->id,
                 'name' => $c->name,
             ])->toArray();
 
-            // گرفتن نشریات مرتبط
             $categoryIds = $magazine->categories()->pluck('id');
 
             $relatedsQuery = $categoryIds->isNotEmpty()
