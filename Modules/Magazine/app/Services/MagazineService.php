@@ -102,36 +102,57 @@ class MagazineService extends BaseService
     public function get(Magazine $magazine)
     {
         return $this->execute(function () use ($magazine) {
+
+            // بارگذاری روابط و آمار اصلی
             $magazine->loadCount([
                 'comments' => fn ($q) => $q->where('status', true),
                 'views',
                 'likes',
-            ])
-                ->load([
-                    'user',
-                    'articles',
-                    'comments' => fn ($q) => $q->where('status', true),
-                ]);
+            ])->load([
+                'user',
+                'articles',
+                'comments' => fn ($q) => $q->where('status', true),
+            ]);
 
+            // گرفتن دسته‌بندی‌ها و تبدیل به آرایه ساده
+            $categories = $magazine->categories()->get()->map(fn($c) => [
+                'id' => $c->id,
+                'name' => $c->name,
+            ])->toArray();
+
+            // گرفتن نشریات مرتبط
             $categoryIds = $magazine->categories()->pluck('id');
 
-            $relateds = $categoryIds->isNotEmpty()
+            $relatedsQuery = $categoryIds->isNotEmpty()
                 ? Magazine::whereHas('categories', fn ($q) => $q->whereIn('id', $categoryIds))
                     ->where('id', '!=', $magazine->id)
-                    ->with(['user', 'categories'])
-                    ->withCount(['likes', 'views', 'comments'])
-                    ->limit(10)
-                    ->get()
-                : Magazine::with(['user', 'categories'])
-                    ->withCount(['likes', 'views', 'comments'])
-                    ->where('id', '!=', $magazine->id)
-                    ->limit(10)
-                    ->get();
+                : Magazine::where('id', '!=', $magazine->id);
 
-            $categories = $magazine->categories()->get();
+            $relateds = $relatedsQuery
+                ->with(['user', 'categories'])
+                ->withCount(['likes', 'views', 'comments'])
+                ->limit(10)
+                ->get()
+                ->map(fn($r) => [
+                    'id' => $r->id,
+                    'title' => $r->title,
+                    'slug' => $r->slug,
+                    'image' => $r->image,
+                    'user' => [
+                        'id' => $r->user->id,
+                        'username' => $r->user->username,
+                    ],
+                    'likes_count' => $r->likes_count,
+                    'views_count' => $r->views_count,
+                    'comments_count' => $r->comments_count,
+                ])->toArray();
 
-            return compact('categories', 'magazine', 'relateds');
+            return [
+                'categories' => $categories,
+                'magazine' => $magazine,
+                'relateds' => $relateds,
+            ];
         });
-
     }
+
 }

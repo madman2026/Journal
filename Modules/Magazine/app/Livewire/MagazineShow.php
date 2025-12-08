@@ -11,11 +11,9 @@ class MagazineShow extends Component
 {
     use HasInteractableComponent;
 
-    public Magazine $magazine;
-
-    public $relateds = [];
-
-    public $categories = [];
+    public $content;      // Model
+    public $categories = []; // تبدیل Collection به array قابل استفاده در Livewire
+    public $relateds = [];   // لیست نشریات مرتبط
 
     public MagazineService $service;
 
@@ -24,27 +22,40 @@ class MagazineShow extends Component
         $this->service = $service;
     }
 
-    public function mount(Magazine $magazine)
+    public function mount(Magazine $Magazine)
     {
-        $result = $this->service->get($magazine);
-
+        $result = $this->service->get($Magazine);
         if (! $result->status) {
-            $this->dispatch('toastMagic', status: 'error', title: 'خطا!', message: 'نشریه پیدا نشد!');
-            $this->redirectRoute('home');
+            $this->dispatch('toastMagic',
+                status: 'error',
+                title: 'خطا!',
+                message: 'نشریه پیدا نشد!'
+            );
+
+            return $this->redirectRoute('home');
         }
+        $this->content     = $result->data['magazine'];
+        $this->categories  = $result->data['categories'];
+        $this->relateds    = $result->data['relateds'];
 
-        $this->magazine = $result->data['magazine'];
-        $this->categories = $result->data['categories'];
-        $this->relateds = $result->data['relateds'];
+        $this->content->load([
+            'user',
+            'comments' => fn($q) => $q->where('status', true),
+        ]);
 
-        // برای Trait تعاملات
-        $this->content = $this->magazine;
         $this->initializeHasLiked();
+        $this->visitAction();
+
+        $this->refreshStats();
     }
 
     public function refreshStats()
     {
-        $this->magazine->loadCount([
+        if (! $this->content) {
+            return;
+        }
+
+        $this->content->loadCount([
             'comments' => fn ($q) => $q->where('status', true),
             'views',
             'likes',
@@ -53,9 +64,6 @@ class MagazineShow extends Component
 
     public function render()
     {
-        // ثبت بازدید
-        $this->visitAction();
-
         return view('magazine::livewire.magazine-show');
     }
 }
