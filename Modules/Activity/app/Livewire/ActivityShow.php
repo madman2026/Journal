@@ -34,7 +34,11 @@ class ActivityShow extends Component
 
     public function refreshStats()
     {
-        $this->content->loadCount(['comments', 'likes', 'views']);
+        $this->content->loadCount([
+            'comments' => fn ($q) => $q->where('status', true),
+            'likes',
+            'views',
+        ]);
     }
 
     public function render()

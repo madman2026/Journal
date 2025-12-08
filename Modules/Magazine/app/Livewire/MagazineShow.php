@@ -44,7 +44,11 @@ class MagazineShow extends Component
 
     public function refreshStats()
     {
-        $this->magazine->loadCount(['comments', 'views', 'likes']);
+        $this->magazine->loadCount([
+            'comments' => fn ($q) => $q->where('status', true),
+            'views',
+            'likes',
+        ]);
     }
 
     public function render()

@@ -123,7 +123,7 @@ trait HasInteractableComponent
 
         $this->commentBody = '';
         $this->content->refresh();
-        $this->content->load('comments');
+        $this->content->load(['comments' => fn ($q) => $q->where('status', true)]);
         $this->refreshStats();
 
         $this->dispatch('toastMagic',

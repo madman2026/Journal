@@ -51,7 +51,6 @@
         />
 
         <x-core::form.textarea label="متن رویداد" name="body" wire:model.lazy="body" placeholder="متن رویداد را وارد کنید" :required="true" />
-        <x-captcha />
 
         <div>
             <button

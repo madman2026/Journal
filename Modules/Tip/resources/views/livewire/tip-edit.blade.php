@@ -38,22 +38,21 @@
             class="dark:bg-gray-700 dark:border-gray-600 dark:text-white"
         />
 
-        <x-core::form.textarea 
-            label="متن نکته" 
-            name="body" 
-            wire:model.lazy="body" 
-            placeholder="متن نکته را وارد کنید" 
-            :required="true" 
+        <x-core::form.textarea
+            label="متن نکته"
+            name="body"
+            wire:model.lazy="body"
+            placeholder="متن نکته را وارد کنید"
+            :required="true"
         />
-        <x-captcha />
 
-        <div>
+<div>
             <button
                 type="submit"
                 class="w-full bg-blue-500 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-700 text-white font-semibold p-2 rounded-md transition duration-200 focus:outline-none focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-400"
             >
                 به‌روزرسانی
             </button>
-        </div>
+</div>
     </form>
 </main>

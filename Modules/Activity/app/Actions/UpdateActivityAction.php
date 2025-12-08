@@ -9,19 +9,25 @@ class UpdateActivityAction
 {
     public function handle(Activity $activity, array $data): Activity
     {
-        // Handle file deletion if new files are uploaded
-        if (isset($data['image']) && $activity->image && Storage::disk('public')->exists($activity->image)) {
-            Storage::disk('public')->delete($activity->image);
+        if (!empty($data['image'])) {
+            if ($activity->image && Storage::disk('public')->exists($activity->image)) {
+                Storage::disk('public')->delete($activity->image);
+            }
+        } else {
+            unset($data['image']);
         }
 
-        if (isset($data['attachment']) && $activity->attachment && Storage::disk('public')->exists($activity->attachment)) {
-            Storage::disk('public')->delete($activity->attachment);
+        if (!empty($data['attachment'])) {
+            if ($activity->attachment && Storage::disk('public')->exists($activity->attachment)) {
+                Storage::disk('public')->delete($activity->attachment);
+            }
+        } else {
+            unset($data['attachment']);
         }
 
         $categories = $data['selectedCategories'] ?? null;
         unset($data['selectedCategories']);
 
-        // فقط فیلدهای مجاز
         $filtered = array_intersect_key($data, array_flip($activity->getFillable()));
 
         $activity->update($filtered);
@@ -32,4 +38,5 @@ class UpdateActivityAction
 
         return $activity->fresh();
     }
+
 }

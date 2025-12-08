@@ -102,11 +102,15 @@ class MagazineService extends BaseService
     public function get(Magazine $magazine)
     {
         return $this->execute(function () use ($magazine) {
-            $magazine->loadCount(['comments', 'views', 'likes'])
+            $magazine->loadCount([
+                'comments' => fn ($q) => $q->where('status', true),
+                'views',
+                'likes',
+            ])
                 ->load([
                     'user',
                     'articles',
-                    'comments' => fn ($q) => $q->where('status', 1),
+                    'comments' => fn ($q) => $q->where('status', true),
                 ]);
 
             $categoryIds = $magazine->categories()->pluck('id');

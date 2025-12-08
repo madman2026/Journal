@@ -21,7 +21,6 @@
                 <input type="file" accept=".docx" name="word" id="word" aria-describedby="error-word"
                         class="mt-1 block w-full focus:outline-none transition-all border border-gray-300 rounded-md p-2 focus:ring focus:ring-blue-400">
             </div>
-            <x-captcha/>
             <div>
                 <button type="submit"
                         class="w-full bg-blue-500 text-white font-semibold p-2 rounded-md hover:bg-blue-600 transition duration-200">

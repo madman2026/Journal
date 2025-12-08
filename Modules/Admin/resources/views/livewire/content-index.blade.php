@@ -3,7 +3,7 @@
     <x-content-table
         type="activities"
         :items="$activities"
-        title="فعالیت‌ها"
+        title="رویداد ها"
         :showFiles="true"
         editRoute="activity.edit"
         viewRoute="activity.show"

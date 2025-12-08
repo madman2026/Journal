@@ -30,7 +30,6 @@
         />
 
         <x-core::form.textarea label="متن نکته" name="body" wire:model.lazy="body" placeholder="متن نکته را وارد کنید" :required="true" />
-        <x-captcha />
 
         <div>
             <button

@@ -75,16 +75,17 @@
         @endforelse
 
         @auth
-            <form method="POST"
-                action="{{ route('create.comment', ['contentId' => $magazine->id, 'model' => 'Magazine']) }}"
-                class="mt-6">
-                @csrf
-                <textarea name="body" rows="3" class="w-full p-3 bg-gray-100 dark:bg-gray-700 rounded-lg resize-none"
-                    placeholder="نظر خود را وارد کنید..." required></textarea>
-                <x-captcha/>
-                <button class="mt-3 w-full px-5 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
+            <form wire:submit.prevent="makeComment" class="mt-6 space-y-4">
+                <x-core::form.textarea
+                    name="commentBody"
+                    label="متن"
+                    required
+                    placeholder="نظر خود را وارد کنید..."
+                />
+
+                <x-core::form.button type="submit" class="w-full">
                     ارسال نظر
-                </button>
+                </x-core::form.button>
             </form>
         @else
             <p class="text-center mt-5">
