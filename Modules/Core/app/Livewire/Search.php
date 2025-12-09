@@ -16,6 +16,9 @@ class Search extends Component
     use WithPagination;
 
     public string $search = '';
+    public string $type   = 'All';
+    public int $page      = 1;
+    public bool $isSearching = false;
 
     public array $types = [
         'All',
@@ -25,85 +28,83 @@ class Search extends Component
         'Article',
     ];
 
-    public string $type = 'All';
-
-    public int $page = 1;
-
     protected array $modelMap = [
-        'Magazine' => Magazine::class,
-        'Tip' => Tip::class,
-        'Activity' => Activity::class,
-        'Article' => Article::class,
+        '1' => Magazine::class,
+        '2' => Activity::class,
+        '3'      => Tip::class,
+        '4'  => Article::class,
     ];
 
-    // query string mapping
     protected $queryString = [
         'search' => ['except' => ''],
-        'type' => ['except' => 'all'],
-        'page' => ['except' => 1],
+        'type'   => ['except' => 'All'],
+        'page'   => ['except' => 1],
     ];
 
     public function updated($field)
     {
         if (in_array($field, ['search', 'type'])) {
-            $this->resetPage();    // Livewire auto resets $page
+            $this->resetPage();
         }
+    }
+
+    public function searchNow()
+    {
+        $this->isSearching = true;
+
+        $this->validate([
+            'search' => 'nullable|string|min:2|max:100',
+            'type'   => 'required|string|in:' . implode(',', array_keys($this->types)),
+        ]);
+
+        $this->resetPage();
+        $this->isSearching = false;
     }
 
     public function getResultsProperty()
     {
         $perPage = 10;
-        $page = $this->page;
-        $search = trim($this->search);
+        $search  = trim($this->search);
 
         try {
+            // Case: All models
+            if ($this->type === 1) {
+                $collections = collect($this->modelMap)->map(function ($model) use ($search, $perPage) {
+                    return $model::query()
+                        ->when($search !== '', fn ($q) => $q->where('title', 'like', "%{$search}%"))
+                        ->latest()
+                        ->take($perPage * 3)
+                        ->get();
+                });
 
-            // حالت all → merge همه مدل‌ها
-            if ($this->type === 'All') {
-
-                $merged = collect($this->modelMap)
-                    ->flatMap(fn ($model) => $model::query()
-                        ->when($search !== '', fn ($q) => $q->where('title', 'like', "%{$search}%")
-                        )
-                        ->get()
-                    )
-                    ->sortByDesc('created_at')
-                    ->values();
+                $merged = $collections->flatten()->sortByDesc('created_at')->values();
 
                 return new LengthAwarePaginator(
-                    $merged->forPage($page, $perPage),
+                    $merged->forPage($this->page, $perPage),
                     $merged->count(),
                     $perPage,
-                    $page,
+                    $this->page,
                     ['path' => request()->url(), 'query' => request()->query()]
                 );
             }
 
-            // حالت یک مدل خاص
+            // Case: Specific model
             if (array_key_exists($this->type, $this->modelMap)) {
-
                 $model = $this->modelMap[$this->type];
 
                 return $model::query()
-                    ->when($search !== '', fn ($q) => $q->where('title', 'like', "%{$search}%")
-                    )
+                    ->when($search !== '', fn ($q) => $q->where('title', 'like', "%{$search}%"))
                     ->latest()
-                    ->paginate(
-                        $perPage,
-                        ['*'],
-                        'page',      // مهم! تا Livewire اشتباه نکنه
-                        $this->page
-                    );
+                    ->paginate($perPage, ['*'], 'page', $this->page);
             }
-
         } catch (\Exception $e) {
             Log::error('Search failed', [
-                'msg' => $e->getMessage(),
+                'msg'   => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
             ]);
-
-            return Magazine::latest()->paginate($perPage);
         }
 
+        // Fallback
         return Magazine::latest()->paginate($perPage);
     }
 

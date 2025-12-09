@@ -24,6 +24,11 @@ class Magazine extends Model
         'body',
     ];
 
+    public function getRouteNameAttribute()
+    {
+        return 'magazine.show';
+    }
+
     public function getImageUrlAttribute()
     {
         return $this->image
@@ -34,11 +39,6 @@ class Magazine extends Model
     public function getTypeWordAttribute()
     {
         return 'نشریه';
-    }
-
-    public function getRouteNameAttribute()
-    {
-        return 'magazine.show';
     }
 
     public function articles()

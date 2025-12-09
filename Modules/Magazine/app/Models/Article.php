@@ -21,6 +21,10 @@ class Article extends Model
         'attachment',
     ];
 
+    public function getRouteNameAttribute()
+    {
+        return 'article.show';
+    }
     public function magazine()
     {
         return $this->belongsTo(Magazine::class);

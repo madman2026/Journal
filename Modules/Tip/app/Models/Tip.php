@@ -22,6 +22,11 @@ class Tip extends Model
         'status',
     ];
 
+    public function getRouteNameAttribute()
+    {
+        return 'tip.show';
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
