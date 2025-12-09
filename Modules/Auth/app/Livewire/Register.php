@@ -8,11 +8,12 @@ use Modules\Core\Contracts\HasCaptcha;
 
 class Register extends Component
 {
-    use HasCaptcha;
+    // use HasCaptcha;
 
     public string $email = '';
 
     public string $password = '';
+    public string $number = '';
 
     public string $password_confirmation = '';
 
@@ -21,7 +22,8 @@ class Register extends Component
     public function rules()
     {
         return [
-            'email' => 'required|email|exists:users,email',
+            'number' => 'required|numeric|min:10|unique:users,number',
+            'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8|max:255|confirmed',
             'username' => 'required|string|unique:users',
         ];
@@ -48,9 +50,9 @@ class Register extends Component
                 title: 'ثبت نام موفق',
                 message: 'کاربر با موفقیت ایجاد شد.'
             );
-
             return redirect()->intended(route('user.profile'));
         }
+
 
         $this->addError('email', $result->message);
         $this->dispatch('toastMagic',

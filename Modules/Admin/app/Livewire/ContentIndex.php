@@ -5,10 +5,13 @@ namespace Modules\Admin\Livewire;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Modules\Activity\Actions\DeleteActivityAction;
+use Modules\Core\Actions\DeleteRecommendAction;
 use Modules\Core\App\Contracts\HasDownloadableContentComponent;
 use Modules\Activity\Models\Activity;
 use Modules\Core\Models\Recommend;
+use Modules\Magazine\Actions\DeleteMagazineAction;
 use Modules\Magazine\Models\Magazine;
+use Modules\Tip\Actions\DeleteTipAction;
 use Modules\Tip\Models\Tip;
 
 class ContentIndex extends Component
@@ -21,71 +24,100 @@ class ContentIndex extends Component
             'with' => ['user'],
             'withCount' => [],
             'pageName' => 'activities_page',
+            'key' => 'slug',
+            'deleteAction' => DeleteActivityAction::class,
         ],
         'tips' => [
             'model' => Tip::class,
             'with' => ['user'],
             'withCount' => [],
             'pageName' => 'tips_page',
+            'key' => 'slug',
+            'deleteAction' => DeleteTipAction::class,
         ],
         'magazines' => [
             'model' => Magazine::class,
             'with' => ['user'],
             'withCount' => ['articles'],
             'pageName' => 'magazines_page',
+            'key' => 'slug',
+            'deleteAction' => DeleteMagazineAction::class,
         ],
         'recommends' => [
             'model' => Recommend::class,
             'with' => ['user'],
             'withCount' => [],
             'pageName' => 'recommends_page',
+            'key' => 'slug',
+            'deleteAction' => DeleteRecommendAction::class,
         ],
     ];
 
-    public function deleteContent(string $type, $slug)
+    /**
+     * حذف محتوا بر اساس نوع و کلید
+     */
+    public function deleteContent(string $type, $identifier)
     {
+        if (!isset($this->contentMap[$type])) {
+            return $this->dispatch('toastMagic', status: 'error', title: 'خطا', message: 'نوع محتوا معتبر نیست.');
+        }
+
+        $config = $this->contentMap[$type];
+        $model = $config['model'];
+        $key = $config['key'] ?? 'slug';
+
+        $content = $model::where($key, $identifier)->first();
+
+        if (!$content) {
+            return $this->dispatch('toastMagic', status: 'error', title: 'خطا', message: 'محتوا یافت نشد.');
+        }
+
         try {
-            if (! isset($this->contentMap[$type])) {
-                throw new \Exception('نوع محتوا معتبر نیست.');
-            }
-
-            $model = $this->contentMap[$type]['model'];
-            $content = $model::whereSlug($slug)->first();
-
-            if (! $content) {
-                throw new \Exception('محتوا یافت نشد.');
-            }
-
-            app(DeleteActivityAction::class)->handle($content);
-
+            app($config['deleteAction']::class)->handle($content);
             $this->dispatch('toastMagic',
                 success: 'success',
                 message: 'محتوا با موفقیت حذف شد.',
             );
-
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             report($e);
 
             $this->dispatch('toastMagic',
-                success: 'error',
+                status: 'error',
+                title: 'خطا',
                 message: 'خطا در حذف محتوا'
             );
         }
     }
 
-    public function render()
+    /**
+     * بارگذاری محتوای مختلف با pagination
+     */
+    protected function loadContents(): array
     {
-        $contents = [];
+        $result = [];
 
         foreach ($this->contentMap as $key => $config) {
-            $query = $config['model']::query()
-                ->when($config['with'], fn ($q, $r) => $q->with($r))
-                ->when($config['withCount'], fn ($q, $r) => $q->withCount($r));
+            $query = $config['model']::query();
 
-            $contents[$key] = $query
-                ->orderByDesc('created_at')
+            if (!empty($config['with'])) {
+                $query->with($config['with']);
+            }
+
+            if (!empty($config['withCount'])) {
+                $query->withCount($config['withCount']);
+            }
+
+            $result[$key] = $query
+                ->latest()
                 ->paginate(10, ['*'], $config['pageName']);
         }
+
+        return $result;
+    }
+
+    public function render()
+    {
+        $contents = $this->loadContents();
 
         return view('admin::livewire.content-index', [
             'activities' => $contents['activities'],
@@ -95,12 +127,13 @@ class ContentIndex extends Component
         ]);
     }
 
-    public function extractContent($item)
+    /**
+     * استخراج متن از فیلدهای محتوا
+     */
+    public function extractContent($item, array $fields = ['content', 'description', 'body']): string
     {
-        $fields = ['content', 'description', 'body'];
-
         foreach ($fields as $field) {
-            if (! empty($item->$field)) {
+            if (!empty($item->$field)) {
                 return strip_tags($item->$field);
             }
         }

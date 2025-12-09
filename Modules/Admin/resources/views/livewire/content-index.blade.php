@@ -33,7 +33,6 @@
         viewRoute="magazine.show"
         showBody="true"
         showImage="true"
-        showFiles="true"
 />
 
     {{-- Recommends --}}
@@ -41,9 +40,7 @@
         :items="$recommends"
         :showFiles="true"
         title="پیشنهادها"
-        editRoute="recommend.edit"
-        viewRoute="recommend.show"
-        showBody="true"
+        type="recommends"
 />
 
 </div>

@@ -3,12 +3,13 @@
 namespace Modules\Magazine\Livewire;
 
 use Livewire\Component;
+use Modules\Core\App\Contracts\HasDownloadableContentComponent;
 use Modules\Core\Contracts\HasInteractableComponent;
 use Modules\Magazine\Models\Article;
 
 class ArticleShow extends Component
 {
-    use HasInteractableComponent;
+    use HasInteractableComponent , HasDownloadableContentComponent;
 
     public $content;
     public $relateds;

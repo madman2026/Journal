@@ -2,18 +2,13 @@
 
 namespace Modules\Core\Actions;
 
+use Modules\Core\app\Contracts\BaseService;
 use Modules\Core\Livewire\Recommend;
 
-class MakeRecommendAction
+class MakeRecommendAction extends BaseService
 {
     public function handle($data)
     {
-        try {
-            Recommend::create($data);
-
-            return true;
-        } catch (\Throwable $th) {
-            return false;
-        }
+        return $this->execute(fn () => auth()->user()->recommends()->create($data));
     }
 }

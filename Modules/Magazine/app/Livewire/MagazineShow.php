@@ -3,13 +3,14 @@
 namespace Modules\Magazine\Livewire;
 
 use Livewire\Component;
+use Modules\Core\App\Contracts\HasDownloadableContentComponent;
 use Modules\Core\Contracts\HasInteractableComponent;
 use Modules\Magazine\Models\Magazine;
 use Modules\Magazine\Services\MagazineService;
 
 class MagazineShow extends Component
 {
-    use HasInteractableComponent;
+    use HasInteractableComponent , HasDownloadableContentComponent;
 
     public ?Magazine $content = null;  // Use Magazine model type
     public array $categories = [];

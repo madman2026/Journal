@@ -5,12 +5,14 @@
     <div class="flex justify-between items-center w-full h-12 mb-6">
         <h1 class="text-2xl font-bold">لیست نظرات</h1>
 
-        <x-core::form.button varient="success" wire:click="acceptAll()">
-            تایید همه
-        </x-core::form.button>
-        <x-core::form.button varient="danger" wire:click="deleteAll()">
-            تایید همه
-        </x-core::form.button>
+        <div>
+            <x-core::form.button variant="success" wire:click="acceptAll()">
+                تایید همه
+            </x-core::form.button>
+            <x-core::form.button variant="danger" wire:click="deleteAll()">
+                حذف همه
+            </x-core::form.button>
+        </div>
     </div>
     <!-- Table Container -->
     <div class="overflow-x-auto border border-gray-300 dark:border-gray-700 rounded-xl shadow-md">

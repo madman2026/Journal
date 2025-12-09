@@ -17,14 +17,11 @@ class LoginAction
                 'email' => __('auth.failed'),
             ]);
         }
-        if (! Hash::check($data['password'], $user->first()->getAuthPassword())) {
+        if (Auth::attempt($data , true)) {
             throw ValidationException::withMessages([
-                'password' => __('auth.failed'),
+                'password' => __('auth.password'),
             ]);
         }
-
-        Auth::attempt($data, true);
-
         return true;
     }
 }

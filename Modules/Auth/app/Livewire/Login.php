@@ -8,7 +8,7 @@ use Modules\Core\Contracts\HasCaptcha;
 
 class Login extends Component
 {
-    use HasCaptcha;
+    // use HasCaptcha;
 
     public string $email = '';
 
