@@ -6,8 +6,8 @@
     'type'
 ])
 
-<div class="relative {{ $containerClass }} mb-6 w-full overflow-hidden rounded-2xl shadow-lg">
-    <div class="swiper {{ $swiperId }}">
+<div class="relative mb-6 w-full overflow-hidden rounded-2xl shadow-lg">
+    <div class="swiper {{ $containerClass }}">
         <div class="swiper-wrapper">
 
             @foreach($items as $item)
@@ -50,7 +50,7 @@
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
-    const selector = ".{{ $swiperId }}";
+    const selector = ".{{ $containerClass }} ";
 
     new window.Swiper(selector, {
         slidesPerView: 1,

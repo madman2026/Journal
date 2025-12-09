@@ -1,36 +1,49 @@
 <main class="w-full transition-all flex flex-col gap-8">
 
-    <section class="mx-4">
-        <a href="{{ route('activity.index') }}" class="text-4xl font-bold hover:text-blue-600 dark:text-white block mb-4 text-center">رویدادها</a>
-        <div class="rounded-xl p-4 bg-blue-300 dark:bg-darkPrimary shadow-lg">
-            @if($activities->isNotEmpty())
-                <x-slider :items="$activities" type="activity" defaultLink="{{ route('activity.index') }}" containerClass="activity-swiper-container" />
-            @else
-                <p class="text-center text-gray-500 dark:text-gray-400">رویدادی موجود نیست</p>
-            @endif
-        </div>
-    </section>
+    {{-- رویدادها --}}
+    <x-section
+        title="رویدادها"
+        :items="$activities"
+        type="activity"
+        defaultLink="{{ route('activity.index') }}"
+        containerClass="activity-swiper-container"
+        emptyMessage="رویدادی موجود نیست"
+        bgClass="bg-blue-300 dark:bg-darkPrimary"
+    />
 
-    <section class="mx-4">
-        <a href="{{ route('tip.index') }}" class="text-4xl font-bold hover:text-blue-600 dark:text-white block mb-4 text-center">نکات</a>
-        <div class="rounded-xl p-4 bg-blue-300 dark:bg-darkPrimary shadow-lg">
-            @if($tips->isNotEmpty())
-                <x-slider :items="$tips" type="tip" defaultLink="{{ route('tip.index') }}" containerClass="tip-swiper-container" />
-            @else
-                <p class="text-center text-gray-500 dark:text-gray-400">نکته ای موجود نیست</p>
-            @endif
-        </div>
-    </section>
+    {{-- نکات --}}
+    <x-section
+        title="نکات"
+        :items="$tips"
+        type="tip"
+        defaultLink="{{ route('tip.index') }}"
+        containerClass="tip-swiper-container"
+        emptyMessage="نکته‌ای موجود نیست"
+        bgClass="bg-blue-300 dark:bg-darkPrimary"
+    />
 
+    {{-- نشریات --}}
     <section class="mx-4">
-        <a href="{{ route('magazine.index') }}" class="text-4xl font-bold hover:text-blue-600 dark:text-white block mb-4 text-center">نشریات</a>
+        <a href="{{ route('magazine.index') }}"
+           class="text-4xl font-bold hover:text-blue-600 dark:text-white block mb-4 text-center">
+           نشریات
+        </a>
+
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
 
-            <div class="relative rounded-xl p-6 flex flex-col lg:col-span-4 lg:flex-row bg-blue-300 dark:bg-darkPrimary items-center shadow-lg">
-                @if(isset($magazines) && $magazines->isNotEmpty())
-                    <x-slider :items="$magazines" type="magazine" defaultLink="{{ route('magazine.index') }}" containerClass="magazine-swiper-container" />
+            <div class="relative rounded-xl p-6 flex flex-col lg:col-span-4 lg:flex-row
+                        bg-blue-300 dark:bg-darkPrimary items-center shadow-lg">
+                @if($magazines->isNotEmpty())
+                    <x-slider
+                        :items="$magazines"
+                        type="magazine"
+                        defaultLink="{{ route('magazine.index') }}"
+                        containerClass="magazine-swiper-container"
+                    />
                 @else
-                    <p class="text-center text-gray-500 dark:text-gray-400 w-full">نشریه‌ای موجود نیست</p>
+                    <p class="text-center text-gray-500 dark:text-gray-400 w-full">
+                        نشریه‌ای موجود نیست
+                    </p>
                 @endif
             </div>
 

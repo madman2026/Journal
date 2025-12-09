@@ -5,7 +5,7 @@
     'links'
 ])
 
-<footer data-aos="fade-up"
+<footer
         class="w-full flex flex-col mt-3 min-h-96 rounded-t-xl text-white bg-sky-600 dark:bg-gray-700">
 
     <div data-aos="fade-down" class="w-full overflow-hidden bg-transparent">
@@ -14,7 +14,6 @@
                 <img
                     src="{{ asset($titleFooter) }}"
                     alt="Footer"
-                    data-aos="fade-up"
                     class="block w-full max-w-full h-auto object-cover">
             </a>
         @endif
