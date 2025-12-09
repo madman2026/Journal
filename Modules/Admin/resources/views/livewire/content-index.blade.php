@@ -16,7 +16,6 @@
         type="tips"
         :items="$tips"
         title="نکات"
-        :showFiles="true"
         editRoute="tip.edit"
         viewRoute="tip.show"
         showBody="true"
