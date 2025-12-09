@@ -7,7 +7,7 @@ use Livewire\WithPagination;
 use Modules\Activity\Actions\DeleteActivityAction;
 use Modules\Activity\Models\Activity;
 use Modules\Core\Actions\DeleteRecommendAction;
-use Modules\Core\App\Contracts\HasDownloadableContentComponent;
+use Modules\Core\Contracts\HasDownloadableContentComponent;
 use Modules\Core\Models\Recommend;
 use Modules\Magazine\Actions\DeleteMagazineAction;
 use Modules\Magazine\Models\Magazine;

@@ -4,7 +4,7 @@ namespace Modules\Activity\Livewire;
 
 use Livewire\Component;
 use Modules\Activity\Models\Activity;
-use Modules\Core\App\Contracts\HasDownloadableContentComponent;
+use Modules\Core\Contracts\HasDownloadableContentComponent;
 use Modules\Core\Contracts\HasInteractableComponent;
 
 class ActivityShow extends Component
