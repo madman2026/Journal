@@ -9,9 +9,10 @@ use Modules\Magazine\Models\Article;
 
 class ArticleShow extends Component
 {
-    use HasInteractableComponent , HasDownloadableContentComponent;
+    use HasDownloadableContentComponent , HasInteractableComponent;
 
     public $content;
+
     public $relateds;
 
     public function mount(Article $Article)
@@ -25,8 +26,8 @@ class ArticleShow extends Component
                 'likes',
                 'views']);
         $this->relateds = Article::whereHas('categories', function ($q) {
-                $q->whereIn('categories.id', $this->content->categories->pluck('id'));
-            })
+            $q->whereIn('categories.id', $this->content->categories->pluck('id'));
+        })
             ->where('id', '!=', $this->content->id)
             ->limit(10)
             ->get();

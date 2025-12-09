@@ -113,7 +113,7 @@ class MagazineService extends BaseService
                 'comments' => fn ($q) => $q->where('status', true),
             ]);
 
-            $categories = $magazine->categories()->get()->map(fn($c) => [
+            $categories = $magazine->categories()->get()->map(fn ($c) => [
                 'id' => $c->id,
                 'name' => $c->name,
             ])->toArray();
@@ -130,7 +130,7 @@ class MagazineService extends BaseService
                 ->withCount(['likes', 'views', 'comments'])
                 ->limit(10)
                 ->get()
-                ->map(fn($r) => [
+                ->map(fn ($r) => [
                     'id' => $r->id,
                     'title' => $r->title,
                     'slug' => $r->slug,
@@ -151,5 +151,4 @@ class MagazineService extends BaseService
             ];
         });
     }
-
 }

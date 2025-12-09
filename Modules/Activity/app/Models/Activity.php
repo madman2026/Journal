@@ -3,7 +3,6 @@
 namespace Modules\Activity\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Modules\Activity\Actions\DeleteActivityAction;
 use Modules\Core\app\Contracts\HasSlug;
 use Modules\Core\Contracts\Interactable;
 use Modules\Core\Models\Category;

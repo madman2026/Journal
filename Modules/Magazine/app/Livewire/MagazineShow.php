@@ -10,10 +10,12 @@ use Modules\Magazine\Services\MagazineService;
 
 class MagazineShow extends Component
 {
-    use HasInteractableComponent , HasDownloadableContentComponent;
+    use HasDownloadableContentComponent , HasInteractableComponent;
 
     public ?Magazine $content = null;  // Use Magazine model type
+
     public array $categories = [];
+
     public array $relateds = [];
 
     protected MagazineService $service;
@@ -45,11 +47,12 @@ class MagazineShow extends Component
             );
 
             $this->redirectRoute('home');
+
             return;
         }
 
         // Map categories
-        $this->categories = $this->content->categories->map(fn($c) => [
+        $this->categories = $this->content->categories->map(fn ($c) => [
             'id' => $c->id,
             'name' => $c->name,
         ])->toArray();
@@ -60,7 +63,7 @@ class MagazineShow extends Component
         $relatedQuery = Magazine::where('id', '!=', $Magazine->id);
 
         if ($categoryIds->isNotEmpty()) {
-            $relatedQuery->whereHas('categories', fn($q) => $q->whereIn('id', $categoryIds));
+            $relatedQuery->whereHas('categories', fn ($q) => $q->whereIn('id', $categoryIds));
         }
 
         $this->relateds = $relatedQuery
@@ -68,7 +71,7 @@ class MagazineShow extends Component
             ->withCount(['likes', 'views', 'comments'])
             ->limit(10)
             ->get()
-            ->map(fn($r) => [
+            ->map(fn ($r) => [
                 'id' => $r->id,
                 'title' => $r->title,
                 'slug' => $r->slug,
@@ -92,13 +95,15 @@ class MagazineShow extends Component
 
     public function refreshStats(): void
     {
-        if (! $this->content) return;
+        if (! $this->content) {
+            return;
+        }
 
         $updated = $this->service->get(Magazine::find($this->content->id));
 
         if ($updated->status) {
-            $this->content->likes_count    = $updated->data['magazine']['likes_count'];
-            $this->content->views_count    = $updated->data['magazine']['views_count'];
+            $this->content->likes_count = $updated->data['magazine']['likes_count'];
+            $this->content->views_count = $updated->data['magazine']['views_count'];
             $this->content->comments_count = $updated->data['magazine']['comments_count'];
         }
     }

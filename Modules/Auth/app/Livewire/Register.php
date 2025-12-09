@@ -13,6 +13,7 @@ class Register extends Component
     public string $email = '';
 
     public string $password = '';
+
     public string $number = '';
 
     public string $password_confirmation = '';
@@ -50,9 +51,9 @@ class Register extends Component
                 title: 'ثبت نام موفق',
                 message: 'کاربر با موفقیت ایجاد شد.'
             );
+
             return redirect()->intended(route('user.profile'));
         }
-
 
         $this->addError('email', $result->message);
         $this->dispatch('toastMagic',

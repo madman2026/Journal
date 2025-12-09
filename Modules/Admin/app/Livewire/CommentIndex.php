@@ -25,12 +25,13 @@ class CommentIndex extends Component
     public function acceptAll()
     {
         Comment::where('status', false)->update(['status' => true]);
-        $this->dispatch('toastMagic', status: 'success' , title:'موفقیت', message: 'همه نظرات تایید شدند');
+        $this->dispatch('toastMagic', status: 'success', title: 'موفقیت', message: 'همه نظرات تایید شدند');
     }
+
     public function deleteAll()
     {
         Comment::where('status', false)->delete();
-        $this->dispatch('toastMagic', status: 'success', title:'موفقیت' , message: 'همه نظرات حذف شدند');
+        $this->dispatch('toastMagic', status: 'success', title: 'موفقیت', message: 'همه نظرات حذف شدند');
     }
 
     public function render()

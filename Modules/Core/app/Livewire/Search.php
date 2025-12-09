@@ -16,8 +16,11 @@ class Search extends Component
     use WithPagination;
 
     public string $search = '';
-    public string $type   = 'All';
-    public int $page      = 1;
+
+    public string $type = 'All';
+
+    public int $page = 1;
+
     public bool $isSearching = false;
 
     public array $types = [
@@ -31,14 +34,14 @@ class Search extends Component
     protected array $modelMap = [
         '1' => Magazine::class,
         '2' => Activity::class,
-        '3'      => Tip::class,
-        '4'  => Article::class,
+        '3' => Tip::class,
+        '4' => Article::class,
     ];
 
     protected $queryString = [
         'search' => ['except' => ''],
-        'type'   => ['except' => 'All'],
-        'page'   => ['except' => 1],
+        'type' => ['except' => 'All'],
+        'page' => ['except' => 1],
     ];
 
     public function updated($field)
@@ -54,7 +57,7 @@ class Search extends Component
 
         $this->validate([
             'search' => 'nullable|string|min:2|max:100',
-            'type'   => 'required|string|in:' . implode(',', array_keys($this->types)),
+            'type' => 'required|string|in:'.implode(',', array_keys($this->types)),
         ]);
 
         $this->resetPage();
@@ -64,7 +67,7 @@ class Search extends Component
     public function getResultsProperty()
     {
         $perPage = 10;
-        $search  = trim($this->search);
+        $search = trim($this->search);
 
         try {
             // Case: All models
@@ -99,7 +102,7 @@ class Search extends Component
             }
         } catch (\Exception $e) {
             Log::error('Search failed', [
-                'msg'   => $e->getMessage(),
+                'msg' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
             ]);
         }

@@ -25,6 +25,7 @@ class Recommend extends Model
     {
         return $this->belongsTo(User::class);
     }
+
     public function getDeleteActionAttribute()
     {
         return DeleteRecommendAction::class;

@@ -20,6 +20,7 @@ class RegisterAction
 
         $user->assignRole('user');
         Auth::login($user);
+
         return $user;
     }
 }

@@ -2,8 +2,8 @@
 
 namespace App\Livewire;
 
-use Livewire\Component;
 use Illuminate\Support\Collection;
+use Livewire\Component;
 use Modules\Activity\Models\Activity;
 use Modules\Core\Models\Section;
 use Modules\Magazine\Models\Magazine;
@@ -12,8 +12,11 @@ use Modules\Tip\Models\Tip;
 class Home extends Component
 {
     public Collection $activities;
+
     public Collection $tips;
+
     public Collection $magazines;
+
     public Collection $sections;
 
     public function mount()
@@ -38,8 +41,8 @@ class Home extends Component
 
         $this->sections = Section::where('name', 'magazineGuide')
             ->get()
-            ->mapWithKeys(fn($section) => [
-                $section->name => collect(['content' => $section->content])
+            ->mapWithKeys(fn ($section) => [
+                $section->name => collect(['content' => $section->content]),
             ]);
     }
 
@@ -60,7 +63,6 @@ class Home extends Component
 
         return $items;
     }
-
 
     public function render()
     {

@@ -25,6 +25,7 @@ class Article extends Model
     {
         return 'article.show';
     }
+
     public function magazine()
     {
         return $this->belongsTo(Magazine::class);

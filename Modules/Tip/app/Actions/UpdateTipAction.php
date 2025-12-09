@@ -14,7 +14,7 @@ class UpdateTipAction
         unset($data['selectedCategories']);
 
         // Handle image safely
-        if (!empty($data['image'])) {
+        if (! empty($data['image'])) {
             // Delete previous image AFTER confirming new exists
             $this->deleteOldFile($tip->image);
         } else {

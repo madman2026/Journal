@@ -12,10 +12,12 @@ abstract class BaseService
 {
     protected function execute(
         callable $callback,
-        string $errorMessage = 'Internal Server Error!',
-        string $successMessage = 'Operation Completed Successfully!',
+        ?string $errorMessage = null,
+        ?string $successMessage = null,
         bool $useTransaction = true,
     ): ServiceResponse {
+        $errorMessage ??= __('errors.internal_server_error');
+        $successMessage ??= __('messages.operation_successful');
         try {
             $result = $useTransaction
                 ? DB::transaction($callback)

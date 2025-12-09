@@ -10,14 +10,14 @@ class UpdateActivityAction
     public function handle(Activity $activity, array $data): Activity
     {
         // Handle image
-        if (!empty($data['image'])) {
+        if (! empty($data['image'])) {
             $this->deleteOldFile($activity->image);
         } else {
             unset($data['image']);
         }
 
         // Handle attachment
-        if (!empty($data['attachment'])) {
+        if (! empty($data['attachment'])) {
             $this->deleteOldFile($activity->attachment);
         } else {
             unset($data['attachment']);

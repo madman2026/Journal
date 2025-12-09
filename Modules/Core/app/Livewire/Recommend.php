@@ -9,6 +9,7 @@ use Modules\Core\Actions\MakeRecommendAction;
 class Recommend extends Component
 {
     use WithFileUploads;
+
     public $word;
 
     public $attachment;
@@ -22,9 +23,10 @@ class Recommend extends Component
         return [
             'word' => 'required|file|mimes:docx,doc',
             'attachment' => 'required|file|mimes:pdf',
-            'title' => 'required|string'
+            'title' => 'required|string',
         ];
     }
+
     public function boot(MakeRecommendAction $action)
     {
         $this->action = $action;
@@ -34,10 +36,10 @@ class Recommend extends Component
     {
         $data = $this->validate();
         if ($this->word) {
-            $data['word'] = $this->word->store('recommends/words' , 'public');
+            $data['word'] = $this->word->store('recommends/words', 'public');
         }
         if ($this->attachment) {
-            $data['attachment'] = $this->attachment->store('recommends/attachment' , 'public');
+            $data['attachment'] = $this->attachment->store('recommends/attachment', 'public');
         }
         $result = $this->action->handle($data);
 
@@ -47,6 +49,7 @@ class Recommend extends Component
                 title: 'ثبت شد',
                 message: 'فرم با موفقیت ارسال شد'
             );
+
             return $this->redirectRoute('home');
         }
         $this->dispatch('toastMagic',

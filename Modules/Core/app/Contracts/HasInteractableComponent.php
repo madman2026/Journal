@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 trait HasInteractableComponent
 {
     public $has_liked = false;
+
     public $commentBody;
 
     /**
@@ -14,7 +15,9 @@ trait HasInteractableComponent
      */
     public function initializeHasLiked(): void
     {
-        if (!isset($this->content)) return;
+        if (! isset($this->content)) {
+            return;
+        }
 
         $userId = Auth::id();
         $this->has_liked = $userId && $this->content->likes()->where('user_id', $userId)->exists();
@@ -33,7 +36,7 @@ trait HasInteractableComponent
             );
         }
 
-        if (!isset($this->content)) {
+        if (! isset($this->content)) {
             return $this->dispatch('toastMagic',
                 status: 'error',
                 title: 'خطا',
@@ -51,6 +54,7 @@ trait HasInteractableComponent
             $this->has_liked = false;
             $this->refreshStats();
             $this->loadComments();
+
             return $this->dispatch('toastMagic', status: 'success', title: 'موفقیت', message: 'لایک حذف شد');
         }
 
@@ -63,6 +67,7 @@ trait HasInteractableComponent
         $this->has_liked = true;
         $this->refreshStats();
         $this->loadComments();
+
         return $this->dispatch('toastMagic', status: 'success', title: 'موفقیت', message: 'با موفقیت لایک شد');
     }
 
@@ -71,13 +76,15 @@ trait HasInteractableComponent
      */
     public function visitAction()
     {
-        if (!isset($this->content)) return;
+        if (! isset($this->content)) {
+            return;
+        }
 
         $ip = request()->ip();
         $userId = auth()->id();
 
         $exists = $this->content->views()
-            ->where(function($q) use ($ip, $userId) {
+            ->where(function ($q) use ($ip, $userId) {
                 $q->where('ip_address', $ip);
                 if ($userId) {
                     $q->orWhere('user_id', $userId);
@@ -106,7 +113,7 @@ trait HasInteractableComponent
             );
         }
 
-        if (!isset($this->content)) {
+        if (! isset($this->content)) {
             return $this->dispatch('toastMagic',
                 status: 'error',
                 title: 'خطا',
@@ -127,6 +134,7 @@ trait HasInteractableComponent
         $this->commentBody = '';
         $this->refreshStats();
         $this->loadComments();
+
         return $this->dispatch('toastMagic',
             status: 'success',
             title: 'موفقیت',
@@ -152,12 +160,14 @@ trait HasInteractableComponent
      */
     public function refreshStats()
     {
-        if (!isset($this->content)) return;
+        if (! isset($this->content)) {
+            return;
+        }
 
         $this->content->loadCount([
             'likes',
             'views',
-            'comments' => fn($q) => $q->where('status', true),
+            'comments' => fn ($q) => $q->where('status', true),
         ]);
     }
 }

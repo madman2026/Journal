@@ -5,9 +5,9 @@ namespace Modules\Admin\Livewire;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Modules\Activity\Actions\DeleteActivityAction;
+use Modules\Activity\Models\Activity;
 use Modules\Core\Actions\DeleteRecommendAction;
 use Modules\Core\App\Contracts\HasDownloadableContentComponent;
-use Modules\Activity\Models\Activity;
 use Modules\Core\Models\Recommend;
 use Modules\Magazine\Actions\DeleteMagazineAction;
 use Modules\Magazine\Models\Magazine;
@@ -58,7 +58,7 @@ class ContentIndex extends Component
      */
     public function deleteContent(string $type, $identifier)
     {
-        if (!isset($this->contentMap[$type])) {
+        if (! isset($this->contentMap[$type])) {
             return $this->dispatch('toastMagic', status: 'error', title: 'خطا', message: 'نوع محتوا معتبر نیست.');
         }
 
@@ -68,7 +68,7 @@ class ContentIndex extends Component
 
         $content = $model::where($key, $identifier)->first();
 
-        if (!$content) {
+        if (! $content) {
             return $this->dispatch('toastMagic', status: 'error', title: 'خطا', message: 'محتوا یافت نشد.');
         }
 
@@ -99,11 +99,11 @@ class ContentIndex extends Component
         foreach ($this->contentMap as $key => $config) {
             $query = $config['model']::query();
 
-            if (!empty($config['with'])) {
+            if (! empty($config['with'])) {
                 $query->with($config['with']);
             }
 
-            if (!empty($config['withCount'])) {
+            if (! empty($config['withCount'])) {
                 $query->withCount($config['withCount']);
             }
 
@@ -133,7 +133,7 @@ class ContentIndex extends Component
     public function extractContent($item, array $fields = ['content', 'description', 'body']): string
     {
         foreach ($fields as $field) {
-            if (!empty($item->$field)) {
+            if (! empty($item->$field)) {
                 return strip_tags($item->$field);
             }
         }

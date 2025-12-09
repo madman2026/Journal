@@ -4,7 +4,6 @@
             label="رمز عبور"
             name="password"
             type="password"
-            wire="password"
             placeholder="رمز عبور خود را وارد کنید"
         />
 
@@ -12,7 +11,6 @@
             label="تکرار رمز عبور"
             name="password_confirmation"
             type="password"
-            wire="password_confirmation"
             placeholder="رمز عبور خود را دوباره وارد کنید"
         />
         <div class="flex justify-end">

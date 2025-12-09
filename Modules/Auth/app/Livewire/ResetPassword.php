@@ -8,7 +8,7 @@ use Modules\Core\Contracts\HasCaptcha;
 
 class ResetPassword extends Component
 {
-    use HasCaptcha;
+    // use HasCaptcha;
 
     public $password;
 
@@ -28,7 +28,7 @@ class ResetPassword extends Component
         $this->service = $service;
     }
 
-    public function save()
+    public function resetPassword()
     {
         $result = $this->service->resetPassword($this->validate());
         if ($result->status) {

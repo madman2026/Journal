@@ -11,6 +11,7 @@ class TipShow extends Component
     use HasInteractableComponent;
 
     public $content;
+
     public $relateds;
 
     public function mount(Tip $Tip)
@@ -21,7 +22,7 @@ class TipShow extends Component
         ])->loadCount([
             'likes',
             'views',
-            'comments' => fn($q) => $q->where('status', true),
+            'comments' => fn ($q) => $q->where('status', true),
         ]);
 
         $this->loadComments();         // فقط کامنت‌های تایید شده
@@ -29,8 +30,8 @@ class TipShow extends Component
         $this->visitAction();
 
         $this->relateds = Tip::whereHas('categories', function ($q) {
-                $q->whereIn('categories.id', $this->content->categories->pluck('id'));
-            })
+            $q->whereIn('categories.id', $this->content->categories->pluck('id'));
+        })
             ->where('id', '!=', $this->content->id)
             ->with('categories')
             ->limit(10)

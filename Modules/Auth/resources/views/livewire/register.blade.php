@@ -5,7 +5,6 @@
                 label="نام کاربری"
                 name="username"
                 type="text"
-                wire="username"
                 :required="true"
                 placeholder="نام کاربری خود را وارد کنید"
             />
@@ -13,33 +12,28 @@
                 label="ایمیل"
                 name="email"
                 type="email"
-                wire="email"
                 placeholder="ایمیل خود را وارد کنید"
             />
             <x-core::form.text-input
                 label="شماره تماس"
                 name="number"
                 type="number"
-                wire="number"
                 placeholder="شماره تماس خود را وارد کنید"
             />
             <x-core::form.text-input
                 label="رمز عبور"
                 name="password"
                 type="password"
-                wire="password"
                 placeholder="رمز عبور خود را وارد کنید"
             />
             <x-core::form.text-input
                 label="تکرار رمز عبور"
                 name="password_confirmation"
                 type="password"
-                wire="password_confirmation"
                 placeholder="رمز عبور خود را دوباره وارد کنید"
             />
             <div class="flex items-center justify-between">
                 <a href="{{ route('login') }}" class="text-sm font-medium text-blue-400 hover:text-blue-300">ورود</a>
-                <a href="{{ route("forgot-password") }}" class="text-sm font-medium text-blue-400 hover:text-blue-300">فراموشی رمز عبور</a>
             </div>
             <x-captcha/>
             <div class="flex justify-end">
