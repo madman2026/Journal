@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Core\App\Contracts;
+namespace Modules\Core\Contracts;
 
 use Illuminate\Support\Facades\Storage;
 
