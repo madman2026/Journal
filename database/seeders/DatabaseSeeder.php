@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'ادمین',
             'email' => 'admin@gmail.com',
             'password' => Hash::make(env('ADMIN_PASSWORD')),
-            'number' => 9903001905,
+            'number' => 09365895040,
         ]);
         $admin->assignRole('super-admin');
         $fields = [

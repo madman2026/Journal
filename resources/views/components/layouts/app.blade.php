@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ isset($title) ? __($title) : __(config('app.name')) }}</title>
+    <title>{{ isset($title) ? __($title) : 'سطح عالی معصومیه' }}</title>
 
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
         @vite('resources/css/app.css')
