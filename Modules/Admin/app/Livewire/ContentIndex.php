@@ -73,7 +73,7 @@ class ContentIndex extends Component
         }
 
         try {
-            app($config['deleteAction']::class)->handle($content);
+            app($config['deleteAction'])->handle($content);
             $this->dispatch('toastMagic',
                 success: 'success',
                 message: 'محتوا با موفقیت حذف شد.',
