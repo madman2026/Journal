@@ -41,7 +41,7 @@ abstract class BaseService
 
             return ServiceResponse::error(
                 $errorMessage,
-                env('APP_DEBUG') ? $e->getMessage() : null,
+                config('app.debug') ? $e->getMessage() : null,
             );
         }
     }
