@@ -12,69 +12,57 @@ class UserIndex extends Component
 {
     use WithPagination;
 
-    public $roles = [];
-
-    public $selectedRoles = [];
+    public $roles = [];          // [id => name]
+    public $selectedRoles = [];  // [userId => roleId]
 
     protected $paginationTheme = 'tailwind';
 
     protected $rules = [
-        'selectedRoles.*' => 'nullable|string|exists:roles,name',
+        'selectedRoles.*' => 'nullable|integer|exists:roles,id',
     ];
 
     public function mount()
     {
-        // Load roles except super-admin
+        // نقش‌ها رو می‌گیریم به شکل [id => name]
         $this->roles = Role::where('name', '!=', 'super-admin')
-            ->select('id', 'name')
-            ->get();
+            ->pluck('name', 'id')
+            ->toArray();
 
-        // Preload roles for all users with one query
-        User::where('username', '!=', 'admin')
-            ->with('roles')
-            ->get()
-            ->each(function ($user) {
-                $this->selectedRoles[$user->id] = $user->roles->pluck('name')->first();
-            });
+        // پر کردن نقش‌های فعلی کاربرها
+        $this->fillSelectedRoles();
     }
 
-    public function updateUsers()
+    public function updatedPage()
     {
-        $validated = $this->validate();
+        // هنگام تغییر صفحه نقش‌ها sync می‌شن
+        $this->fillSelectedRoles();
+    }
 
-        try {
-            foreach ($validated['selectedRoles'] as $userId => $roleName) {
-                if (! $roleName) {
-                    continue;
-                }
+    private function fillSelectedRoles()
+    {
+        $users = User::where('username', '!=', 'admin')
+            ->with('roles:id,name')
+            ->paginate(10);
 
-                $user = User::find($userId);
-
-                if ($user) {
-                    $user->syncRoles([$roleName]);
-                }
-            }
-
-            $this->toast('success', 'تغییرات اعمال شد', 'وضعیت و نقش کاربران به‌روزرسانی شد.');
-        } catch (\Exception $e) {
-            Log::error('Error updating users: '.$e->getMessage());
-
-            $this->toast('error', 'خطا!', 'عملیات انجام نشد. دوباره تلاش کن.');
+        foreach ($users as $user) {
+            $this->selectedRoles[$user->id] = $user->roles->pluck('id')->first();
         }
     }
 
-    public function changeRole($userId, $roleName)
+    public function changeRole($userId, $roleId)
     {
         try {
             $user = User::findOrFail($userId);
-            $user->syncRoles([$roleName]);
 
-            $this->selectedRoles[$userId] = $roleName;
+            $user->syncRoles([$roleId]);
 
-            $this->toast('info', 'نقش کاربر تغییر کرد', "نقش {$user->username} به «{$roleName}» تغییر یافت.");
+            $this->selectedRoles[$userId] = $roleId;
+
+            $roleName = $this->roles[$roleId] ?? '---';
+
+            $this->toast('info', 'نقش تغییر کرد', "نقش {$user->username} به {$roleName} تغییر کرد.");
         } catch (\Exception $e) {
-            Log::error('Error changing user role: '.$e->getMessage());
-
+            Log::error("Error changing user role: " . $e->getMessage());
             $this->toast('error', 'خطا', 'در تغییر نقش مشکلی رخ داد.');
         }
     }
@@ -86,8 +74,10 @@ class UserIndex extends Component
 
     public function render()
     {
-        return view('admin::livewire.user-index', [
-            'users' => User::where('username', '!=', 'admin')->paginate(10),
-        ]);
+        $users = User::where('username', '!=', 'admin')
+            ->with('roles:id,name')
+            ->paginate(10);
+
+        return view('admin::livewire.user-index', compact('users'));
     }
 }

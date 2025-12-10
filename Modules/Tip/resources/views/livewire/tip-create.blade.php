@@ -16,7 +16,6 @@
                 label="دسته بندی"
                 name="selectedCategories"
                 :multiple="true"
-                class="dark:bg-gray-700 dark:border-gray-600 dark:text-white"
             />
 
         <x-core::form.file-input

@@ -36,13 +36,6 @@ class Profile extends Component
         ];
     }
 
-    protected UserService $service;
-
-    public function boot(UserService $service)
-    {
-        $this->service = $service;
-    }
-
     public function mount()
     {
         $this->user = Auth::user()->toArray();

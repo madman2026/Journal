@@ -41,6 +41,8 @@
             <div class="flex items-center justify-between">
                 <a href="{{ route('login') }}" class="text-sm font-medium text-blue-400 hover:text-blue-300">ورود</a>
             </div>
+            <x-captcha/>
+
             <div class="flex justify-end">
                 <x-core::form.button type="submit" class="px-6 py-2">
                     ثبت نام
@@ -48,6 +50,3 @@
             </div>
         </form>
     </div>
-    @push('scripts')
-    @livewireRecaptcha
-@endpush
