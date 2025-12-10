@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
 class Slider extends Component
@@ -22,7 +23,7 @@ class Slider extends Component
         $this->containerClass = $containerClass;
     }
 
-    public function render()
+    public function render(): View
     {
         return view('livewire.slider');
     }

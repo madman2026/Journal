@@ -3,6 +3,8 @@
 namespace Modules\Magazine\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Modules\Core\app\Contracts\HasSlug;
 use Modules\Core\Contracts\Interactable;
 use Modules\Core\Models\Category;
@@ -26,12 +28,12 @@ class Article extends Model
         return 'article.show';
     }
 
-    public function magazine()
+    public function magazine(): BelongsTo
     {
         return $this->belongsTo(Magazine::class);
     }
 
-    public function categories()
+    public function categories(): MorphToMany
     {
         return $this->morphToMany(Category::class, 'categorizable');
     }

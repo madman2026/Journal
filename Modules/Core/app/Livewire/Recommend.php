@@ -2,6 +2,7 @@
 
 namespace Modules\Core\Livewire;
 
+use Illuminate\Contracts\View\View;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Modules\Core\Actions\MakeRecommendAction;
@@ -60,7 +61,7 @@ class Recommend extends Component
 
     }
 
-    public function render()
+    public function render(): View
     {
         return view('core::livewire.recommend');
     }

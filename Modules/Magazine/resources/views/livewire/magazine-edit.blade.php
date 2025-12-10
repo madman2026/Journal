@@ -70,7 +70,7 @@
             <h3 class="text-lg font-semibold text-gray-800 dark:text-white">مقالات</h3>
 
             @foreach($articles as $index => $article)
-                <div class="border rounded-lg p-4 bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
+                <div wire:key="article-{{ $index }}" class="border rounded-lg p-4 bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
                     <div class="flex justify-between items-center mb-4">
                         <h4 class="font-medium text-gray-800 dark:text-white">مقاله شماره {{ $index + 1 }}</h4>
                         @if($index > 0)

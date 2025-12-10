@@ -2,6 +2,7 @@
 
 namespace Modules\Core\Livewire;
 
+use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Modules\Core\Services\ContactService;
@@ -55,7 +56,7 @@ class ContactCreate extends Component
 
     }
 
-    public function render()
+    public function render(): View
     {
         return view('core::livewire.contact-create');
     }

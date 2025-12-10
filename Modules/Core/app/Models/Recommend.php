@@ -3,6 +3,7 @@
 namespace Modules\Core\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\Core\Actions\DeleteRecommendAction;
 use Modules\Core\app\Contracts\HasSlug;
 use Modules\User\Models\User;
@@ -21,7 +22,7 @@ class Recommend extends Model
         'word',
     ];
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }

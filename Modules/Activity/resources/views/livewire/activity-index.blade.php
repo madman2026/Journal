@@ -2,7 +2,7 @@
 <main class="w-full p-5">
     <div class="grid p-4 gap-4 rounded-2xl bg-blue-300 dark:bg-darkPrimary xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 max-sm:grid-cols-1">
         @foreach ($activities as $item)
-            <div class="col-span-1 p-4 rounded-xl bg-blue-400 dark:bg-emerald-800 shadow-md transition-transform transform hover:scale-105 hover:shadow-lg duration-300 animate-fadeIn">
+            <div wire:key="activity-{{ $item->id }}" class="col-span-1 p-4 rounded-xl bg-blue-400 dark:bg-emerald-800 shadow-md transition-transform transform hover:scale-105 hover:shadow-lg duration-300 animate-fadeIn">
                 <a href="{{ route('activity.show', $item->slug) }}">
                     <img src="{{ asset($item->image) }}" alt="{{ $item->title }}"
                         class="w-full h-48 rounded-xl object-cover mb-4" loading="lazy">

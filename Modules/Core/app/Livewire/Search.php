@@ -2,6 +2,7 @@
 
 namespace Modules\Core\Livewire;
 
+use Illuminate\Contracts\View\View;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
@@ -111,7 +112,7 @@ class Search extends Component
         return Magazine::latest()->paginate($perPage);
     }
 
-    public function render()
+    public function render(): View
     {
         return view('core::livewire.search', [
             'results' => $this->results,

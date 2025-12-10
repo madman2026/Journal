@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Livewire\Component;
 use Modules\Activity\Models\Activity;
@@ -64,7 +65,7 @@ class Home extends Component
         return $items;
     }
 
-    public function render()
+    public function render(): View
     {
         return view('livewire.home');
     }

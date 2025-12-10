@@ -3,6 +3,8 @@
 namespace Modules\Activity\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Modules\Core\app\Contracts\HasSlug;
 use Modules\Core\Contracts\Interactable;
 use Modules\Core\Models\Category;
@@ -34,17 +36,17 @@ class Activity extends Model
         return 'activity.show';
     }
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function level()
+    public function level(): BelongsTo
     {
         return $this->belongsTo(Level::class);
     }
 
-    public function categories()
+    public function categories(): MorphToMany
     {
         return $this->morphToMany(Category::class, 'categorizable');
     }

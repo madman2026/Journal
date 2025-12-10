@@ -19,7 +19,7 @@
             <tbody class="bg-white dark:bg-gray-900">
 
                 @foreach ($contacts as $contact)
-                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-800 transition duration-150">
+                    <tr wire:key="contact-{{ $contact->id }}" class="hover:bg-gray-50 dark:hover:bg-gray-800 transition duration-150">
 
                         <td class="border border-gray-300 dark:border-gray-700 p-3">
                             {{ $contact->user?->username ?? 'ناشناس' }}

@@ -2,6 +2,7 @@
 
 namespace Modules\Activity\Livewire;
 
+use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -48,7 +49,7 @@ class ActivityCreate extends Component
         $this->levels = Level::all()->keyBy('id')->pluck('name')->toArray();
     }
 
-    public function render()
+    public function render(): View
     {
         $this->categories = Category::all()->pluck('name', 'id');
         $this->levels = Level::all()->pluck('name')->toArray();

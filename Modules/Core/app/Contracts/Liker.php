@@ -2,13 +2,14 @@
 
 namespace Modules\Core\Contracts;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Interaction\Models\Like;
 
 trait Liker
 {
-    public function likes()
+    public function likes(): HasMany
     {
-        return $this->morphMany(Like::class, 'user');
+        return $this->hasMany(Like::class, 'user_id');
     }
 
     public function like($model)

@@ -18,12 +18,12 @@ class Like extends Model
         'ip_address',
     ];
 
-    public function user()
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->morphTo();
+        return $this->belongsTo(\Modules\User\Models\User::class);
     }
 
-    public function likeable()
+    public function likeable(): \Illuminate\Database\Eloquent\Relations\MorphTo
     {
         return $this->morphTo();
     }

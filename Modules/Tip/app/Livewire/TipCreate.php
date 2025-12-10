@@ -2,6 +2,7 @@
 
 namespace Modules\Tip\Livewire;
 
+use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -38,7 +39,7 @@ class TipCreate extends Component
         $this->categories = Category::all()->pluck('name', 'id');
     }
 
-    public function render()
+    public function render(): View
     {
         $this->categories = Category::all()->pluck('name', 'id');
 

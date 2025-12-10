@@ -2,6 +2,7 @@
 
 namespace Modules\Activity\Livewire;
 
+use Illuminate\Contracts\View\View;
 use Livewire\Component;
 use Modules\Activity\Models\Activity;
 use Modules\Core\Contracts\HasDownloadableContentComponent;
@@ -48,7 +49,7 @@ class ActivityShow extends Component
         ]);
     }
 
-    public function render()
+    public function render(): View
     {
         return view('activity::livewire.activity-show');
     }

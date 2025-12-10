@@ -3,6 +3,7 @@
 namespace Modules\User\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Str;
 use Modules\Activity\Models\Activity;
@@ -56,32 +57,32 @@ class User extends Authenticatable
         ];
     }
 
-    public function recommends()
+    public function recommends(): HasMany
     {
         return $this->hasMany(Recommend::class);
     }
 
-    public function comments()
+    public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
     }
 
-    public function magazines()
+    public function magazines(): HasMany
     {
         return $this->hasMany(Magazine::class);
     }
 
-    public function activities()
+    public function activities(): HasMany
     {
         return $this->hasMany(Activity::class);
     }
 
-    public function tips()
+    public function tips(): HasMany
     {
         return $this->hasMany(Tip::class);
     }
 
-    public function contacts()
+    public function contacts(): HasMany
     {
         return $this->hasMany(Contact::class);
     }

@@ -30,7 +30,7 @@
 
             <tbody>
                 @foreach ($comments as $comment)
-                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-800 transition">
+                    <tr wire:key="comment-{{ $comment->id }}" class="hover:bg-gray-50 dark:hover:bg-gray-800 transition">
                         <!-- نویسنده -->
                         <td class="border border-gray-300 dark:border-gray-700 p-3">
                             {{ $comment->user->username }}

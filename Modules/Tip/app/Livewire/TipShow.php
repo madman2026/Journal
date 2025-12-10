@@ -2,6 +2,7 @@
 
 namespace Modules\Tip\Livewire;
 
+use Illuminate\Contracts\View\View;
 use Livewire\Component;
 use Modules\Core\Contracts\HasInteractableComponent;
 use Modules\Tip\Models\Tip;
@@ -38,7 +39,7 @@ class TipShow extends Component
             ->get();
     }
 
-    public function render()
+    public function render(): View
     {
         return view('tip::livewire.tip-show');
     }

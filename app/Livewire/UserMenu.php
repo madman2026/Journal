@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
@@ -31,7 +32,7 @@ class UserMenu extends Component
         return redirect()->route('home');
     }
 
-    public function render()
+    public function render(): View
     {
         return view('components.livewire.user-menu');
     }

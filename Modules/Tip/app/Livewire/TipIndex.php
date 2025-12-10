@@ -2,12 +2,13 @@
 
 namespace Modules\Tip\Livewire;
 
+use Illuminate\Contracts\View\View;
 use Livewire\Component;
 use Modules\Tip\Models\Tip;
 
 class TipIndex extends Component
 {
-    public function render()
+    public function render(): View
     {
         return view('tip::livewire.tip-index', [
             'tips' => Tip::query()
