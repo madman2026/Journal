@@ -4,13 +4,16 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 
 window.Swiper = Swiper;
+
+// Initialize AOS
 AOS.init();
 
-const initSwiper = (selector, breakpoints) => {
+// Helper function to init Swiper
+const initSwiper = (selector, breakpoints = {}) => {
     const container = document.querySelector(selector);
     if (!container) return;
 
-    new Swiper(selector, {
+    return new Swiper(selector, {
         slidesPerView: 1,
         spaceBetween: 30,
         pagination: {
@@ -33,24 +36,13 @@ const initSwiper = (selector, breakpoints) => {
     });
 };
 
-if (location.pathname === "/" || location.pathname === "") {
-    initSwiper(".activity-swiper-container", {
-        0: { slidesPerView: 1 },
-        800: { slidesPerView: 2 },
-        1024: { slidesPerView: 3 },
-        1200: { slidesPerView: 4 },
-    });
+// Only init swipers on home page
+if (["/", ""].includes(location.pathname)) {
+    const swiperConfigs = [
+        { selector: ".activity-swiper-container", breakpoints: { 0: { slidesPerView: 1 }, 800: { slidesPerView: 2 }, 1024: { slidesPerView: 3 }, 1200: { slidesPerView: 4 } } },
+        { selector: ".tip-swiper-container", breakpoints: { 0: { slidesPerView: 1 }, 800: { slidesPerView: 2 }, 1024: { slidesPerView: 3 }, 1200: { slidesPerView: 4 } } },
+        { selector: ".magazine-swiper-container", breakpoints: { 800: { slidesPerView: 1 }, 1024: { slidesPerView: 2 }, 1280: { slidesPerView: 3 } } },
+    ];
 
-    initSwiper(".tip-swiper-container", {
-        0: { slidesPerView: 1 },
-        800: { slidesPerView: 2 },
-        1024: { slidesPerView: 3 },
-        1200: { slidesPerView: 4 },
-    });
-
-    initSwiper(".magazine-swiper-container", {
-        800: { slidesPerView: 1 },
-        1024: { slidesPerView: 2 },
-        1280: { slidesPerView:3 }
-    });
+    swiperConfigs.forEach(config => initSwiper(config.selector, config.breakpoints));
 }
