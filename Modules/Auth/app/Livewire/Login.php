@@ -2,13 +2,14 @@
 
 namespace Modules\Auth\Livewire;
 
+use DutchCodingCompany\LivewireRecaptcha\ValidatesRecaptcha;
 use Livewire\Component;
 use Modules\Auth\Services\AuthService;
 use Modules\Core\Contracts\HasCaptcha;
 
 class Login extends Component
 {
-    // use HasCaptcha;
+    use HasCaptcha;
 
     public string $email = '';
 
@@ -34,6 +35,7 @@ class Login extends Component
         return view('auth::livewire.login');
     }
 
+    #[ValidatesRecaptcha]
     public function login()
     {
         $result = $this->service->login($this->validate());

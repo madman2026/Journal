@@ -2,11 +2,15 @@
 
 namespace Modules\Auth\Livewire;
 
+use DutchCodingCompany\LivewireRecaptcha\ValidatesRecaptcha;
 use Livewire\Component;
 use Modules\Auth\Services\AuthService;
+use Modules\Core\Contracts\HasCaptcha;
 
 class ForgotPassword extends Component
 {
+    use HasCaptcha;
+
     public $email;
 
     public $number;
@@ -31,6 +35,7 @@ class ForgotPassword extends Component
         ];
     }
 
+    #[ValidatesRecaptcha]
     public function forgotPassword()
     {
 

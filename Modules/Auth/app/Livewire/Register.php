@@ -2,13 +2,14 @@
 
 namespace Modules\Auth\Livewire;
 
+use DutchCodingCompany\LivewireRecaptcha\ValidatesRecaptcha;
 use Livewire\Component;
 use Modules\Auth\Services\AuthService;
 use Modules\Core\Contracts\HasCaptcha;
 
 class Register extends Component
 {
-    // use HasCaptcha;
+    use HasCaptcha;
 
     public string $email = '';
 
@@ -42,6 +43,7 @@ class Register extends Component
         return view('auth::livewire.register');
     }
 
+    #[ValidatesRecaptcha]
     public function register()
     {
         $result = $this->service->register($this->validate());

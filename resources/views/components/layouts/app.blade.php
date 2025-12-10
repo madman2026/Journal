@@ -11,8 +11,8 @@
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
         @vite('resources/css/app.css')
     @else
-        <link rel="stylesheet" href="{{ asset('assets/app1.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets/app2.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/app-1.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/app-2.css') }}">
     @endif
     <link rel="icon" type="image/x-icon" href="{{ asset('assets/favicon.ico') }}">
     {{ $styles ?? '' }}

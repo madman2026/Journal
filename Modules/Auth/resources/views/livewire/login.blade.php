@@ -1,7 +1,12 @@
 <div class="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
-    <form wire:submit.prevent="login"
+    <form wire:submit.prevent="login" wire:recaptcha
           class="w-full max-w-md bg-slate-800 rounded-2xl shadow-xl p-6 space-y-6">
-
+          @if($errors->has('gRecaptchaResponse'))
+          <p class="text-red-500 dark:text-red-400 text-sm mt-1 flex items-center gap-1">
+              <x-heroicon-o-exclamation-triangle class="w-4 h-4" />
+              <span>{{ $errors->first('gRecaptchaResponse') }}</span>
+          </p>
+      @endif
         <x-core::form.text-input
             label="ایمیل"
             name="email"
@@ -30,7 +35,6 @@
             />
         </div>
 
-        <x-captcha/>
 
         <div class="flex justify-end">
             <x-core::form.button type="submit" class="px-6 py-2">
@@ -39,3 +43,6 @@
         </div>
     </form>
 </div>
+@push('scripts')
+    @livewireRecaptcha
+@endpush

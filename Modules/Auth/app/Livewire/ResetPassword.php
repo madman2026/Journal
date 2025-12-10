@@ -2,13 +2,14 @@
 
 namespace Modules\Auth\Livewire;
 
+use DutchCodingCompany\LivewireRecaptcha\ValidatesRecaptcha;
 use Livewire\Component;
 use Modules\Auth\Services\AuthService;
 use Modules\Core\Contracts\HasCaptcha;
 
 class ResetPassword extends Component
 {
-    // use HasCaptcha;
+    use HasCaptcha;
 
     public $password;
 
@@ -28,6 +29,7 @@ class ResetPassword extends Component
         $this->service = $service;
     }
 
+    #[ValidatesRecaptcha]
     public function resetPassword()
     {
         $result = $this->service->resetPassword($this->validate());
