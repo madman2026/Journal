@@ -8,6 +8,7 @@
     "Environment file already exists.": "فایل env از قبل وجود دارد.",
     "Environment file not found.": "فایل env پیدا نشد.",
     "errors": "خطاها",
+    "recaptcha-invalid_response":"پاسخ نامعتبر تشخیص ربات",
     "Internal Server Error!":"مشکلی در سرور رخ داد",
     "Masoumieh-High-Level": "سطح عالی معصومیه",
     "Forbidden": "عدم دسترسی",

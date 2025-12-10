@@ -11,8 +11,8 @@
     "require": {
         "php": "^8.2",
         "blade-ui-kit/blade-heroicons": "^2.6",
+        "anhskohbo/no-captcha": "^3.7",
         "devrabiul/laravel-toaster-magic": "^1.5",
-        "dutchcodingcompany/livewire-recaptcha": "^1.0",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
         "livewire/volt": "^1.7.0",

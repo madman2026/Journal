@@ -3,6 +3,7 @@
 namespace Modules\Auth\Livewire;
 
 use DutchCodingCompany\LivewireRecaptcha\ValidatesRecaptcha;
+use Illuminate\Contracts\View\View;
 use Livewire\Component;
 use Modules\Auth\Services\AuthService;
 use Modules\Core\Contracts\HasCaptcha;
@@ -33,23 +34,25 @@ class ResetPassword extends Component
     public function resetPassword()
     {
         $result = $this->service->resetPassword($this->validate());
+        
         if ($result->status) {
             $this->dispatch('toastMagic',
                 status: 'success',
-                title: 'ثبت نام موفق',
-                message: 'کاربر با موفقیت ایجاد شد.'
+                title: 'موفقیت',
+                message: 'رمز عبور با موفقیت تغییر کرد.'
             );
 
-            return redirect()->intended(route('user.profile'));
+            return redirect()->intended(route('login'));
         }
+        
         $this->dispatch('toastMagic',
             status: 'error',
-            title: 'ثبت نام ناموفق',
-            message: 'مشکلی پیش آمد.'
+            title: 'خطا',
+            message: $result->message ?? 'تغییر رمز عبور با خطا مواجه شد.'
         );
     }
 
-    public function render()
+    public function render(): View
     {
         return view('auth::livewire.reset-password');
     }

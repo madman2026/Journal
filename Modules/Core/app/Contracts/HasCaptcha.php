@@ -2,7 +2,10 @@
 
 namespace Modules\Core\Contracts;
 
+use Livewire\Attributes\Validate;
+
 trait HasCaptcha
 {
-    public string $gRecaptchaResponse;
+    #[Validate('required|captcha')]
+    public $g_recaptcha_response;
 }

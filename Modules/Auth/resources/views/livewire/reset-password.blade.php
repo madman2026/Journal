@@ -21,9 +21,12 @@
         />
         <div class="flex justify-end">
             <x-core::form.button type="submit" class="px-6 py-2">
-                ثبت نام
+                تغییر رمز عبور
             </x-core::form.button>
         </div>
     </form>
 </div>
+
+@push('scripts')
     @livewireRecaptcha
+@endpush

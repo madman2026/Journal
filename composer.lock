@@ -4,8 +4,72 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d64a06eea01cb1e5bf1dc0bb76dae975",
+    "content-hash": "f1505e06a2a8cf3833445f1ef87747de",
     "packages": [
+        {
+            "name": "anhskohbo/no-captcha",
+            "version": "3.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/anhskohbo/no-captcha.git",
+                "reference": "87666572f0dbe1e3380a2e9ae7574bf3a2d0804e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/anhskohbo/no-captcha/zipball/87666572f0dbe1e3380a2e9ae7574bf3a2d0804e",
+                "reference": "87666572f0dbe1e3380a2e9ae7574bf3a2d0804e",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^6.2|^7.0",
+                "illuminate/support": "^5.0|^6.0|^7.0|^8.0|^9.0|^10.0|^11.0|^12.0",
+                "php": ">=5.5.5"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.8|^9.5.10|^10.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "NoCaptcha": "Anhskohbo\\NoCaptcha\\Facades\\NoCaptcha"
+                    },
+                    "providers": [
+                        "Anhskohbo\\NoCaptcha\\NoCaptchaServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Anhskohbo\\NoCaptcha\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "anhskohbo",
+                    "email": "anhskohbo@gmail.com"
+                }
+            ],
+            "description": "No CAPTCHA reCAPTCHA For Laravel.",
+            "keywords": [
+                "captcha",
+                "laravel",
+                "laravel4",
+                "laravel5",
+                "laravel6",
+                "no-captcha",
+                "recaptcha"
+            ],
+            "support": {
+                "issues": "https://github.com/anhskohbo/no-captcha/issues",
+                "source": "https://github.com/anhskohbo/no-captcha/tree/3.7.0"
+            },
+            "time": "2025-02-25T18:53:34+00:00"
+        },
         {
             "name": "blade-ui-kit/blade-heroicons",
             "version": "2.6.0",
@@ -653,62 +717,6 @@
                 }
             ],
             "time": "2025-10-31T18:51:33+00:00"
-        },
-        {
-            "name": "dutchcodingcompany/livewire-recaptcha",
-            "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/DutchCodingCompany/livewire-recaptcha.git",
-                "reference": "cdf2629c31d237ade99c41f3c6f8296207672246"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/DutchCodingCompany/livewire-recaptcha/zipball/cdf2629c31d237ade99c41f3c6f8296207672246",
-                "reference": "cdf2629c31d237ade99c41f3c6f8296207672246",
-                "shasum": ""
-            },
-            "require": {
-                "livewire/livewire": "^3.0",
-                "php": "^8.2"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^3.8",
-                "larastan/larastan": "^2.9",
-                "orchestra/testbench": "^9.0",
-                "phpunit/phpunit": "^11.1"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "DutchCodingCompany\\LivewireRecaptcha\\LivewireRecaptchaServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "DutchCodingCompany\\LivewireRecaptcha\\": "src/",
-                    "DutchCodingCompany\\LivewireRecaptcha\\Tests\\": "tests/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "Add Google Recaptcha V3 support to your Laravel Livewire components",
-            "homepage": "https://github.com/dutchcodingcompany/livewire-recaptcha",
-            "keywords": [
-                "Google ReCaptcha",
-                "dutchcodingcompany",
-                "laravel",
-                "livewire"
-            ],
-            "support": {
-                "issues": "https://github.com/DutchCodingCompany/livewire-recaptcha/issues",
-                "source": "https://github.com/DutchCodingCompany/livewire-recaptcha/tree/1.0.0"
-            },
-            "time": "2024-06-04T15:07:32+00:00"
         },
         {
             "name": "egulias/email-validator",
