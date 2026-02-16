@@ -20,7 +20,7 @@ class CreateActivityAction
 
         $activity = Activity::create($data);
 
-        if (!empty($categories)) {
+        if (! empty($categories)) {
             $activity->categories()->sync($categories);
         }
 

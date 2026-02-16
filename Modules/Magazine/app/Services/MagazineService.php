@@ -2,7 +2,7 @@
 
 namespace Modules\Magazine\Services;
 
-use Modules\Core\app\Contracts\BaseService;
+use Modules\Core\Contracts\BaseService;
 use Modules\Magazine\Models\Magazine;
 
 class MagazineService extends BaseService

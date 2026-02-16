@@ -13,6 +13,7 @@ class UserIndex extends Component
     use WithPagination;
 
     public $roles = [];          // [id => name]
+
     public $selectedRoles = [];  // [userId => roleId]
 
     protected $paginationTheme = 'tailwind';
@@ -62,7 +63,7 @@ class UserIndex extends Component
 
             $this->toast('info', 'نقش تغییر کرد', "نقش {$user->username} به {$roleName} تغییر کرد.");
         } catch (\Exception $e) {
-            Log::error("Error changing user role: " . $e->getMessage());
+            Log::error('Error changing user role: '.$e->getMessage());
             $this->toast('error', 'خطا', 'در تغییر نقش مشکلی رخ داد.');
         }
     }

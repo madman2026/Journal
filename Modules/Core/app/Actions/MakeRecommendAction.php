@@ -2,7 +2,7 @@
 
 namespace Modules\Core\Actions;
 
-use Modules\Core\app\Contracts\BaseService;
+use Modules\Core\Contracts\BaseService;
 
 class MakeRecommendAction extends BaseService
 {

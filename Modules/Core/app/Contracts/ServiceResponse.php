@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Core\app\Contracts;
+namespace Modules\Core\Contracts;
 
 class ServiceResponse
 {

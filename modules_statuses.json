@@ -1,13 +1,10 @@
 {
-    "Magazine": true,
-    "User": true,
-    "Auth": true,
-    "Admin": true,
-    "Tip": true,
-    "Core": true,
-    "Media": true,
-    "Interaction": true,
-    "Event": true,
     "Activity": true,
-    "Setting": true
+    "Admin": true,
+    "Auth": true,
+    "Core": true,
+    "Interaction": true,
+    "Magazine": true,
+    "Tip": true,
+    "User": true
 }

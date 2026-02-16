@@ -4,6 +4,7 @@ namespace Modules\Core\Livewire;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -18,18 +19,18 @@ class Search extends Component
 
     public string $search = '';
 
-    public string $type = 'All';
+    public string $type = '0';
 
     public int $page = 1;
 
     public bool $isSearching = false;
 
     public array $types = [
-        'همه',
-        'نشریات',
-        'رویدادها',
-        'نکته ها',
-        'مقالات',
+        '0' => '???',
+        '1' => '??????',
+        '2' => '????????',
+        '3' => '???? ??',
+        '4' => '??????',
     ];
 
     protected array $modelMap = [
@@ -41,18 +42,18 @@ class Search extends Component
 
     protected $queryString = [
         'search' => ['except' => ''],
-        'type' => ['except' => 'All'],
+        'type' => ['except' => '0'],
         'page' => ['except' => 1],
     ];
 
-    public function updated($field)
+    public function updated(string $field): void
     {
-        if (in_array($field, ['search', 'type'])) {
+        if (in_array($field, ['search', 'type'], true)) {
             $this->resetPage();
         }
     }
 
-    public function searchNow()
+    public function searchNow(): void
     {
         $this->isSearching = true;
 
@@ -65,51 +66,31 @@ class Search extends Component
         $this->isSearching = false;
     }
 
-    public function getResultsProperty()
+    public function getResultsProperty(): LengthAwarePaginator
     {
         $perPage = 10;
         $search = trim($this->search);
 
         try {
-            // Case: All models
-            if ($this->type === 1) {
-                $collections = collect($this->modelMap)->map(function ($model) use ($search, $perPage) {
-                    return $model::query()
-                        ->when($search !== '', fn ($q) => $q->where('title', 'like', "%{$search}%"))
-                        ->latest()
-                        ->take($perPage * 3)
-                        ->get();
-                });
-
-                $merged = $collections->flatten()->sortByDesc('created_at')->values();
-
-                return new LengthAwarePaginator(
-                    $merged->forPage($this->page, $perPage),
-                    $merged->count(),
-                    $perPage,
-                    $this->page,
-                    ['path' => request()->url(), 'query' => request()->query()]
-                );
+            if ($this->type === '0') {
+                return $this->buildAllResults($search, $perPage);
             }
 
-            // Case: Specific model
             if (array_key_exists($this->type, $this->modelMap)) {
                 $model = $this->modelMap[$this->type];
 
-                return $model::query()
-                    ->when($search !== '', fn ($q) => $q->where('title', 'like', "%{$search}%"))
+                return $this->buildQuery($model, $search)
                     ->latest()
                     ->paginate($perPage, ['*'], 'page', $this->page);
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             Log::error('Search failed', [
-                'msg' => $e->getMessage(),
+                'message' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
             ]);
         }
 
-        // Fallback
-        return Magazine::latest()->paginate($perPage);
+        return Magazine::query()->latest()->paginate($perPage, ['*'], 'page', $this->page);
     }
 
     public function render(): View
@@ -117,5 +98,36 @@ class Search extends Component
         return view('core::livewire.search', [
             'results' => $this->results,
         ]);
+    }
+
+    private function buildQuery(string $model, string $search)
+    {
+        return $model::query()
+            ->with('categories')
+            ->when($search !== '', fn ($q) => $q->where('title', 'like', "%{$search}%"));
+    }
+
+    private function buildAllResults(string $search, int $perPage): LengthAwarePaginator
+    {
+        /** @var Collection<int, Collection> $collections */
+        $collections = collect($this->modelMap)->map(function (string $model) use ($search, $perPage) {
+            return $this->buildQuery($model, $search)
+                ->latest()
+                ->take($perPage * 3)
+                ->get();
+        });
+
+        $merged = $collections
+            ->flatten(1)
+            ->sortByDesc('created_at')
+            ->values();
+
+        return new LengthAwarePaginator(
+            $merged->forPage($this->page, $perPage)->values(),
+            $merged->count(),
+            $perPage,
+            $this->page,
+            ['path' => request()->url(), 'query' => request()->query()]
+        );
     }
 }

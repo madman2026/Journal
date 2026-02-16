@@ -12,7 +12,7 @@ class EventsIndex extends Component
 
     protected GetEventsListAction $action;
 
-    public function boot(GetEventsListAction $action)
+    public function boot(GetEventsListAction $action): void
     {
         $this->action = $action;
     }

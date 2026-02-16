@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
-use Modules\Core\app\Contracts\HasSlug;
+use Modules\Core\Contracts\HasSlug;
 use Modules\Core\Contracts\Interactable;
 use Modules\Core\Models\Category;
 use Modules\User\Models\User;

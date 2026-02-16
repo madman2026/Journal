@@ -10,8 +10,8 @@ return new class extends Migration
     {
         Schema::table('views', function (Blueprint $table) {
             $table->foreignId('user_id')
-                  ->nullable()
-                  ->change();
+                ->nullable()
+                ->change();
         });
     }
 
@@ -19,9 +19,8 @@ return new class extends Migration
     {
         Schema::table('views', function (Blueprint $table) {
             $table->foreignId('user_id')
-                  ->nullable(false)
-                  ->change();
+                ->nullable(false)
+                ->change();
         });
     }
 };
-

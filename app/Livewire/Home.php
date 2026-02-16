@@ -12,6 +12,10 @@ use Modules\Tip\Models\Tip;
 
 class Home extends Component
 {
+    private const DEFAULT_CONTENT_IMAGE = 'images/defaultContentImage.jpg';
+
+    private const DEFAULT_CONTENT_TITLE = '????? ???? ???????';
+
     public Collection $activities;
 
     public Collection $tips;
@@ -20,24 +24,26 @@ class Home extends Component
 
     public Collection $sections;
 
-    public function mount()
+    public function mount(): void
     {
+        $defaultImage = Section::where('name', 'defaultContentImage')->value('content') ?: self::DEFAULT_CONTENT_IMAGE;
+
         $this->activities = $this->ensureMinimumItems(
             Activity::latest()->take(10)->get(),
             4,
-            'activity'
+            $defaultImage
         );
 
         $this->tips = $this->ensureMinimumItems(
             Tip::latest()->take(10)->get(),
             4,
-            'tip'
+            $defaultImage
         );
 
         $this->magazines = $this->ensureMinimumItems(
             Magazine::latest()->take(10)->get(),
             4,
-            'magazine'
+            $defaultImage
         );
 
         $this->sections = Section::where('name', 'magazineGuide')
@@ -47,17 +53,17 @@ class Home extends Component
             ]);
     }
 
-    private function ensureMinimumItems($items, int $min, string $type)
+    private function ensureMinimumItems(iterable $items, int $min, string $defaultImage): Collection
     {
-        $items = collect($items); // force plain collection
+        $items = collect($items);
         $count = $items->count();
 
         if ($count < $min) {
             for ($i = $count; $i < $min; $i++) {
                 $items->push([
                     'slug' => null,
-                    'image' => Section::whereName('defaultContentImage')->first()->content,
-                    'title' => 'موسسه عالی معصومیه',
+                    'image' => $defaultImage,
+                    'title' => self::DEFAULT_CONTENT_TITLE,
                 ]);
             }
         }

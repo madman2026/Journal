@@ -2,7 +2,6 @@
 
 namespace Modules\Auth\Livewire;
 
-use DutchCodingCompany\LivewireRecaptcha\ValidatesRecaptcha;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
 use Modules\Auth\Services\AuthService;
@@ -12,31 +11,30 @@ class ForgotPassword extends Component
 {
     use HasCaptcha;
 
-    public $email;
+    public string $email = '';
 
-    public $number;
+    public string $number = '';
 
-    public $password;
+    public string $password = '';
 
-    public $password_confirmation;
+    public string $password_confirmation = '';
 
     protected AuthService $service;
 
-    public function boot(AuthService $service)
+    public function boot(AuthService $service): void
     {
         $this->service = $service;
     }
 
-    protected function rules()
+    protected function rules(): array
     {
         return [
             'email' => 'required|email',
-            'number' => 'required|numeric',
-            'password' => 'required|string|min:6|max:50|confirmed',
+            'number' => 'required|digits_between:10,15',
+            'password' => 'required|string|min:8|max:255|confirmed',
         ];
     }
 
-    #[ValidatesRecaptcha]
     public function forgotPassword()
     {
         $result = $this->service->forgotPassword($this->validate());
@@ -45,8 +43,8 @@ class ForgotPassword extends Component
             $this->dispatch(
                 'toastMagic',
                 status: 'success',
-                title: 'موفقیت',
-                message: 'رمز عبور با موفقیت بازیابی شد'
+                title: '??????',
+                message: '??? ???? ?? ?????? ??????? ??'
             );
 
             return $this->redirectRoute('home');
@@ -55,8 +53,8 @@ class ForgotPassword extends Component
         $this->dispatch(
             'toastMagic',
             status: 'error',
-            title: 'خطا',
-            message: $result->message ?? 'بازیابی با خطا مواجه شد'
+            title: '???',
+            message: $result->message ?? '??????? ?? ??? ????? ??'
         );
     }
 

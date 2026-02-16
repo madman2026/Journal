@@ -14,13 +14,13 @@ class UserMenu extends Component
 
     public $roles = [];
 
-    public function mount()
+    public function mount(): void
     {
         $this->user = Auth::user();
         $this->roles = $this->user?->getRoleNames()->toArray() ?? [];
     }
 
-    public function toggleMenu()
+    public function toggleMenu(): void
     {
         $this->open = ! $this->open;
     }
@@ -34,6 +34,6 @@ class UserMenu extends Component
 
     public function render(): View
     {
-        return view('components.livewire.user-menu');
+        return view('livewire.user-menu');
     }
 }

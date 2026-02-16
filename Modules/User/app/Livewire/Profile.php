@@ -5,7 +5,6 @@ namespace Modules\User\Livewire;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use Modules\User\Services\UserService;
 
 class Profile extends Component
 {

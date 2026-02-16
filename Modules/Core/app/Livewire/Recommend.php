@@ -19,16 +19,16 @@ class Recommend extends Component
 
     protected MakeRecommendAction $action;
 
-    public function rules()
+    public function rules(): array
     {
         return [
             'word' => 'required|file|mimes:docx,doc',
             'attachment' => 'required|file|mimes:pdf',
-            'title' => 'required|string',
+            'title' => 'required|string|max:255',
         ];
     }
 
-    public function boot(MakeRecommendAction $action)
+    public function boot(MakeRecommendAction $action): void
     {
         $this->action = $action;
     }
@@ -36,29 +36,32 @@ class Recommend extends Component
     public function save()
     {
         $data = $this->validate();
+
         if ($this->word) {
             $data['word'] = $this->word->store('recommends/words', 'public');
         }
+
         if ($this->attachment) {
             $data['attachment'] = $this->attachment->store('recommends/attachment', 'public');
         }
+
         $result = $this->action->handle($data);
 
         if ($result->status) {
             $this->dispatch('toastMagic',
                 status: 'success',
-                title: 'ثبت شد',
-                message: 'فرم با موفقیت ارسال شد'
+                title: '??? ??',
+                message: '??? ?? ?????? ????? ??'
             );
 
             return $this->redirectRoute('home');
         }
-        $this->dispatch('toastMagic',
-            status: 'success',
-            title: 'ثبت شد',
-            message: 'فرم با موفقیت ارسال شد'
-        );
 
+        $this->dispatch('toastMagic',
+            status: 'error',
+            title: '???',
+            message: $result->message ?? '????? ??? ?? ??? ????? ??.'
+        );
     }
 
     public function render(): View

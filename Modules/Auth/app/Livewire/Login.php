@@ -2,7 +2,6 @@
 
 namespace Modules\Auth\Livewire;
 
-use DutchCodingCompany\LivewireRecaptcha\ValidatesRecaptcha;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
 use Modules\Auth\Services\AuthService;
@@ -16,19 +15,19 @@ class Login extends Component
 
     public string $password = '';
 
-    public function rules()
+    protected AuthService $service;
+
+    public function boot(AuthService $service): void
+    {
+        $this->service = $service;
+    }
+
+    public function rules(): array
     {
         return [
             'email' => 'required|email|exists:users,email',
             'password' => 'required|string|min:8|max:255',
         ];
-    }
-
-    protected AuthService $service;
-
-    public function boot(AuthService $service)
-    {
-        $this->service = $service;
     }
 
     public function render(): View
@@ -39,11 +38,12 @@ class Login extends Component
     public function login()
     {
         $result = $this->service->login($this->validate());
+
         if ($result->status) {
             $this->dispatch('toastMagic',
                 status: 'success',
-                title: 'ورود موفق',
-                message: 'کاربر با موفقیت وارد شد.'
+                title: '???? ????',
+                message: '????? ?? ?????? ???? ??.'
             );
 
             return redirect()->intended(route('user.profile'));
@@ -52,7 +52,7 @@ class Login extends Component
         $this->addError('email', $result->message);
         $this->dispatch('toastMagic',
             status: 'error',
-            title: 'خطا',
+            title: '???',
             message: $result->message
         );
     }

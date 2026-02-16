@@ -3,7 +3,7 @@
 namespace Modules\Interaction\Services;
 
 use Illuminate\Database\Eloquent\Model;
-use Modules\Core\app\Contracts\BaseService;
+use Modules\Core\Contracts\BaseService;
 
 class InteractionService extends BaseService
 {

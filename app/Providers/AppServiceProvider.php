@@ -22,14 +22,17 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        View::composer('*', function ($view) {
+        View::composer('*', function ($view): void {
+            $sections = Section::query()
+                ->whereIn('name', ['titleFooter', 'aboutUs', 'contactUs'])
+                ->pluck('content', 'name');
+
             $view->with('footerData', [
-                'titleFooter' => Section::where('name', 'titleFooter')->value('content'),
-                'aboutUs' => Section::where('name', 'aboutUs')->value('content'),
-                'contactUs' => Section::where('name', 'contactUs')->value('content'),
-                'links' => FooterLink::all(),
+                'titleFooter' => $sections->get('titleFooter'),
+                'aboutUs' => $sections->get('aboutUs'),
+                'contactUs' => $sections->get('contactUs'),
+                'links' => FooterLink::query()->get(['id', 'name', 'link']),
             ]);
         });
-
     }
 }

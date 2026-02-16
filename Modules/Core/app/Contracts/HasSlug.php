@@ -1,37 +1,37 @@
 <?php
 
-namespace Modules\Core\app\Contracts;
+namespace Modules\Core\Contracts;
 
 use Illuminate\Support\Str;
 
 trait HasSlug
 {
-    protected static function bootHasSlug()
+    protected static function bootHasSlug(): void
     {
-        static::creating(function ($model) {
+        static::creating(function ($model): void {
             $model->generateSlugOnCreate();
         });
 
-        static::updating(function ($model) {
+        static::updating(function ($model): void {
             $model->generateSlugOnUpdate();
         });
     }
 
-    protected function generateSlugOnCreate()
+    protected function generateSlugOnCreate(): void
     {
         if (empty($this->slug) && ! empty($this->title)) {
             $this->slug = $this->generateUniqueSlug($this->title);
         }
     }
 
-    protected function generateSlugOnUpdate()
+    protected function generateSlugOnUpdate(): void
     {
         if ($this->isDirty('title') && ! empty($this->title)) {
             $this->slug = $this->generateUniqueSlug($this->title, $this->id);
         }
     }
 
-    protected function generateUniqueSlug(string $value, $exceptId = null)
+    protected function generateUniqueSlug(string $value, $exceptId = null): string
     {
         $slug = Str::slug($value);
         $original = $slug;

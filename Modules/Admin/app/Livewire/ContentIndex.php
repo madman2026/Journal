@@ -16,7 +16,8 @@ use Modules\Tip\Models\Tip;
 
 class ContentIndex extends Component
 {
-    use HasDownloadableContentComponent, WithPagination;
+    use HasDownloadableContentComponent;
+    use WithPagination;
 
     protected array $contentMap = [
         'activities' => [
@@ -53,13 +54,10 @@ class ContentIndex extends Component
         ],
     ];
 
-    /**
-     * حذف محتوا بر اساس نوع و کلید
-     */
     public function deleteContent(string $type, $identifier)
     {
         if (! isset($this->contentMap[$type])) {
-            return $this->dispatch('toastMagic', status: 'error', title: 'خطا', message: 'نوع محتوا معتبر نیست.');
+            return $this->dispatch('toastMagic', status: 'error', title: '???', message: '??? ????? ????? ????.');
         }
 
         $config = $this->contentMap[$type];
@@ -69,29 +67,28 @@ class ContentIndex extends Component
         $content = $model::where($key, $identifier)->first();
 
         if (! $content) {
-            return $this->dispatch('toastMagic', status: 'error', title: 'خطا', message: 'محتوا یافت نشد.');
+            return $this->dispatch('toastMagic', status: 'error', title: '???', message: '????? ???? ???.');
         }
 
         try {
             app($config['deleteAction'])->handle($content);
+
             $this->dispatch('toastMagic',
-                success: 'success',
-                message: 'محتوا با موفقیت حذف شد.',
+                status: 'success',
+                title: '??????',
+                message: '????? ?? ?????? ??? ??.'
             );
         } catch (\Throwable $e) {
             report($e);
 
             $this->dispatch('toastMagic',
                 status: 'error',
-                title: 'خطا',
-                message: 'خطا در حذف محتوا'
+                title: '???',
+                message: '??? ?? ??? ?????'
             );
         }
     }
 
-    /**
-     * بارگذاری محتوای مختلف با pagination
-     */
     protected function loadContents(): array
     {
         $result = [];
@@ -127,9 +124,6 @@ class ContentIndex extends Component
         ]);
     }
 
-    /**
-     * استخراج متن از فیلدهای محتوا
-     */
     public function extractContent($item, array $fields = ['content', 'description', 'body']): string
     {
         foreach ($fields as $field) {

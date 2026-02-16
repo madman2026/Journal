@@ -2,7 +2,7 @@
 
 namespace Modules\Tip\Services;
 
-use Modules\Core\app\Contracts\BaseService;
+use Modules\Core\Contracts\BaseService;
 use Modules\Tip\Actions\CreateTipAction;
 use Modules\Tip\Actions\DeleteTipAction;
 use Modules\Tip\Actions\UpdateTipAction;

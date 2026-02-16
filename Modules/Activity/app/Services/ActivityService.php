@@ -6,7 +6,7 @@ use Modules\Activity\Actions\CreateActivityAction;
 use Modules\Activity\Actions\DeleteActivityAction;
 use Modules\Activity\Actions\UpdateActivityAction;
 use Modules\Activity\Models\Activity;
-use Modules\Core\app\Contracts\BaseService;
+use Modules\Core\Contracts\BaseService;
 
 class ActivityService extends BaseService
 {

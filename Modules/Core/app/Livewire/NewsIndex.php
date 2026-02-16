@@ -12,7 +12,7 @@ class NewsIndex extends Component
 
     protected GetNewsListAction $action;
 
-    public function boot(GetNewsListAction $action)
+    public function boot(GetNewsListAction $action): void
     {
         $this->action = $action;
     }

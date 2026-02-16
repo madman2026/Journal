@@ -153,7 +153,7 @@
             placeholder="جستجو..."
             class="rounded-r-lg px-3 py-2 w-64 focus:outline-none dark:bg-gray-700 dark:text-gray-200 bg-gray-200 text-gray-700 focus:ring-2 ring-blue-400 transition-all border border-gray-300 dark:border-gray-600"
         >
-        <input type="hidden" value="all" name="type">
+        <input type="hidden" value="0" name="type">
         <button type="submit" class="ml-2 shadow-lg rounded-l-lg bg-blue-500 text-white px-4 py-2 hover:bg-blue-600 transition-all flex items-center gap-2">
             <x-heroicon-o-magnifying-glass class="w-4 h-4" />
             جستجو
@@ -169,3 +169,4 @@
         <x-heroicon-o-sun x-show="!dark" class="w-5 h-5"/>
     </button>
 </header>
+

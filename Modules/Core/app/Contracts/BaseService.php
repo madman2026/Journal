@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Core\app\Contracts;
+namespace Modules\Core\Contracts;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -18,6 +18,7 @@ abstract class BaseService
     ): ServiceResponse {
         $errorMessage ??= __('errors.internal_server_error');
         $successMessage ??= __('messages.operation_successful');
+
         try {
             $result = $useTransaction
                 ? DB::transaction($callback)
@@ -30,11 +31,10 @@ abstract class BaseService
                 $e->validator->errors()->toArray()
             );
         } catch (Throwable $e) {
-
             Log::error($errorMessage, [
                 'exception' => $e,
                 'trace' => $e->getTraceAsString(),
-                'user_id' => Auth::id() ?? null,
+                'user_id' => Auth::id(),
             ]);
 
             report($e);

@@ -2,7 +2,6 @@
 
 namespace Modules\Auth\Livewire;
 
-use DutchCodingCompany\LivewireRecaptcha\ValidatesRecaptcha;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
 use Modules\Auth\Services\AuthService;
@@ -22,21 +21,21 @@ class Register extends Component
 
     public string $username = '';
 
-    public function rules()
-    {
-        return [
-            'number' => 'required|numeric|min:10|unique:users,number',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8|max:255|confirmed',
-            'username' => 'required|string|unique:users',
-        ];
-    }
-
     protected AuthService $service;
 
-    public function boot(AuthService $service)
+    public function boot(AuthService $service): void
     {
         $this->service = $service;
+    }
+
+    public function rules(): array
+    {
+        return [
+            'number' => 'required|digits_between:10,15|unique:users,number',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:8|max:255|confirmed',
+            'username' => 'required|string|min:3|max:255|unique:users,username',
+        ];
     }
 
     public function render(): View
@@ -44,15 +43,15 @@ class Register extends Component
         return view('auth::livewire.register');
     }
 
-    #[ValidatesRecaptcha]
     public function register()
     {
         $result = $this->service->register($this->validate());
+
         if ($result->status) {
             $this->dispatch('toastMagic',
                 status: 'success',
-                title: 'ثبت نام موفق',
-                message: 'کاربر با موفقیت ایجاد شد.'
+                title: '??? ??? ????',
+                message: '????? ?? ?????? ????? ??.'
             );
 
             return redirect()->intended(route('user.profile'));
@@ -61,7 +60,7 @@ class Register extends Component
         $this->addError('email', $result->message);
         $this->dispatch('toastMagic',
             status: 'error',
-            title: 'خطا',
+            title: '???',
             message: $result->message
         );
     }

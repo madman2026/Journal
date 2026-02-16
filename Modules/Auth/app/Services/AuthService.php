@@ -7,7 +7,7 @@ use Modules\Auth\Actions\LoginAction;
 use Modules\Auth\Actions\LogoutAction;
 use Modules\Auth\Actions\RegisterAction;
 use Modules\Auth\Actions\ResetPasswordAction;
-use Modules\Core\app\Contracts\BaseService;
+use Modules\Core\Contracts\BaseService;
 
 class AuthService extends BaseService
 {

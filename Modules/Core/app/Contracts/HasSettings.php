@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Core\app\Contracts;
+namespace Modules\Core\Contracts;
 
 trait HasSettings
 {
@@ -9,7 +9,7 @@ trait HasSettings
         return data_get($this->settings, $key, $default);
     }
 
-    public function setSetting($key, $value)
+    public function setSetting($key, $value): void
     {
         $settings = $this->settings ?? [];
         data_set($settings, $key, $value);

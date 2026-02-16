@@ -3,8 +3,8 @@
 namespace Modules\Core\Services;
 
 use Modules\Core\Actions\CreateContactAction;
-use Modules\Core\app\Contracts\BaseService;
-use Modules\Core\app\Contracts\ServiceResponse;
+use Modules\Core\Contracts\BaseService;
+use Modules\Core\Contracts\ServiceResponse;
 
 class ContactService extends BaseService
 {
