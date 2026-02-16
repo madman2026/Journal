@@ -25,11 +25,11 @@ class Search extends Component
     public bool $isSearching = false;
 
     public array $types = [
-        'All',
-        'Magazine',
-        'Activity',
-        'Tip',
-        'Article',
+        'همه',
+        'نشریات',
+        'رویدادها',
+        'نکته ها',
+        'مقالات',
     ];
 
     protected array $modelMap = [
