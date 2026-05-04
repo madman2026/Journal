@@ -14,7 +14,7 @@ class Home extends Component
 {
     private const DEFAULT_CONTENT_IMAGE = 'images/defaultContentImage.jpg';
 
-    private const DEFAULT_CONTENT_TITLE = '????? ???? ???????';
+    private const DEFAULT_CONTENT_TITLE = 'موسسه جواد الائمه';
 
     public Collection $activities;
 

@@ -42,8 +42,8 @@ class Login extends Component
         if ($result->status) {
             $this->dispatch('toastMagic',
                 status: 'success',
-                title: '???? ????',
-                message: '????? ?? ?????? ???? ??.'
+                title: 'موفقیت',
+                message: 'ورود باموفقیت انجام شد.'
             );
 
             return redirect()->intended(route('user.profile'));
